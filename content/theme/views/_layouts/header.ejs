@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="<%= description %>">
+    <meta name="keywords" content="<%= keywords %>">
+    <meta name="author" content="<%= author %>">
+
+    <title>Christopher Fox -
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/themereset.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+
+<body>
+    <% media.forEach(function(medias){ %>
+    <% if(medias.category == "site-logo"){ %>
+        <div class="site-logo">
+            <a class="navbar-brand" href="/"><img src="/images/<%= medias.path %>" alt="<%= medias.alt %>"></a>
+        </div>
+            <% } %>
+<% }) %>
+    <nav class="header-main">
+
+        <div class="header-main">
+            <ul class="header-main">
+                <% pages.forEach(function(page){ %>
+                    <% if (page.slug == "home"){ %>
+                        <li>
+                            <a class="nav-link" href="/">
+                                <%= page.title %>
+                            </a>
+                        </li>
+                        <% } else{ %>
+                            <li>
+                                <a class="nav-link" href="/<%= page.slug %>">
+                                    <%= page.title %>
+                                </a>
+                            </li>
+                            <% } %>
+                                <% }) %>
+
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main" class="container">
+        <%- messages("messages", locals) %>
+
+            <% if (errors) { %>
+                <% errors.forEach(function(error){ %>
+                    <div class="alert alert-danger">
+                        <%= error.msg %>
+                    </div>
+                    <% }) %>
+                        <% } %>

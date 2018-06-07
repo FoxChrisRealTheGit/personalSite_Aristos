@@ -1,0 +1,42 @@
+<% include _layouts/header %>
+    <% media.forEach(function(medias){ %>
+        <% if (medias.category == "home-banner"){ %>
+    
+            <img class="home-hero" src="images/<%= medias.path %>" alt="<%= medias.alt %>">
+            <% } %>
+                <% }) %>
+                <div class="divider"></div>
+                    <div class="home-about">
+                        <div class="home-card">
+                            <h4>developer</h4>
+                               <p> I am a very motivated, self-taught web developer with knowledge of Golang, ReactJs, Javascript, HTML, CSS, RESTful api's, Express, and NodeJS. Currently, I am exploring various computer science topics and data structure solutions. Kali Linux also has my interest.</p>
+                        </div>
+                        <div class="home-card">
+                                <h4>designer</h4>
+                                <p>I will have my BA for Graphic Design in October 2018. I have played around with the creation of various print material, but I am very interested in the UX considerations surrounding web design. VR is also extremely fascinating to me at the present moment.</p>
+                        </div>
+                        <div class="home-card">
+                                <h4>writer</h4>
+                                <p>I regularly perform spoken word poetry and try to tell stories when I can. I enjoy being in front of people and working with crowds. I have well over 200 pages of various scripts, a few plays being worked on, a completed novel, and a collection of short stories near completion.</p>
+                        </div>
+                    </div>
+                    <div class="home-recentwork">
+                        <h3>Most Recent Work</h3>
+                        <a href="/portfolio/<%= project[0].category %>/<%= project[0]._id %>#projects">
+                            <div class="work-holder">
+                                   <img  class="work-img" src="/images/portfolio_images/<%= project[0]._id %>/<%= project[0].image %>" alt="">
+                              
+                                <div class="work-information">
+                                    <h5><%= project[0].title %></h5>
+                                    <p><%- project[0].content %></p>
+                                </div>
+                            </div>
+                        </div></a>
+                    <div class="home-publications">
+                        <h3>Some Published Stuffs</h3>
+                        <div class="home-card">
+                            <img class="home-card-image" src="/images/portfolio_images/<%= books[0]._id %>/<%= books[0].image %>" alt="">
+                             <h4> <%= books[0].title %></h4>
+                            </div>
+                        </div>
+                    <% include _layouts/footer %>
