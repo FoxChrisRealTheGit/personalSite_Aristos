@@ -1,0 +1,8 @@
+/node_modules
+
+/includes/config/stuff.js
+/includes/config/log.txt
+.env
+
+/content/theme
+/content/public
