@@ -2,7 +2,7 @@
     <% media.forEach(function(medias){ %>
         <% if (medias.category == "home-banner"){ %>
     
-            <img class="home-hero" src="images/<%= medias.path %>" alt="<%= medias.alt %>">
+            <img class="home-hero" src="/<%= medias.path %>" alt="<%= medias.alt %>">
             <% } %>
                 <% }) %>
                 <div class="divider"></div>
@@ -22,9 +22,9 @@
                     </div>
                     <div class="home-recentwork">
                         <h3>Most Recent Work</h3>
-                        <a href="/portfolio/<%= project[0].category %>/<%= project[0]._id %>#projects">
+                         <a href="/portfolio/<%= project[0].category %>/<%= project[0]._id %>#projects">
                             <div class="work-holder">
-                                   <img  class="work-img" src="/images/portfolio_images/<%= project[0]._id %>/<%= project[0].image %>" alt="">
+                                   <img  class="work-img" src="/portfolio_images/<%= project[0]._id %>/<%= project[0].image %>" alt="">
                               
                                 <div class="work-information">
                                     <h5><%= project[0].title %></h5>
@@ -35,7 +35,7 @@
                     <div class="home-publications">
                         <h3>Some Published Stuffs</h3>
                         <div class="home-card">
-                            <img class="home-card-image" src="/images/portfolio_images/<%= books[0]._id %>/<%= books[0].image %>" alt="">
+                            <img class="home-card-image" src="/portfolio_images/<%= books[0]._id %>/<%= books[0].image %>" alt="">
                              <h4> <%= books[0].title %></h4>
                             </div>
                         </div>

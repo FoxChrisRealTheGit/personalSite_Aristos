@@ -1,225 +1,203 @@
-const express = require("express")
+const express = require("express");
 const router = express.Router();
-const config = require("../../../includes/config/stuff");
+const config = require("../../../important/AppStuff/config/stuff.json");
+
 // GET page model
-const Page = require("../../../includes/models/page")
+const FindPageWithParams = require("../../../important/admin/adminModels/queries/page/FindPageWithParam");
+const createPage = require("../../../important/admin/adminModels/queries/page/CreatePage");
 // GET media model
-const Media = require("../../../includes/models/media")
+const FindAllMedia = require("../../../important/admin/adminModels/queries/media/FindAllMedia");
 //GET project categories
-const portfolioCategories = require("../../upgrade/portfolio-projects/models/projectCategory")
+const FindAllPortfolioCategories = require("../../../expansion/upgrade/portfolio-projects/models/queries/projectCategory/FindAllProjectCategories");
+const FindPortfolioCategoryWithParams = require("../../../expansion/upgrade/portfolio-projects/models/queries/projectCategory/FindProjectCategoryWithParams");
 //GET portfolio projects
-const projects = require("../../upgrade/portfolio-projects/models/project");
+const FindProjectWithParams = require("../../../expansion/upgrade/portfolio-projects/models/queries/project/FindProjectWithParams");
+const FindMostRecentProject = require("../../../expansion/upgrade/portfolio-projects/models/queries/project/FindMostRecentProjectSorted");
+const FindSortedProjects = require("../../../expansion/upgrade/portfolio-projects/models/queries/project/FindAllSortedProjects");
+const FindSortedProjectsWithParams = require("../../../expansion/upgrade/portfolio-projects/models/queries/project/FindSortedProjectsWithParams");
 /*
 * GET /contact
 */
-router.get("/contact", function (req, res) {
-    Media.find({}, function (err, media) {
-        Page.findOne({ slug: "contact" }, function (err, page) {
-            if (err) {
-                console.log(err);
-            }
-            res.render("pages/contact", {
-                title: page.title,
-                content: page.content,
-                keywords: page.keywords,
-                description: page.description,
-                author: page.author,
-                siKey: config.recaptchasitekey,
-                media: media
-            })
-        })
-
-    })
-})
+router.get("/contact", (req, res) => {
+  const AllMedia = FindAllMedia();
+  const foundPage = FindPageWithParams({ slug: "contact" });
+  Promise.all([AllMedia, foundPage]).then(result => {
+    res.render("pages/contact", {
+      title: result[1].title,
+      content: result[1].content,
+      keywords: result[1].keywords,
+      description: result[1].description,
+      author: result[1].author,
+      siKey: config.recaptchasitekey,
+      media: result[0]
+    });
+  });
+});
 /*
 * GET /portfolio
 */
-router.get("/portfolio", function (req, res) {
-    Media.find({}, function (err, media) {
-        portfolioCategories.find({}, function (err, portfolioCat) {
-            projects.find({}).sort({ _id: -1 }).exec(function (err, project) {
-                Page.findOne({ slug: "portfolio" }, function (err, page) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    res.render("pages/portfolio", {
-                        title: page.title,
-                        keywords: page.keywords,
-                        description: page.description,
-                        author: page.author,
-                        media: media,
-                        portfolioCats: portfolioCat,
-                        projects: project
-                    })
-                })
-            })
-        })
-    })
-})
+router.get("/portfolio", (req, res) => {
+  const AllMedia = FindAllMedia();
+  const AllPortfolioCategories = FindAllPortfolioCategories();
+  const sortedProjects = FindSortedProjects();
+  const foundPage = FindPageWithParams({ slug: "portfolio" });
+  Promise.all([
+    AllMedia,
+    AllPortfolioCategories,
+    sortedProjects,
+    foundPage
+  ]).then(result => {
+    res.render("pages/portfolio", {
+      title: result[3].title,
+      keywords: result[3].keywords,
+      description: result[3].description,
+      author: result[3].author,
+      media: result[0],
+      portfolioCats: result[1],
+      projects: result[2]
+    });
+  });
+});
 /*
 * GET /portfolio/:category
 */
-router.get("/portfolio/:category", function (req, res) {
-    const slug = req.params.category
-
-    portfolioCategories.find({}, function (err, portfolioCat) {
-        portfolioCategories.findOne({ slug: slug }, function (err, Cats) {
-            projects.find({ category: slug }).sort({ _id: -1 }).exec(function (err, project) {
-                Media.find({}, function (err, media) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    res.render("pages/portfolio_cats", {
-                        title: Cats.title,
-                        keywords: Cats.keywords,
-                        description: Cats.description,
-                        author: Cats.author,
-                        media: media,
-                        portfolioCats: portfolioCat,
-                        projects: project
-                    })
-                })
-            })
-        })
-    })
-})
+router.get("/portfolio/:category", function(req, res) {
+  const slug = req.params.category;
+  const AllPortfolioCategories = FindAllPortfolioCategories();
+  const foundCategories = FindPortfolioCategoryWithParams({ slug: slug });
+  const foundProjects = FindSortedProjectsWithParams({ category: slug });
+  const AllMedia = FindAllMedia();
+  Promise.all([
+    AllPortfolioCategories,
+    foundCategories,
+    foundProjects,
+    AllMedia
+  ]).then(result => {
+    res.render("pages/portfolio_cats", {
+      title: result[1].title,
+      keywords: result[1].keywords,
+      description: result[1].description,
+      author: result[1].author,
+      media: result[3],
+      portfolioCats: result[0],
+      projects: result[2]
+    });
+  });
+});
 /*
 * GET /portfolio/:category
 */
-router.get("/portfolio/:category/:project", function (req, res) {
-    const slug = req.params.category
-    const project = req.params.project
-
-    portfolioCategories.find({}, function (err, portfolioCat) {
-        projects.findOne({ _id: project }, function (err, project) {
-            Media.find({}, function (err, media) {
-                if (err) {
-                    console.log(err);
-                }
-                res.render("pages/portfolioProject", {
-                    title: project.title,
-                    keywords: project.keywords,
-                    description: project.description,
-                    content: project.content,
-                    author: project.author,
-                    media: media,
-                    portfolioCats: portfolioCat,
-                    project: project
-                })
-            })
-        })
-    })
-})
+router.get("/portfolio/:category/:project", function(req, res) {
+  const slug = req.params.category;
+  const project = req.params.project;
+  const AllPortfolioCategories = FindAllPortfolioCategories();
+  const foundProject = FindProjectWithParams({ _id: project });
+  const AllMedia = FindAllMedia();
+  Promise.all([AllPortfolioCategories, foundProject, AllMedia]).then(result => {
+    res.render("pages/portfolioProject", {
+      title: result[1].title,
+      keywords: result[1].keywords,
+      description: result[1].description,
+      content: result[1].content,
+      author: result[1].author,
+      media: result[2],
+      portfolioCats: result[0],
+      project: result[1]
+    });
+  });
+});
 
 /*
 * GET /about
 */
-router.get("/about", function (req, res) {
-    Media.find({}, function (err, media) {
-        Page.findOne({ slug: "about" }, function (err, page) {
-            if (err) {
-                console.log(err);
-            }
-            res.render("pages/about", {
-                title: page.title,
-                content: page.content,
-                keywords: page.keywords,
-                description: page.description,
-                author: page.author,
-                siKey: config.recaptchasitekey,
-                media: media
-            })
-        })
-    })
-})
+router.get("/about", function(req, res) {
+  const AllMedia = FindAllMedia();
+  const foundPage = FindPageWithParams({ slug: "about" });
+  Promise.all([AllMedia, foundPage]).then(result => {
+    res.render("pages/about", {
+      title: result[1].title,
+      content: result[1].content,
+      keywords: result[1].keywords,
+      description: result[1].description,
+      author: result[1].author,
+      siKey: config.recaptchasitekey,
+      media: result[0]
+    });
+  });
+});
 
 /*
 * GET /
 */
 
-router.get("/", function (req, res) {
-    Page.findOne({ slug: "home" }, function (err, page) {
-        if (!page) {
-            let page = new Page({
-                title: "Home",
-                slug: "home",
-                content: "You should put stuff here and stuff.",
-                parent: "home",
-                description: "",
-                keywords: "",
-                author: ""
-            });
-            Media.find({}, function (err, media) {
-                if (err) {
-                    console.log(err);
-                }
-                page.save(function (err) {
-                    if (err) { return console.log(err) };
-                    res.render("index", {
-                        title: page.title,
-                        content: page.content,
-                        keywords: page.keywords,
-                        description: page.description,
-                        author: page.author,
-                        media: media
-                    })
-                })
-            })
-
-        } else {
-            Media.find({}, function (err, media) {
-                projects.find().sort({ _id: -1 }).limit(1).exec(function (err, project) {
-                    projects.find({ category: "publications" }, function (err, pubsStuff) {
-                        if (err) {
-                            console.log(err);
-                        }
-                        res.render("index", {
-                            title: page.title,
-                            content: page.content,
-                            keywords: page.keywords,
-                            description: page.description,
-                            author: page.author,
-                            media: media,
-                            project: project,
-                            books: pubsStuff
-                        })
-                    })
-                })
-            })
-        }
-
-    })
-})
+router.get("/", function(req, res) {
+  const foundPage = FindPageWithParams({ slug: "home" });
+  foundPage.then(page => {
+    if (!page) {
+      let pageProps = {
+        title: "Home",
+        slug: "home",
+        content: "You should put stuff here and stuff.",
+        parent: "home",
+        description: "",
+        keywords: "",
+        author: ""
+      };
+      const AllMedia = FindAllMedia();
+      const makePage = createPage(pageProps);
+      Promise.all([AllMedia, makePage]).then(result => {
+        res.render("index", {
+          title: result[1].title,
+          content: result[1].content,
+          keywords: result[1].keywords,
+          description: result[1].description,
+          author: result[1].author,
+          media: result[0]
+        });
+      });
+    } else {
+      const AllMedia = FindAllMedia();
+      const recentProject = FindMostRecentProject();
+      const foundProjects = FindProjectWithParams({ category: "publications" });
+      Promise.all([AllMedia, recentProject, foundProjects]).then(result => {
+        res.render("index", {
+          title: page.title,
+          content: page.content,
+          keywords: page.keywords,
+          description: page.description,
+          author: page.author,
+          media: result[0],
+          project: result[1],
+          books: result[2]
+        });
+      });
+    }
+  });
+});
 
 /*
 * GET a page
 */
 
-router.get("/:slug", function (req, res) {
-    let slug = req.params.slug;
-    Media.find({}, function (err, media) {
-        Page.findOne({ slug: slug }, function (err, page) {
-            if (err) {
-                console.log(err);
-            }
-
-            if (!page) {
-                res.redirect("/")
-            } else {
-                res.render("index", {
-                    title: page.title,
-                    content: page.content,
-                    keywords: page.keywords,
-                    description: page.description,
-                    author: page.author,
-                    media: media
-                })
-            }
-        })
-
-    })
-})
-
+router.get("/:slug", function(req, res) {
+  let slug = req.params.slug;
+  const AllMedia = FindAllMedia();
+  const foundPage = FindPageWithParams({ slug: slug });
+  Promise.all([AllMedia, foundPage]).then(result => {
+    if (!result[1]) {
+      res.redirect("/");
+    } else {
+      res.render("index", {
+        title: result[1].title,
+        content: result[1].content,
+        keywords: result[1].keywords,
+        description: result[1].description,
+        author: result[1].author,
+        media: result[0]
+      });
+    }
+  });
+});
 
 //Exports
 module.exports = router;

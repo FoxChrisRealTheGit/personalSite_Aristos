@@ -11,8 +11,7 @@
     <title>Christopher Fox -
         <%= title %>
     </title>
-    <link rel="stylesheet" href="/css/themereset.css" />
-    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="styles/main.css" />
     <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
@@ -20,7 +19,7 @@
     <% media.forEach(function(medias){ %>
     <% if(medias.category == "site-logo"){ %>
         <div class="site-logo">
-            <a class="navbar-brand" href="/"><img src="/images/<%= medias.path %>" alt="<%= medias.alt %>"></a>
+            <a class="navbar-brand" href="/"><img src="/<%= medias.path %>" alt="<%= medias.alt %>"></a>
         </div>
             <% } %>
 <% }) %>
@@ -49,12 +48,5 @@
     </nav>
 
     <main role="main" class="container">
-        <%- messages("messages", locals) %>
-
-            <% if (errors) { %>
-                <% errors.forEach(function(error){ %>
-                    <div class="alert alert-danger">
-                        <%= error.msg %>
-                    </div>
-                    <% }) %>
-                        <% } %>
+    <% include messages/messages %>
+    <% include messages/errors %>
