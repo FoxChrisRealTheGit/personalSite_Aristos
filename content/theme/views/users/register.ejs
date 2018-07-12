@@ -1,31 +1,34 @@
 <% include ../_layouts/header %>
-    <h1 class="site-title">
+    <h1 class="page__title">
         <%= title %>
     </h1>
-
-    <form class="site-form" method="post" action="/users/register">
-        <div class="form-group">
+    <% include ../_layouts/messages/messages %>
+    <% include ../_layouts/messages/errors %>
+    <form class="form" method="post" action="/users/register">
+        <div class="form__group">
             <label>Name</label>
-            <input type="text" name="name" class="form-control" placeholder="Name">
+            <input type="text" name="name" placeholder="Name">
         </div>
-        <div class="form-group">
+        <div class="form__group">
             <label>Email</label>
-            <input type="text" name="email" class="form-control" placeholder="Email">
+            <input type="text" name="email" placeholder="Email">
         </div>
-        <div class="form-group">
+        <div class="form__group">
             <label>Username</label>
-            <input type="text" name="username" class="form-control" placeholder="Username">
+            <input type="text" name="username" placeholder="Username">
         </div>
-        <div class="form-group">
+        <div class="form__group">
             <label>Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Password">
+            <input type="password" name="password" placeholder="Password">
         </div>
-        <div class="form-group">
+        <div class="form__group">
             <label>Confirm Password</label>
-            <input type="password" name="password2" class="form-control" placeholder="Confirm Password">
+            <input type="password" name="password2" placeholder="Confirm Password">
         </div>
 
-        <button type="submit" class="btn btn-default">Register</button>
+        <button type="submit" >Register</button>
 
     </form>
 
+    
+    <% include ../_layouts/footer %>

@@ -1,35 +1,37 @@
 <% include ../_layouts/header %>
-    <h1 class="site-title">Portfolio</h1>
-    <div class="portfolio-icons-holder">
+    <h1 class="page__title">Portfolio</h1>
+    <% include ../_layouts/messages/messages %>
+    <% include ../_layouts/messages/errors %>
+    <div class="portfolio__icons-holder">
 
         <% media.forEach(function(icon){ %>
             <% if(icon.category == "portfolio-icon"){ %>
-                <img class="portfolio-icon" src="/images/<%= icon.path %>" alt="<%= icon.alt %>">
+                <img class="portfolio__icon" src="<%= icon.path %>" alt="<%= icon.alt %>">
                 <% } %>
                     <% }) %>
     </div>
-    <div class="portfolio-work-holder">
+    <div class="portfolio__holder">
 
-        <div class="portfolio-work-categories">
+        <div class="portfolio__work-categories">
             <h5>Project Categories</h5>
-            <a class="project-category" href="/portfolio#projects">all projects</a>
+            <a class="portfolio__project-category" href="/portfolio#projects">all projects</a>
             <% portfolioCats.forEach(function(portCat){ %>
                 <% if(portCat.slug != "publications") { %>
-                    <a class="project-category" href="/portfolio/<%= portCat.slug %>#projects">
+                    <a class="portfolio__project-category" href="/portfolio/<%= portCat.slug %>#projects">
                         <%= portCat.title.toLowerCase() %>
                     </a>
                     <% } %>
                         <% }) %>
         </div>
-        <div class="portfolio-work-stuffs">
-            <h3 class="portfolio-category-title" id="projects"><%= title %></h3>
-            <div class="portfolio-col">
+        <div class="portfolio__work-stuffs">
+            <h3 class="portfolio__category-title" id="projects"><%= title %></h3>
+            <div class="portfolio--col">
                 
-                    <div class="work-holder">
+                    <div class="page__work-holder">
                         <div>
-                            <img class="work-img" src="/images/portfolio_images/<%= project._id %>/<%= project.image %>" alt="">
+                            <img class="page__work-img" src="/portfolio_images/<%= project._id %>/<%= project.image %>" alt="">
                         </div>
-                        <div class="work-information">
+                        <div class="page__work-information">
                             <p>
                                 <%- content %>
                             </p>

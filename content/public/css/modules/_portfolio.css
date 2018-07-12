@@ -1,0 +1,61 @@
+.portfolio {
+  &__icon {
+    width: 100px;
+    margin: 10px 25px;
+  }
+  &__icons-holder {
+    padding: 40px;
+    display: flex;
+    background: $darkGrey;
+    flex-wrap: wrap;
+  }
+
+  &__holder {
+    background-color: $white;
+    padding: 20px;
+    display: flex;
+  }
+
+  &__work-categories {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 350px;
+    height: 300px;
+    border: 4px solid $black;
+
+    & h5 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__project-category {
+    padding: 10px;
+    transition: all 0.4s linear;
+    font-variant: small-caps;
+
+    &:hover {
+      color: $white;
+      background: $blue;
+      transition: all 0.4s linear;
+    }
+  }
+  &__work-stuffs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__category-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+  }
+  &--col {
+    display: flex;
+    flex-direction: column;
+  }
+}

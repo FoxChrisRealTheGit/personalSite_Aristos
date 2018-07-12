@@ -1,0 +1,36 @@
+.header {
+  &__brand {
+    background-color: $white;
+    display: flex;
+    justify-content: center;
+
+    & img {
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+    }
+  }
+  &__main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: $white;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    &--link {
+      font-weight: 600;
+      margin: 2px;
+      padding: 20px;
+      transition: all 0.5s linear;
+
+      &:hover {
+        color: $white;
+        background: $blue;
+        transition: all 0.5s liner;
+      }
+    }
+  }
+}

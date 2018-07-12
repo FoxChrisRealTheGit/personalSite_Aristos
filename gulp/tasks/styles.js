@@ -10,7 +10,7 @@ const Logger = require("../../important/AristosStuff/AristosLogger/AristosLogger
 
 gulp.task("styles", () => {
   return gulp
-    .src("./content/public/css/main.css")
+    .src("./content/public/css/theme.css")
     .pipe(postcss([cssimport, mixins, cssvars, nested, hexrgba, autoprefixer]))
     .on("error", function(errorInfo) {
       Logger.debug(errorInfo.toString());

@@ -1,27 +1,35 @@
 const passport = require("passport");
+/* media query */
+const AllMedia = require("../../../important/admin/adminModels/queries/media/FindAllMedia");
 
 module.exports = {
   register(req, res, next) {
-    res.render("register", {
-      title: "Register",
-      author: "",
-      description: "",
-      keywords: "",
-      name: "",
-      username: "",
-      email: ""
+    AllMedia().then(media => {
+      res.render("users/register", {
+        title: "Register",
+        author: "",
+        description: "",
+        keywords: "",
+        name: "",
+        username: "",
+        email: "",
+        media: media
+      });
     });
   }, // end of register function
 
   login(req, res, next) {
     if (res.locals.user) {
-      res.render("/");
+      res.redirect("/");
     } else {
-      res.render("login", {
-        title: "Log in",
-        author: "",
-        description: "",
-        keywords: ""
+      AllMedia().then(media => {
+        res.render("users/login", {
+          title: "Log in",
+          author: "",
+          description: "",
+          keywords: "",
+          media: media
+        });
       });
     }
   }, // end of login function

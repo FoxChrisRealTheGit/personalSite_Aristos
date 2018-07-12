@@ -74,10 +74,10 @@ router.get("/portfolio/:category", function(req, res) {
     AllMedia
   ]).then(result => {
     res.render("pages/portfolio_cats", {
-      title: result[1].title,
-      keywords: result[1].keywords,
-      description: result[1].description,
-      author: result[1].author,
+      title: result[1][0].title,
+      keywords: result[1][0].keywords,
+      description: result[1][0].description,
+      author: result[1][0].author,
       media: result[3],
       portfolioCats: result[0],
       projects: result[2]
@@ -95,14 +95,14 @@ router.get("/portfolio/:category/:project", function(req, res) {
   const AllMedia = FindAllMedia();
   Promise.all([AllPortfolioCategories, foundProject, AllMedia]).then(result => {
     res.render("pages/portfolioProject", {
-      title: result[1].title,
-      keywords: result[1].keywords,
-      description: result[1].description,
-      content: result[1].content,
-      author: result[1].author,
+      title: result[1][0].title,
+      keywords: result[1][0].keywords,
+      description: result[1][0].description,
+      content: result[1][0].content,
+      author: result[1][0].author,
       media: result[2],
       portfolioCats: result[0],
-      project: result[1]
+      project: result[1][0]
     });
   });
 });
@@ -115,11 +115,11 @@ router.get("/about", function(req, res) {
   const foundPage = FindPageWithParams({ slug: "about" });
   Promise.all([AllMedia, foundPage]).then(result => {
     res.render("pages/about", {
-      title: result[1].title,
-      content: result[1].content,
-      keywords: result[1].keywords,
-      description: result[1].description,
-      author: result[1].author,
+      title: result[1][0].title,
+      content: result[1][0].content,
+      keywords: result[1][0].keywords,
+      description: result[1][0].description,
+      author: result[1][0].author,
       siKey: config.recaptchasitekey,
       media: result[0]
     });
@@ -147,11 +147,11 @@ router.get("/", function(req, res) {
       const makePage = createPage(pageProps);
       Promise.all([AllMedia, makePage]).then(result => {
         res.render("index", {
-          title: result[1].title,
-          content: result[1].content,
-          keywords: result[1].keywords,
-          description: result[1].description,
-          author: result[1].author,
+          title: result[1][0].title,
+          content: result[1][0].content,
+          keywords: result[1][0].keywords,
+          description: result[1][0].description,
+          author: result[1][0].author,
           media: result[0]
         });
       });
@@ -161,11 +161,11 @@ router.get("/", function(req, res) {
       const foundProjects = FindProjectWithParams({ category: "publications" });
       Promise.all([AllMedia, recentProject, foundProjects]).then(result => {
         res.render("index", {
-          title: page.title,
-          content: page.content,
-          keywords: page.keywords,
-          description: page.description,
-          author: page.author,
+          title: result[0][0].title,
+          content: result[0][0].content,
+          keywords: result[0][0].keywords,
+          description: result[0][0].description,
+          author: result[0][0].author,
           media: result[0],
           project: result[1],
           books: result[2]
@@ -184,7 +184,7 @@ router.get("/:slug", function(req, res) {
   const AllMedia = FindAllMedia();
   const foundPage = FindPageWithParams({ slug: slug });
   Promise.all([AllMedia, foundPage]).then(result => {
-    if (!result[1]) {
+    if (result[1].length < 1) {
       res.redirect("/");
     } else {
       res.render("index", {

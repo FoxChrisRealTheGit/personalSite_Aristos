@@ -5,46 +5,46 @@ grey: #e1e8f0
 red: #e62739
 */
 
-.divider{
+/* .divider{
     width: 100%;
     margin-top: -3px;
     height: 10px;
     background:  #6ed3cf;
-}
-.site-title{
+} */
+/* .site-title{
     text-align: center;
     font-size: 40px;
     font-weight: 900;
     background: #9068be;
     padding: 40px;
     color: #e1e8f0;
-}
-.page-body{
+} */
+/* .page-body{
     display: flex;
     justify-content: center;
     background-color: #6ed3cf;
     padding: 40px;
    
-}
-.content-holder{
+} */
+/* .content-holder{
     display: flex;
     flex-direction: column;
     font-size: 20px;
     width: 500px;
     text-align: center;
     font-weight: 600;
-}
+} */
 /* footer css */
-.footer{
+/* .footer{
     text-align: center;
     width: 100%;
     height: 200px;
     background: #e1e8f0;
     padding-top: 40px;
-}
+} */
 
 /* header css */
-.site-logo{
+/* .site-logo{
     background-color: #e1e8f0;
     display: flex;
     justify-content: center;
@@ -54,16 +54,16 @@ red: #e62739
    width: 150px;
     height: 150px;
     cursor: pointer;
-}
-.header-main{
+} */
+/* .header-main{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
     background-color: #e1e8f0;
-}
+} */
 
-.nav-link{
+/* .nav-link{
     font-weight: 600;
     margin: 2px;
     padding: 20px;
@@ -74,22 +74,21 @@ red: #e62739
     background: #6ed3cf;
     transition: background-color 0.5s liner;
 
-}
+} */
 
 
 
 
 /* Contact form */
-.site-form{
+/* .site-form{
    display: flex;
    flex-direction: column;
    align-items: center;
    background-color: #6ed3cf;
    padding: 40px;
-   
+}  */
 
-}
-.message-textarea{
+/* .message-textarea{
     resize: none;
     overflow-y: scroll;
     width: 250px;
@@ -99,8 +98,8 @@ red: #e62739
 .form-group{
     display: flex;
     flex-direction: column;
-}
-.form-group label{
+} */
+/* .form-group label{
    font-size: 20px;
    font-weight: 600;
    margin: 10px 0 5px 0;
@@ -131,17 +130,17 @@ red: #e62739
     border: 1px solid #e1e8f0;
     background-color: #9068be;
     transition: all .4s linear;
- }
+ } */
 
 
  /* home page */
- .home-hero{
+ /* .home-hero{
      width: 100%;
      height: 300px;
      margin: 0;
- }
+ } */
 
- .home-about{
+ /* .home-about{
      display: flex;
      background-color: #9068be;
      height: 400px;
@@ -200,23 +199,23 @@ margin: 20px;
 }
 .work-information p{
     padding: 10px;
-}
- .home-publications{
+} */
+ /* .home-publications{
     padding: 8px;
     display: flex;
     background-color: #9068be;
     height: 400px;
     flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
+     justify-content: center; 
  }
  .home-publications h3{
     font-size: 40px;
    font-weight: 900;
    color:#e1e8f0;
- }
+ } */
 
- .home-card{
+ /* .home-card{
      width: 250px;
      height: 325px;
      border: 4px solid #6ed3cf;
@@ -229,8 +228,8 @@ margin: 20px;
      padding: 5px;
      overflow: hidden;
      cursor: default;
- }
- .home-card h4{
+ } */
+ /* .home-card h4{
   font-weight: 600;
   font-size: 25px;
   font-variant: small-caps;
@@ -244,11 +243,11 @@ margin: 20px;
  .home-card:hover{
    box-shadow: 1px 2px 15px #6ed3cf;
    transition: all .3s linear;
-}
+} */
 
 
 /* portfolio */
-.portfolio-icons-holder{
+/* .portfolio-icons-holder{
     padding: 40px;
     display: flex;
     background: #6ed3cf;
@@ -257,13 +256,13 @@ margin: 20px;
 .portfolio-icon{
     width: 100px;
     margin: 10px 25px;
-}
-.portfolio-work-holder{
+} */
+/* .portfolio-work-holder{
     background-color: #e1e8f0;
     padding: 20px;
     display: flex;
-}
-
+} */
+/* 
 .portfolio-work-categories{
     display: flex;
     flex-direction: column;
@@ -287,8 +286,8 @@ margin: 20px;
     color: #e1e8f0;
     background: #9068be;
     transition: all .4s linear;
-}
-.portfolio-work-stuffs{
+} */
+/* .portfolio-work-stuffs{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -302,8 +301,8 @@ margin: 20px;
 .portfolio-col{
     display: flex;
     flex-direction: column;
-}
+} */
 
-.home-card-image{
+/* .home-card-image{
     width: 210px;
-}
+} */

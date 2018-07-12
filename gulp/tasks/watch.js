@@ -51,7 +51,7 @@ gulp.task("nodemon", function(cb) {
 
 gulp.task("cssInject", ["styles"], () => {
   return gulp
-    .src("./content/temp/styles/main.css")
+    .src("./content/temp/styles/theme.css")
     .pipe(browserSync.stream());
 }); /* end of css inject task */
 
