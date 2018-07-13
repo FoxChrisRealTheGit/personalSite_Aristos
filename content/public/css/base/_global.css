@@ -25,3 +25,7 @@ a {
   height: 10px;
   background: $blue;
 }
+
+main{
+   overflow: hidden;
+}
