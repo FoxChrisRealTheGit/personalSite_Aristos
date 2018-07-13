@@ -16,18 +16,30 @@
   &__content-holder {
     display: flex;
     flex-direction: column;
-    font-size: 20px;
-    width: 500px;
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
     text-align: center;
     font-weight: 600;
+
+    @mixin atMedium {
+      font-size: 20px;
+      width: 500px;
+    }
   }
 
   &__about {
     display: flex;
     background-color: $darkGrey;
-    height: 400px;
+    height: 1100px;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+
+    @mixin atMedium {
+      height: 400px;
+      flex-direction: row;
+    }
   }
 
   &__recentwork {
@@ -35,26 +47,43 @@
     display: flex;
     flex-direction: column;
     background-color: $white;
-    height: 500px;
+    height: 900px;
     justify-content: center;
     align-items: center;
+    @mixin atMedium {
+      height: 700px;
+    }
 
     & h3 {
+      overflow: hidden;
       font-size: 40px;
       font-weight: 900;
       color: $black;
+      text-align: center;
     }
   }
 
   &__work-holder {
-    width: 900px;
-    height: 375px;
+    width: 275px;
+    height: 575px;
     border: 4px solid $black;
     margin: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s linear;
+    flex-direction: column;
+    overflow: hidden;
+
+    @mixin atMedium {
+      flex-direction: row;
+      width: 700px;
+      height: 375px;
+    }
+
+    @mixin atLarge {
+      width: 900px;
+    }
 
     &:hover {
       box-shadow: 1px 2px 15px $black;
@@ -63,24 +92,39 @@
   }
 
   &__work-img {
-    width: 325px;
-    height: 325px;
-    margin: 20px;
+    width: 175px;
+    height: 175px;
+    overflow: hidden;
+
+    @mixin atMedium {
+      width: 325px;
+      height: 325px;
+      margin: 20px;
+    }
   }
 
   &__work-information {
-    width: 450px;
-    height: 325px;
-    margin: 20px;
-    color: $black;
+    width: 100%;
+    padding: 10px;
     overflow: hidden;
+
+    @mixin atMedium {
+      width: 450px;
+      height: 325px;
+      margin: 20px;
+      color: $black;
+      overflow: hidden;
+    }
+
     & h5 {
+      overflow: hidden;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       font-size: 25px;
       font-weight: 600;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     & p {
@@ -93,14 +137,20 @@
     padding: 8px;
     display: flex;
     background-color: $blue;
-    height: 500px;
+    height: 600px;
     flex-direction: column;
     align-items: center;
 
     & h3 {
+      height: 200px;
+      overflow: hidden;
       font-size: 40px;
       font-weight: 900;
       color: #e1e8f0;
+      text-align: center;
+      @mixin atSmall {
+        height: 50px;
+      }
     }
   }
 }
