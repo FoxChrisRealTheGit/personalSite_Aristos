@@ -8,14 +8,15 @@ const passport = require("passport");
 module.exports = app => {
   /* don't know if this should be a thing just yet */
   /* Set admin css folder */
+  if (process.env.NODE_ENV !== "production"){
   app.use(express.static(path.join(__dirname, "../../temp")));
   /* Set temp folder */
-  app.use(express.static(path.join(__dirname, "../../../content/temp")));
+  app.use(express.static(path.join(__dirname, "../../../")));
   /* Set public folder for images (should be removed) */
   app.use(
     express.static(path.join(__dirname, "../../../content/public/images/"))
   );
-  /* need to set to dist for production */
+}
   /* Express fileUpload middleware */
   app.use(fileUpload());
   /* end Express fileUpload middleware */

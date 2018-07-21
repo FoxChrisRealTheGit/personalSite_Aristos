@@ -86,11 +86,16 @@ gulp.task("adminCompress", ["deleteDistFolder"], ()=>{
   gulp.src('./important/**/*.js')
     .pipe(gulp.dest('./dist/important'));
 })
+gulp.task("expansionCompress", ["deleteDistFolder"], ()=>{
+  gulp.src('./expansion/**/*')
+    .pipe(gulp.dest('./dist/expansion'));
+})
 
 gulp.task("build", [
   "deleteDistFolder",
   "copyGeneralFiles",
-  "adminCompress",
+  "adminCompress", 
+  "expansionCompress",
   "optimizeImages",
   "useminTrigger"
 ]);

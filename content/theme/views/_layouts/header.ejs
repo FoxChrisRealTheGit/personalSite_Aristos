@@ -11,7 +11,16 @@
     <title>Christopher Fox | Portfolio |
         <%= title %>
     </title>
-    <link rel="stylesheet" href="/styles/theme.css">
+    <!-- build:css ../../../public/styles/theme.css-->
+    <% if (process.env.NODE_ENV === "production"){ %>
+        <link rel="stylesheet" href="../../../temp/styles/theme.css" />
+<% } %>
+ <!-- endbuild -->
+ <!-- build:remove -->
+ <% if (process.env.NODE_ENV !== "production"){ %>
+     <link rel="stylesheet" href="content/temp/styles/theme.css" />
+ <% } %>
+   <!-- endbuild -->
     <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
