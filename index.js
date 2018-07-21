@@ -1,5 +1,5 @@
 let app;
-if (process.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   app = require("./dist/important/app.js.gz");
 } else {
   app = require("./important/app");
