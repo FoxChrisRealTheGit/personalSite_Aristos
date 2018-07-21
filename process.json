@@ -1,6 +1,6 @@
 {
     "aristos" : [{
-      "script"    : "index.js",
+      "script"    : "./index.js",
       "instances" : "max",
       "exec_mode" : "cluster",
       "env": "production"
