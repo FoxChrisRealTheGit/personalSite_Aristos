@@ -50,7 +50,7 @@
             placeholder: "ui-state-hightlight",
             update: function () {
                 let ids = $("tbody").sortable("serialize");
-                let url = "/admin/portfolio/reorder-pages";
+                let url = "/admin/portfolio/reorder-projects";
                 $.post(url, ids);
             }
         });

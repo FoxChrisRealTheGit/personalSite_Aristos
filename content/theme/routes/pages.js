@@ -15,49 +15,16 @@ const FindProjectWithParams = require("../../../expansion/upgrade/portfolio-proj
 const FindMostRecentProject = require("../../../expansion/upgrade/portfolio-projects/models/queries/project/FindMostRecentProjectSorted");
 const FindSortedProjects = require("../../../expansion/upgrade/portfolio-projects/models/queries/project/FindAllSortedProjects");
 const FindSortedProjectsWithParams = require("../../../expansion/upgrade/portfolio-projects/models/queries/project/FindSortedProjectsWithParams");
+
+const pagesController = require("../controllers/pages_controller");
 /*
 * GET /contact
 */
-router.get("/contact", (req, res) => {
-  const AllMedia = FindAllMedia();
-  const foundPage = FindPageWithParams({ slug: "contact" });
-  Promise.all([AllMedia, foundPage]).then(result => {
-    res.render("pages/contact", {
-      title: result[1].title,
-      content: result[1].content,
-      keywords: result[1].keywords,
-      description: result[1].description,
-      author: result[1].author,
-      siKey: config.recaptchasitekey,
-      media: result[0]
-    });
-  });
-});
+router.get("/contact", pagesController.contact);
 /*
 * GET /portfolio
 */
-router.get("/portfolio", (req, res) => {
-  const AllMedia = FindAllMedia();
-  const AllPortfolioCategories = FindAllPortfolioCategories();
-  const sortedProjects = FindSortedProjects();
-  const foundPage = FindPageWithParams({ slug: "portfolio" });
-  Promise.all([
-    AllMedia,
-    AllPortfolioCategories,
-    sortedProjects,
-    foundPage
-  ]).then(result => {
-    res.render("pages/portfolio", {
-      title: result[3].title,
-      keywords: result[3].keywords,
-      description: result[3].description,
-      author: result[3].author,
-      media: result[0],
-      portfolioCats: result[1],
-      projects: result[2]
-    });
-  });
-});
+router.get("/portfolio", pagesController.portfolioAll);
 /*
 * GET /portfolio/:category
 */
@@ -133,7 +100,7 @@ router.get("/about", function(req, res) {
 router.get("/", function(req, res) {
   const foundPage = FindPageWithParams({ slug: "home" });
   foundPage.then(page => {
-    if (!page) {
+    if (page.length < 1) {
       let pageProps = {
         title: "Home",
         slug: "home",
@@ -161,11 +128,11 @@ router.get("/", function(req, res) {
       const foundProjects = FindProjectWithParams({ category: "publications" });
       Promise.all([AllMedia, recentProject, foundProjects]).then(result => {
         res.render("index", {
-          title: result[0][0].title,
-          content: result[0][0].content,
-          keywords: result[0][0].keywords,
-          description: result[0][0].description,
-          author: result[0][0].author,
+          title: page[0].title,
+          content: page[0].content,
+          keywords: page[0].keywords,
+          description: page[0].description,
+          author: page[0].author,
           media: result[0],
           project: result[1],
           books: result[2]

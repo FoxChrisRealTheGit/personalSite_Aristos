@@ -11,6 +11,7 @@ const CreateProject = require("../models/queries/project/CreateProject");
 const EditProject = require("../models/queries/project/EditProject");
 const DeleteProject = require("../models/queries/project/DeleteProject");
 const FindAllSortedProjects = require("../models/queries/project/FindAllSortedProjects");
+const SortProjectsByID = require("../models/queries/project/SortProjectByID");
 /* media model Queries */
 const FindAllMedia = require("../../../../important/admin/adminModels/queries/media/FindAllMedia");
 /* media categories Queries */
@@ -401,48 +402,11 @@ console.log(pimage)
     User.then(user => {
       if (user.admin === 1) {
         let ids = req.body["id[]"];
-
-        sortProjects(ids, ()=> {
-          Product.find({})
-            .sort({ sorting: 1 })
-            .exec(function(err, product) {
-              if (err) {
-                Logger.error(err);
-              }
-            });
-        });
+        SortProjectsByID(ids)
       } else {
         res.redirect("/users/login");
       }
     });
   }
 };
-/* move to queries */
-/* Sort projects function */
-function sortProjects(ids, cb) {
-  let count = 0;
 
-  for (let i = 0; i < ids.length; i++) {
-    let id = ids[i];
-    count++;
-
-    (function(count) {
-      Product.findById(id, function(err, product) {
-        if (err) {
-          Logger.error(err);
-        }
-        product.sorting = count;
-        product.save(function(err) {
-          if (err) {
-            Logger.error(err);
-          }
-
-          ++count;
-          if (count >= ids.length) {
-            cb();
-          }
-        });
-      });
-    })(count);
-  }
-}
