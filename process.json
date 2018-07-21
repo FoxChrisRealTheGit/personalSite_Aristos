@@ -3,11 +3,9 @@
     {
       "name": "site",
       "script": "./index.js",
-      "watch": true,
       "env": {
         "NODE_ENV": "production"
-      },
-      "exec_mode": "cluster"
+      }
     }
   ]
 }
