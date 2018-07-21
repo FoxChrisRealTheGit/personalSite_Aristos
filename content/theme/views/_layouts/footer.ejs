@@ -6,16 +6,9 @@
     </p>
     <p>Powered by Aristos - Node Version - 0.0.3</p>
 </div>
- <!-- build:js ../../../public/scripts/main.js -->
-<% if (process.env.NODE_ENV === "production"){ %>
-<script src="../../../temp/scripts/main.js"></script>
-<% } %>
- <!-- endbuild -->
-  <!-- build:remove -->
-<% if (process.env.NODE_ENV === "production"){ %>
+ <!-- build:js(content/temp) ../../../public/scripts/main.js -->
 <script src="/scripts/main.js"></script>
-<% } %>
-<!-- endbuild -->
+ <!-- endbuild -->
 
 </body>
 
