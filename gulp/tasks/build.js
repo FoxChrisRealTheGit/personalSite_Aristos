@@ -61,6 +61,7 @@ gulp.task("usemin", ["styles"], () => {
     .src("./content/theme/**/*.ejs")
     .pipe(
       usemin({
+        outputRelativePath: "../public",
         css: [
           function() {
             return rev();
