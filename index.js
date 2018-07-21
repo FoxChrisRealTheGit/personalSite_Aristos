@@ -1,6 +1,6 @@
 let app;
 if (process.env.NODE_ENV === "production") {
-  app = require("./dist/important/app.js.gz");
+  app = require("./dist/important/app");
 } else {
   app = require("./important/app");
 }
