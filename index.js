@@ -1,10 +1,10 @@
 let app;
-if (process.NODE_ENV === "production") {
-  app = require("./dist/app");
-} else {
-  app = require("./important/app");
-}
-
+// if (process.NODE_ENV === "production") {
+//   app = require("./dist/important/app.js.gz");
+// } else {
+//   app = require("./important/app");
+// }
+app = require("./dist/important/app.js.gz");
 /* The port that the server runs on */
 const port = process.env.PORT || 3000;
 /* Sets the app to listen to the server */

@@ -15,6 +15,7 @@ module.exports = app => {
   app.use("/admin/user-controls", adminUserControls);
   app.use("/admin", adminHome);
   /* */
+  console.log(process.NODE_ENV)
   /* */
   require("../../expansion")(app);
   require("../../content/theme")(app);
