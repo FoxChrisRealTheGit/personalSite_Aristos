@@ -1,8 +1,13 @@
 {
-    "aristos" : [{
-      "script"    : "./index.js",
-      "instances" : "max",
-      "exec_mode" : "cluster",
-      "env": "production"
-    }]
-  }
+  "apps": [
+    {
+      "name": "site",
+      "script": "./index.js",
+      "watch": true,
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "exec_mode": "cluster"
+    }
+  ]
+}
