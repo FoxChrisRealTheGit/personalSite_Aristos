@@ -13,7 +13,7 @@
     "preview": "SET NODE_ENV=production && gulp previewDist",
     "dev": "SET NODE_ENV=development && gulp watch",
     "test": "SET NODE_ENV=test && nodemon --exec mocha --recursive -R min",
-    "temps":"gulp styles && gulp adminStyles && gulp scripts"
+    "temps": "gulp styles && gulp adminStyles && gulp scripts"
   },
   "author": "Christopher Fox (https://foxchrisrealthe.com/)",
   "repository": {
@@ -58,6 +58,7 @@
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-cssnano": "^2.1.3",
+    "gulp-gzip": "^1.4.2",
     "gulp-imagemin": "^4.1.0",
     "gulp-modernizr": "^2.0.4",
     "gulp-nodemon": "^2.2.1",

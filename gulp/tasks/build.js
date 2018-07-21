@@ -5,9 +5,10 @@ const usemin = require("gulp-usemin");
 const rev = require("gulp-rev");
 const cssnano = require("gulp-cssnano");
 const uglify = require("gulp-uglify");
+const gzip = require("gulp-gzip");
 const browserSync = require("browser-sync").create();
 
-/* not working right, needs NODE_ENV set up and better pathing support */
+// doesnt work
 gulp.task("previewDist", ["nodemon"], () => {
   browserSync.init({
     notify: false,
@@ -22,18 +23,16 @@ gulp.task("deleteDistFolder", ["icons"], () => {
 
 gulp.task("copyGeneralFiles", ["deleteDistFolder"], () => {
   const pathsToCopy = [
-    "./important/**/*",
-    "!./content/index.js",
-    "!./content/theme/**",
-    "!./content/theme/views/**",
-    "!./content/assets/images/**",
-    "!./content/assets/css/**",
-    "!./content/assets/scripts",
-    "!./content/assets/scripts/**",
+    "./content/**/*",
+    "!./content/public/images/**",
+    "!./content/public/css",
+    "!./content/public/css/**",
+    "!./content/public/scripts",
+    "!./content/public/scripts/**",
     "!./content/temp",
     "!./content/temp/**"
   ];
-  return gulp.src(pathsToCopy).pipe(gulp.dest("./dist"));
+  return gulp.src(pathsToCopy).pipe(gulp.dest("./dist/content"));
 }); /* end of copy general files */
 
 gulp.task("optimizeImages", ["deleteDistFolder"], () => {
@@ -50,16 +49,16 @@ gulp.task("optimizeImages", ["deleteDistFolder"], () => {
         multipass: true
       })
     )
-    .pipe(gulp.dest("./dist/public/images"));
+    .pipe(gulp.dest("./dist/content/public/images"));
 }); /* end of optimize Images task */
 
 gulp.task("useminTrigger", ["deleteDistFolder"], function() {
   gulp.start("usemin");
 }); /* end of useminTrigger task */
 
-gulp.task("usemin", ["styles", "scripts"], () => {
+gulp.task("usemin", ["styles"], () => {
   return gulp
-    .src("./content/theme/**")
+    .src("./content/theme/**/*.ejs")
     .pipe(
       usemin({
         css: [
@@ -80,12 +79,19 @@ gulp.task("usemin", ["styles", "scripts"], () => {
         ]
       })
     )
-    .pipe(gulp.dest("./dist"));
+    .pipe(gulp.dest("./dist/content/theme"));
 }); /* end of usemin task */
+
+gulp.task("adminCompress", ["deleteDistFolder"], ()=>{
+  gulp.src('./important/**/*.js')
+    .pipe(gzip())
+    .pipe(gulp.dest('./dist/important'));
+})
 
 gulp.task("build", [
   "deleteDistFolder",
   "copyGeneralFiles",
+  "adminCompress",
   "optimizeImages",
   "useminTrigger"
 ]);
