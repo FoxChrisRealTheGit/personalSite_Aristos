@@ -83,7 +83,7 @@ gulp.task("usemin", ["styles"], () => {
 }); /* end of usemin task */
 
 gulp.task("adminCompress", ["deleteDistFolder"], ()=>{
-  gulp.src('./important/**/*.js')
+  gulp.src('./important/**/*')
     .pipe(gulp.dest('./dist/important'));
 })
 gulp.task("expansionCompress", ["deleteDistFolder"], ()=>{
