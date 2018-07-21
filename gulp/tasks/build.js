@@ -84,7 +84,6 @@ gulp.task("usemin", ["styles"], () => {
 
 gulp.task("adminCompress", ["deleteDistFolder"], ()=>{
   gulp.src('./important/**/*.js')
-    .pipe(gzip())
     .pipe(gulp.dest('./dist/important'));
 })
 
