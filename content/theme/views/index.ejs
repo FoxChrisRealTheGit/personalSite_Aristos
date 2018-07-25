@@ -1,7 +1,7 @@
 <% include _layouts/header %>
     <% media.forEach(function(medias){ %>
         <% if (medias.category == "home-banner"){ %>
-            <img src="/<%= medias.path %>" alt="<%= medias.alt %>">
+            <img src="<%= medias.path %>" alt="<%= medias.alt %>">
         <% } %>
     <% }) %>
     <div class="divider"></div>

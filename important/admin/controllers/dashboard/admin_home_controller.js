@@ -36,8 +36,9 @@ module.exports = {
           infoLogs: allTheInfo
         });
       });
-    } else if (req.app.locals.contactManagmentExists) {
+    } else if (req.app.locals.contactManagementExists) {
       const LatestThreeMessages = require("../../../../expansion/upgrade/contact/models/queries/FindLatestThreeMessages");
+      
       LatestThreeMessages().then(messages => {
         return res.render("../../../important/admin/views/index", {
           content: "",
@@ -85,7 +86,7 @@ module.exports = {
           infoLogs: log
         });
       });
-    } else if (req.app.locals.contactManagmentExists) {
+    } else if (req.app.locals.contactManagementExists) {
       const LatestThreeMessages = require("../../../../expansion/upgrade/contact/models/queries/FindLatestThreeMessages");
       LatestThreeMessages().then(messages => {
         return res.render("../../../important/admin/views/index", {
