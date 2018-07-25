@@ -11,12 +11,7 @@ module.exports = app => {
   app.use(express.static(path.join(__dirname, "../../temp")));
   /* Set temp folder */
   if (process.env.NODE_ENV === "production") { 
-    app.use(
-      express.static(path.join(__dirname, "../../../content/public/images"))
-    );
-    app.use(express.static(path.join(__dirname, "../../../content/public")));
-    /* Set public folder for images (should be removed) */
-   
+    app.use(express.static(path.join(__dirname, "../../../content/public")));   
   } else {
     app.use(express.static(path.join(__dirname, "../../../content/temp")));
   }
