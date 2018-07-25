@@ -8,74 +8,74 @@
 *````````````````````````````````````````````````````````````````````````````````````
 */
 .icon{
-    background-image: url("/sprites/sprite-fc1d68f6.svg");
+    background-image: url("/sprites/sprite-d783c7cb.svg");
 }
 
 .no-svg .icon{
-    background-image: url("/sprites/sprite-fc1d68f6.png");
+    background-image: url("/sprites/sprite-d783c7cb.png");
 }
 .icon--GoIcon{
-    width: 42.81px;
-    height: 58.23px;
-    background-position: 99.97314571137011% 0;
+    width: 46.81px;
+    height: 62.23px;
+    background-position: 99.97477168373783% 0;
 }
 .icon--ReactIcon{
-    width: 61.98px;
-    height: 53.25px;
-    background-position: 38.31277691294456% 0;
+    width: 65.98px;
+    height: 57.25px;
+    background-position: 37.97899676013853% 0;
 }
 .icon--aiIcon{
-    width: 58.75px;
-    height: 58.75px;
-    background-position: 61.33333333333332% 70.8024948024948%;
+    width: 62.75px;
+    height: 62.75px;
+    background-position: 61.684499314128935% 70.42722117202268%;
 }
 .icon--awsIcon{
-    width: 25.57px;
-    height: 15.42px;
-    background-position: 91.50076193285159% 77.36887150018337%;
+    width: 29.57px;
+    height: 19.42px;
+    background-position: 62.18725340017639% 35.61339560314387%;
 }
 .icon--cssIcon{
-    width: 52.26px;
-    height: 59.04px;
-    background-position: 0 70.97365788596198%;
+    width: 56.26px;
+    height: 63.04px;
+    background-position: 0 70.58199454380114%;
 }
 .icon--htmlIcon{
-    width: 43.97px;
-    height: 62.37px;
-    background-position: 0 19.52327874474835%;
+    width: 47.97px;
+    height: 66.37px;
+    background-position: 0 20.81163025732722%;
 }
 .icon--idIcon{
-    width: 35.2px;
-    height: 34.28px;
-    background-position: 96.04747162022703% 40.2363184079602%;
+    width: 39.2px;
+    height: 38.28px;
+    background-position: 96.2779397473275% 39.70775906074528%;
 }
 .icon--jsIcon{
-    width: 29.4px;
-    height: 33.17px;
-    background-position: 16.638276553106213% 98.86854556675583%;
+    width: 33.4px;
+    height: 37.17px;
+    background-position: 17.58506616257089% 98.95457137426345%;
 }
 .icon--mongoIcon{
-    width: 28.52px;
-    height: 34.05px;
-    background-position: 92.84716679968076% 63.82200758882374%;
+    width: 32.52px;
+    height: 38.05px;
+    background-position: 93.25112951807229% 64.03950302644155%;
 }
 .icon--nodeIcon{
-    width: 63.99px;
-    height: 22.77px;
+    width: 67.99px;
+    height: 26.77px;
     background-position: 0 0;
 }
 .icon--postCssIcon{
-    width: 33.21px;
-    height: 33.86px;
-    background-position: 0 99.33856965688302%;
+    width: 37.21px;
+    height: 37.86px;
+    background-position: 0 99.38907980145095%;
 }
 .icon--psIcon{
-    width: 60.17px;
-    height: 58.53px;
-    background-position: 74.61351655511461% 0;
+    width: 64.17px;
+    height: 62.53px;
+    background-position: 74.08615827019854% 0;
 }
 .icon--sqlIcon{
-    width: 52.16px;
-    height: 58.93px;
-    background-position: 29.55213752544673% 70.9086366286333%;
+    width: 56.16px;
+    height: 62.93px;
+    background-position: 29.792416860834567% 70.52320739002045%;
 }

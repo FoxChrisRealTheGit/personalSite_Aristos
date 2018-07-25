@@ -12,12 +12,16 @@ module.exports = app => {
   /* Set temp folder */
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../../../content/public")));
+    /* Set public folder for images (should be removed) */
+    app.use(
+      express.static(path.join(__dirname, "../../../content/public/images"))
+    );
   } else {
     app.use(express.static(path.join(__dirname, "../../../content/temp")));
   }
   /* Set public folder for images (should be removed) */
   app.use(
-    express.static(path.join(__dirname, "../../../content/public/images/"))
+    express.static(path.join(__dirname, "../../../content/public/images"))
   );
   /* Express fileUpload middleware */
   app.use(fileUpload());
