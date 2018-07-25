@@ -42,14 +42,14 @@ gulp.task("createSprite", ["beginClean"], () => {
     .pipe(gulp.dest("./content/temp/sprite/"));
 }); /* end of createSprite task */
 
-gulp.task("createPngCopy", ["createSprite"], () => {
-  return gulp
-    .src("./content/temp/sprite/css/*.svg")
-    .pipe(svg2png())
-    .pipe(gulp.dest("./content/temp/sprite/css"));
-}); /* end of create svg copy task */
+// gulp.task("createPngCopy", ["createSprite"], () => {
+//   return gulp
+//     .src("./content/temp/sprite/css/*.svg")
+//     .pipe(svg2png())
+//     .pipe(gulp.dest("./content/temp/sprite/css"));
+// }); /* end of create svg copy task */
 
-gulp.task("copySpriteGraphic", ["createPngCopy"], () => {
+gulp.task("copySpriteGraphic", () => {
   return gulp
     .src("./content/temp/sprite/css/**/*.{svg, png}")
     .pipe(gulp.dest("./content/public/images/sprites"));
@@ -69,7 +69,7 @@ gulp.task("endClean", ["copySpriteGraphic", "copySpriteCSS"], () => {
 gulp.task("icons", [
   "beginClean",
   "createSprite",
-  "createPngCopy",
+  // "createPngCopy",
   "copySpriteGraphic",
   "copySpriteCSS",
   "endClean"

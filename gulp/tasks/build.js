@@ -16,8 +16,8 @@ gulp.task("previewDist", ["nodemon"], () => {
     port: 3001
   });
 }); /* end of preview dist task */
-// ["icons"],
-gulp.task("deleteDistFolder", () => {
+
+gulp.task("deleteDistFolder", ["icons"],() => {
   return del("./dist");
 }); /* end of delete dist folder */
 
