@@ -252,7 +252,7 @@ module.exports = {
         let description = req.body.description;
         let author = req.body.author;
         let keywords = req.body.keywords;
-console.log(pimage)
+
         if (errors.length > 0) {
           req.flash("error_msg", "Stuff is wrong, fix stuffs.");
           res.redirect("/admin/portfolio/edit-project/" + id);
