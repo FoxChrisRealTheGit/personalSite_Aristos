@@ -1,8 +1,8 @@
 const User = require("../../admin/adminModels/user");
-const Logger = require("../../AristosStuff/AristosLogger/AristosLogger").Logger;
+const addErrorLog = require("../../AristosStuff/AristosLogger/AristosLogger").addError;
 /* User Queries */
 
-module.exports = passport => {
+module.exports = function(passport) {
   /* start passport local strategy */
   require("./strategies/passport-local")(passport);
   /* end passport local strategy */
@@ -19,7 +19,7 @@ module.exports = passport => {
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
       if (err) {
-        Logger.error(err);
+        addErrorLog(err, "deserialize error");
       }
       done(err, user);
     });

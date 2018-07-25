@@ -3,14 +3,13 @@
     <% include ../_layouts/messages/messages %>
     <% include ../_layouts/messages/errors %>
     <div class="portfolio__icons-holder">
-        <% media.forEach(function(icon){ %>
-            <% if(icon.category == "portfolio-icon"){ %>
-                <img class="portfolio__icon" src="<%= icon.path %>" alt="<%= icon.alt %>">
-                <% } %>
-                    <% }) %>
+    <% media.forEach(function(icon){ %>
+        <% if(icon.category == "icons"){ %> 
+            <span class="icon icon--<%= icon.title %> portfolio__icon"></span>
+        <% } %>
+    <% }) %>
     </div>
     <div class="portfolio__holder">
-
         <div class="portfolio__work-categories">
             <h5>Project Categories</h5>
             <a class="portfolio__project-category" href="/portfolio#projects">all projects</a>
@@ -19,8 +18,8 @@
                     <a class="portfolio__project-category" href="/portfolio/<%= portCat.slug %>#projects">
                         <%= portCat.title.toLowerCase() %>
                     </a>
-                    <% } %>
-                        <% }) %>
+                <% } %>
+            <% }) %>
         </div>
         <div class="portfolio__work-stuffs">
             <h3 class="portfolio__category-title" id="projects">
@@ -31,9 +30,7 @@
                 <% if(project.category !== "publications") { %>
                     <a href="/portfolio/<%= project.category %>/<%= project._id %>#projects">
                     <div class="page__work-holder">
-        
-                            <img class="page__work-img" src="/portfolio_images/<%= project._id %>/<%= project.image %>" alt="">
-                    
+                        <img class="page__work-img" src="/portfolio_images/<%= project._id %>/<%= project.image %>" alt="">
                         <div class="page__work-information">
                             <h5>
                                 <%= project.title %>
@@ -43,9 +40,10 @@
                             </p>
                         </div>
                     </div>
-        </a>
-        <% } %>
+                    </a>
+                <% } %>
             <% }) %>
-</div>
+            </div>
+        </div>
     </div>
-    <% include ../_layouts/footer %>
+<% include ../_layouts/footer %>

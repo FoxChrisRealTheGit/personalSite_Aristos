@@ -1,0 +1,81 @@
+/* Do not edit modules/_sprite directly as it is generated automatically by Gulp */
+/* Instead edit gulp/templates/sprite */
+/*
+*````````````````````````````````````````````````````````````````````````````````````
+*                              How to Use
+*                  <span class="icon icon--iconName"></span>
+*
+*````````````````````````````````````````````````````````````````````````````````````
+*/
+.icon{
+    background-image: url("/sprites/sprite-fc1d68f6.svg");
+}
+
+.no-svg .icon{
+    background-image: url("/sprites/sprite-fc1d68f6.png");
+}
+.icon--GoIcon{
+    width: 42.81px;
+    height: 58.23px;
+    background-position: 99.97314571137011% 0;
+}
+.icon--ReactIcon{
+    width: 61.98px;
+    height: 53.25px;
+    background-position: 38.31277691294456% 0;
+}
+.icon--aiIcon{
+    width: 58.75px;
+    height: 58.75px;
+    background-position: 61.33333333333332% 70.8024948024948%;
+}
+.icon--awsIcon{
+    width: 25.57px;
+    height: 15.42px;
+    background-position: 91.50076193285159% 77.36887150018337%;
+}
+.icon--cssIcon{
+    width: 52.26px;
+    height: 59.04px;
+    background-position: 0 70.97365788596198%;
+}
+.icon--htmlIcon{
+    width: 43.97px;
+    height: 62.37px;
+    background-position: 0 19.52327874474835%;
+}
+.icon--idIcon{
+    width: 35.2px;
+    height: 34.28px;
+    background-position: 96.04747162022703% 40.2363184079602%;
+}
+.icon--jsIcon{
+    width: 29.4px;
+    height: 33.17px;
+    background-position: 16.638276553106213% 98.86854556675583%;
+}
+.icon--mongoIcon{
+    width: 28.52px;
+    height: 34.05px;
+    background-position: 92.84716679968076% 63.82200758882374%;
+}
+.icon--nodeIcon{
+    width: 63.99px;
+    height: 22.77px;
+    background-position: 0 0;
+}
+.icon--postCssIcon{
+    width: 33.21px;
+    height: 33.86px;
+    background-position: 0 99.33856965688302%;
+}
+.icon--psIcon{
+    width: 60.17px;
+    height: 58.53px;
+    background-position: 74.61351655511461% 0;
+}
+.icon--sqlIcon{
+    width: 52.16px;
+    height: 58.93px;
+    background-position: 29.55213752544673% 70.9086366286333%;
+}

@@ -1,13 +1,11 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="<%= description %>">
     <meta name="keywords" content="<%= keywords %>">
     <meta name="author" content="<%= author %>">
-
     <title>Christopher Fox | Portfolio |
         <%= title %>
     </title>
@@ -16,39 +14,35 @@
     <!-- endbuild -->
     <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
-
 <body>
     <% media.forEach(function(medias){ %>
-    <% if(medias.category == "site-logo"){ %>
-        <div class="header__brand">
-            <a class="navbar-brand" href="/"><img src="/<%= medias.path %>" alt="<%= medias.alt %>"></a>
-        </div>
-            <% } %>
-<% }) %>
-    <nav class="header__main">
-    
-        <div class="header__menu-icon">
-                <div class="header__menu-icon__middle"></div>
+        <% if(medias.category == "site-logo"){ %>
+            <div class="header__brand">
+                <a class="navbar-brand" href="/"><img src="/<%= medias.path %>" alt="<%= medias.alt %>"></a>
             </div>
-            <ul class="header__menu-content">
-                <% pages.forEach(function(page){ %>
-                    <% if (page.slug == "home"){ %>
-                        <li>
-                            <a class="header__menu-content--link" href="/">
-                                <%= page.title %>
-                            </a>
-                        </li>
-                        <% } else{ %>
-                            <li>
-                                <a class="header__menu-content--link" href="/<%= page.slug %>">
-                                    <%= page.title %>
-                                </a>
-                            </li>
-                            <% } %>
-                                <% }) %>
-
-            </ul>
+        <% } %>
+    <% }) %>
+    <nav class="header__main">
+        <div class="header__menu-icon">
+            <div class="header__menu-icon__middle"></div>
+        </div>
+        <ul class="header__menu-content">
+            <% pages.forEach(function(page){ %>
+                <% if (page.slug == "home"){ %>
+                    <li>
+                        <a class="header__menu-content--link" href="/">
+                            <%= page.title %>
+                        </a>
+                    </li>
+                <% } else{ %>
+                    <li>
+                        <a class="header__menu-content--link" href="/<%= page.slug %>">
+                            <%= page.title %>
+                        </a>
+                    </li>
+                <% } %>
+            <% }) %>
+        </ul>
         </div>
     </nav>
-
     <main role="main" class="container">

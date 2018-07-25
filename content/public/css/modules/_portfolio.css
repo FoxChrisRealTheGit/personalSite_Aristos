@@ -1,11 +1,9 @@
 .portfolio {
   &__icon {
-    width: 50px;
-    margin: 5px 15px;
+    margin: 5px;
 
     @mixin atMedium {
-      width: 100px;
-      margin: 10px 25px;
+      margin: 0 auto;
     }
   }
   &__icons-holder {

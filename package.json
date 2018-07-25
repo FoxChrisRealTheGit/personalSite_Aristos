@@ -10,7 +10,7 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
-    "dev": "SET NODE_ENV=development && gulp watch",
+    "dev": "gulp watch",
     "test": "SET NODE_ENV=test && nodemon --exec mocha --recursive -R min",
     "temps": "gulp styles && gulp adminStyles && gulp scripts",
     "preview": "SET NODE_ENV=production && node ."
