@@ -49,9 +49,9 @@ gulp.task("createSprite", ["beginClean"], () => {
 //     .pipe(gulp.dest("./content/temp/sprite/css"));
 // }); /* end of create svg copy task */
 
-gulp.task("copySpriteGraphic", () => {
+gulp.task("copySpriteGraphic", ["copySpriteCSS"],() => {
   return gulp
-    .src("./content/temp/sprite/css/**/*.{svg, png}")
+    .src("./content/temp/sprite/css/**/*.svg")
     .pipe(gulp.dest("./content/public/images/sprites"));
 }); /* end of copySpriteGraphic task */
 
