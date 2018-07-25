@@ -12,11 +12,13 @@ const config = {
   },
   mode: {
     css: {
-      variables:{
-        replaceSvgWithPng: function(){
-          return function(sprite, render){
-            return render(sprite).split(".svg").join(".png")
-          }
+      variables: {
+        replaceSvgWithPng: function() {
+          return function(sprite, render) {
+            return render(sprite)
+              .split(".svg")
+              .join(".png");
+          };
         }
       },
       sprite: "sprite.svg",
@@ -57,12 +59,13 @@ gulp.task("copySpriteCSS", ["createSprite"], () => {
   return gulp
     .src("./content/temp/sprite/css/*.css")
     .pipe(rename("_sprite.css"))
-    .pipe(gulp.dest("./content/public/css/modules"));
+    .pipe(gulp.dest("./content/public/css/modules"))
+    .catch(err => console.log(err));
 }); /* end of copySpriteCSS */
 
 gulp.task("endClean", ["copySpriteGraphic", "copySpriteCSS"], () => {
   return del("./content/temp/sprite");
-});/* end of endClean */
+}); /* end of endClean */
 
 gulp.task("icons", [
   "beginClean",
