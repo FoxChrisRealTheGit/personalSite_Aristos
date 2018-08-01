@@ -10,15 +10,20 @@ module.exports = app => {
   /* Set admin css folder */
   app.use(express.static(path.join(__dirname, "../../temp")));
   /* Set temp folder */
-  if (process.env.NODE_ENV === "production") { 
-    app.use(express.static(path.join(__dirname, "../../../content/public")));   
+  if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../../../content/public")));
   } else {
     app.use(express.static(path.join(__dirname, "../../../content/temp")));
   }
   /* Set public folder for images (should be removed) */
   app.use(
-    express.static(path.join(__dirname, "../../../content/public/images"))
+    express.static(path.join(__dirname, "../../../content/public/images/"))
   );
+  /* testing grapesjs */
+  app.use(
+    express.static(path.join(__dirname, "../../../important/AristosStuff/"))
+  );
+  /* need to set to dist for production */
   /* Express fileUpload middleware */
   app.use(fileUpload());
   /* end Express fileUpload middleware */

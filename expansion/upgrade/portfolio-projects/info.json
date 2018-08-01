@@ -1,0 +1,16 @@
+{
+  "name": "portfolio",
+  "folder": "portfolio-projects",
+  "variable": "portfolioManagementExists",
+  "link": "/admin/portfolio",
+  "dropdownCategories": [
+    {
+      "name": "add portfolio",
+      "link": "/admin/portfolio/add-project"
+    },
+    {
+      "name": "add category",
+      "link": "/admin/portfolio-categories/add-portfolio-category"
+    }
+  ]
+}
