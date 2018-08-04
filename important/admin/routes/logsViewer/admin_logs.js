@@ -13,6 +13,7 @@ router.get("/", isAdmin, LogController.index);
 */
 router.get("/type/:logname", isAdmin, LogController.indexByCategory);
 
+
 /*
 * GET log index
 */

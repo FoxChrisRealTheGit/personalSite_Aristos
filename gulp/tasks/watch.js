@@ -5,7 +5,7 @@ const nodemon = require("gulp-nodemon");
 
 gulp.task(
   "watch",
-  ["nodemon", "cssInject", "adminCssInject", "scriptsRefresh"],
+  ["nodemon", "cssInject", "scriptsRefresh"],
   () => {
     browserSync.init(null, {
       proxy: "http://localhost:3000",
@@ -28,15 +28,17 @@ gulp.task(
     });
 
     /* watch admin */
-    watch("./important/admin/views/**/*.ejs", () => {
-      browserSync.reload();
-    });
-    watch("./content/public/scripts/**/*.js", () => {
-      gulp.start("scriptsRefresh");
-    });
-    watch("./important/admin/admincss/**/*.css", () => {
-      gulp.start("adminCssInject");
-    });
+   
+    // watch("./important/admin/views/**/*.ejs", () => {
+    //   browserSync.reload();
+    // });
+    // watch("./content/public/scripts/**/*.js", () => {
+    //   gulp.start("scriptsRefresh");
+    // });
+    // watch("./important/admin/admincss/**/*.css", () => {
+    //   gulp.start("adminCssInject");
+    // });
+    
   }
 ); /* end of watch task */
 
@@ -65,8 +67,8 @@ gulp.task("scriptsRefresh", ["scripts"], () => {
   browserSync.reload();
 }); /* end of scripts refresh task */
 
-gulp.task("adminCssInject", ["adminStyles"], () => {
-  return gulp
-    .src("./important/temp/styles/main.css")
-    .pipe(browserSync.stream());
-}); /* end of css inject task */
+// gulp.task("adminCssInject", ["adminStyles"], () => {
+//   return gulp
+//     .src("./important/temp/styles/main.css")
+//     .pipe(browserSync.stream());
+// }); /* end of css inject task */

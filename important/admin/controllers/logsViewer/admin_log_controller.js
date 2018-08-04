@@ -50,5 +50,5 @@ module.exports = {
       clearInfoLogs();
     }
     res.redirect("back");
-  } /* end of clear log function */
+  } /* end of clear lgo function */
 };
