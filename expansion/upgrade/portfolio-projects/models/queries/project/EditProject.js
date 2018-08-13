@@ -1,15 +1,17 @@
 const Project = require("../../project");
 /* Aristos Logger Path */
-const Logger = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").Logger;
+const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 
 /**
- * Edits a single page in the Page collection
- * @param {string} _id - The ID of the page to edit.
- * @param {object} artistProps - An object with title, slug, content, parent, 100, description, keywords, author
- * @return {promise} A promise that resolves when the page is edited
+ * Edits a single project in the Project collection
+ * @param {objectID} _id - The ID of the project to edit.
+ * @param {object} projectProps - Object containing title, slug, content, category, image, description, keywords, author
+ * @return {promise} A promise that resolves when the project is edited
  */
 module.exports = (_id, projectProps) => {
   return Project.findByIdAndUpdate({ _id }, projectProps).catch(err => {
-    Logger.error(err);
+    errorAddEvent(err, "project query error");
   });
 };
+

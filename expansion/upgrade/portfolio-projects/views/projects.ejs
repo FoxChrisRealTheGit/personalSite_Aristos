@@ -1,59 +1,73 @@
 <%- include("../../../../important/admin/views/_layouts/adminheader") %>
     <h2 class="admin-page__main-title">portfolio projects</h2>
     <% include ../../../../important/admin/views/_layouts/messages/messages %>
+        <button class="admin-button admin-button--add-something">
+            <a  href="/admin/portfolio/add-project">+</a>
+        </button>
+    <br>
+    <br>
+    <% if(count < 1){ %>
+        <h3 class="admin-page__none-of-something">There are no docs right now...</h3>
+        <% } else { %>
     <div class="button-row">
         <button class="admin-button admin-button--main">
-            <a  href="/admin/portfolio/add-project">Add a New Project</a>
+            <a href="/admin/portfolio/">All Categories</a>
         </button>
-        <button class="admin-button admin-button--main">
-            <a href="/admin/portfolio-categories/add-portfolio-category">Add a New Category</a>
+<% categories.forEach(function(category){ %>
+    
+        <button  class="admin-button admin-button--main">
+            <a href="/admin/portfolio/sorted/<%= category.slug %>">
+                <%= category.title %>
+            </a>
         </button>
+   
+    <% }) %> 
     </div>
-
-    <table class="admin-table">
-        <thead>
-            <tr class="home">
-                <th>Project</th>
-                <th>Category</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
+        <div class="blocks-holder">
             <% projects.forEach(function(project){ %>
-                <tr id="id_<%= project._id %>" class="<%= project.slug %>">
-                    <td>
+            <div class="admin-blocks" id="id_<%= project._id %>" class="<%= project.slug %>">
+            <a href="/admin/portfolio/edit-project/<%= project._id %>">
+            <h4>
+                title:
+            </h4>
+                    <h5>
                         <%= project.title %>
-                    </td>
-                    <td>
+                    </h5>
+                    <h4>
+                category:
+            </h4>
+                    <h5>
                         <%= project.category %>
-                    </td>
-                    <td class="admin-table__edit-stuffs">
-                        <a href="/admin/portfolio/edit-project/<%= project._id %>">Edit</a>
-                    </td>
-                    <td class="admin-table__delete-stuffs">
-                    <form method="post" action="/admin/portfolio/delete-project/<%= project._id %>?_method=DELETE">
+                    </h5>
+                    <h4>
+                        image:
+                    </h4>
+                    <img src="/portfolio_images/<%= project._id %>/<%= project.image %>">
+                    <h4>
+                        description:
+                    </h4>
+                    <h5>
+                        <%= project.description %>
+                    </h5>
+                    <form class="admin-blocks__delete-stuffs" method="post" action="/admin/portfolio/delete-project/<%= project._id %>?_method=DELETE">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit">Delete</button>
-                            </form>
-                    </td>
-                </tr>
+                    </form>
+                    </a>
+               </div>
             <% }) %>
-
-
-        </tbody>
-    </table>
+    </div>
+    <% } %>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
-        $('tbody').sortable({
-            items: "tr",
-            placeholder: "ui-state-hightlight",
+        $('.blocks-holder').sortable({
+            items: "div",
             update: function () {
-                let ids = $("tbody").sortable("serialize");
+                let ids = $(".blocks-holder").sortable("serialize");
                 let url = "/admin/portfolio/reorder-projects";
                 $.post(url, ids);
             }
-        });
+        }, "refresh");
     </script>
 
     <%- include("../../../../important/admin/views/_layouts/adminfooter") %>

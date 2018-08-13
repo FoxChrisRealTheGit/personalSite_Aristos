@@ -1,12 +1,16 @@
 const ProjectCategory = require("../../projectCategory");
 /* Aristos Logger Path */
-const Logger = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").Logger;
+const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 
 /**
- * Deletes a single page from the Page collection
- * @param {string} _id - The ID of the page to delete.
+ * Deletes a single project category from the Project Category collection
+ * @param {objectID} _id - The ID of the project category to delete.
  * @return {promise} A promise that resolves when the record is deleted
  */
 module.exports = _id => {
-    ProjectCategory.findByIdAndRemove(_id).catch(err => Logger.error(err));
+  return ProjectCategory.findByIdAndRemove(_id).catch(err => {
+    errorAddEvent(err, "project category query error");
+  });
 };
+

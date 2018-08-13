@@ -1,5 +1,5 @@
-const Logger = require("../../../../important/AristosStuff/AristosLogger/AristosLogger")
-  .Logger;
+const errorAddEvent = require("../../../../important/AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 const fs = require("fs-extra");
 const resizeImg = require("resize-img");
 // Project model Queries
@@ -11,6 +11,7 @@ const CreateProject = require("../models/queries/project/CreateProject");
 const EditProject = require("../models/queries/project/EditProject");
 const DeleteProject = require("../models/queries/project/DeleteProject");
 const FindAllSortedProjects = require("../models/queries/project/FindAllSortedProjects");
+const FindAllSortedProjectsWithParam = require("../models/queries/project/FindSortedProjectsWithParams");
 const SortProjectsByID = require("../models/queries/project/SortProjectByID");
 /* media model Queries */
 const FindAllMedia = require("../../../../important/admin/adminModels/queries/media/FindAllMedia");
@@ -22,15 +23,37 @@ const FindAllProjectCategories = require("../models/queries/projectCategory/Find
 const FindOneUserByID = require("../../../../important/admin/adminModels/queries/user/FindOneUserWithID");
 module.exports = {
   index(req, res, next) {
-    FindAllSortedProjects().then(projects => {
+    const theCount = CountProjects();
+    const allSorted = FindAllSortedProjects();
+    const allCategories = FindAllProjectCategories();
+    Promise.all([theCount, allSorted, allCategories]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/projects",
         {
-          projects: projects
+          count: result[0],
+          projects: result[1],
+          categories: result[2]
         }
       );
     });
   } /* end of index function */,
+  catIndex(req, res, next){
+    const theCount = CountProjects();
+    const sortedCat = FindAllSortedProjectsWithParam({category:req.params.category});
+    const allCategories = FindAllProjectCategories();
+    Promise.all([theCount, sortedCat, allCategories]).then(result => {
+      res.render(
+        "../../../expansion/upgrade/portfolio-projects/views/projects",
+        {
+          count: result[0],
+          projects: result[1],
+          categories: result[2]
+        }
+      );
+    });
+  }/* end of cat index function*/,
+
+
   addIndex(req, res, next) {
     let title,
       content,
@@ -75,7 +98,7 @@ module.exports = {
         }
 
         let title = req.body.title;
-        let slug = title.replace(/\s+/g, "-").toLowerCase();
+        let slug = title.replace(/s+/g, "-").toLowerCase();
         let content = req.body.content;
         let category = req.body.category;
         let keywords = req.body.keywords;
@@ -132,7 +155,7 @@ module.exports = {
                 image: imageFile,
                 description: description,
                 keywords: keywords,
-                sorting: 100,
+                sorting: 0,
                 author: author
               };
               CreateProject(ProjectProps).then(project => {
@@ -140,7 +163,7 @@ module.exports = {
                   "content/public/images/portfolio_images/" + project._id,
                   function(err) {
                     if (err) {
-                      Logger.error(err);
+                      errorAddEvent(err);
                     }
                   }
                 );
@@ -150,7 +173,7 @@ module.exports = {
                     "/gallery",
                   function(err) {
                     if (err) {
-                      Logger.error(err);
+                      errorAddEvent(err);
                     }
                   }
                 );
@@ -160,7 +183,7 @@ module.exports = {
                     "/gallery/thumbs",
                   function(err) {
                     if (err) {
-                      Logger.error(err);
+                      errorAddEvent(err);
                     }
                   }
                 );
@@ -174,7 +197,7 @@ module.exports = {
                     imageFile;
                   projectImage.mv(path, function(err) {
                     if (err) {
-                      Logger.error(err);
+                      errorAddEvent(err);
                     }
                   });
                 }
@@ -201,7 +224,7 @@ module.exports = {
 
       fs.readdir(galleryDir, (err, files) => {
         if (err) {
-          Logger.error(err);
+          errorAddEvent(err);
         } else {
           galleryImages = files;
           res.render(
@@ -244,7 +267,7 @@ module.exports = {
         // }
 
         let title = req.body.title;
-        let slug = title.replace(/\s+/g, "-").toLowerCase();
+        let slug = title.replace(/s+/g, "-").toLowerCase();
         let content = req.body.content;
         let category = req.body.category;
         let pimage = req.body.pimage;
@@ -290,7 +313,7 @@ module.exports = {
                       pimage,
                     function(err) {
                       if (err) {
-                        Logger.error(err);
+                        errorAddEvent(err);
                       }
                     }
                   );
@@ -305,7 +328,7 @@ module.exports = {
 
                 projectImage.mv(path, function(err) {
                   if (err) {
-                    Logger.error(err);
+                    errorAddEvent(err);
                   }
                 });
               }
@@ -340,7 +363,7 @@ module.exports = {
 
         productImage.mv(path, function(err) {
           if (err) {
-            Logger.error(err);
+            errorAddEvent(err);
           }
 
           resizeImg(fs.readFileSync(path), { width: 100, height: 100 }).then(
@@ -369,11 +392,11 @@ module.exports = {
 
     fs.remove(originalImage, (err)=> {
       if (err) {
-        Logger.error(err);
+        errorAddEvent(err);
       } else {
         fs.remove(thumbsImage, (err)=> {
           if (err) {
-            Logger.error(err);
+            errorAddEvent(err);
           } else {
             req.flash("success_msg", "Image deleted!");
             res.redirect("/admin/portfolio/edit-project/" + req.query.id);
@@ -388,7 +411,7 @@ module.exports = {
 
     fs.remove(path, (err)=> {
       if (err) {
-        Logger.error(err);
+        errorAddEvent(err);
       } else {
         DeleteProject(id);
         req.flash("success_msg", "Product deleted!");
@@ -409,4 +432,5 @@ module.exports = {
     });
   }
 };
+
 

@@ -12,6 +12,12 @@ const portfolioProjectsController = require("../controllers/admin_portfolio_proj
 router.get("/", isAdmin, portfolioProjectsController.index);
 
 /*
+* GET Project cats index
+*/
+router.get("/sorted/:category", isAdmin, portfolioProjectsController.catIndex);
+
+
+/*
 * GET, POST add portfolio Project
 */
 router
@@ -56,3 +62,4 @@ router.post("/reorder-projects", portfolioProjectsController.reorder);
 
 /* Exports */
 module.exports = router;
+

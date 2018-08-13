@@ -1,14 +1,19 @@
 const Project = require("../../project");
 /* Aristos Logger Path */
-// const Logger = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").Logger;
+const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 /**
- * Sorts pages by ids.
- * @param {string} _id - The ID of the record to find.
- * @return {promise} A promise that resolves with the page that matches the id
+ * Sorts projects by ids.
+ * @param {string} ids - The ids of the projects to sort.
+ * @return {promise} A promise that resolves with the sorted projects
  */
 module.exports = ids => {
   return sortProjects(ids, function() {
-    Project.find({}).sort({ sorting: 1 });
+    Project.find({})
+      .sort({ sorting: 1 })
+      .catch(err => {
+        errorAddEvent(err, "project query error");
+      });
   });
 }; //* end of exports */
 /* Sort pages function */
@@ -33,3 +38,4 @@ function sortProjects(ids, cb) {
     })(count);
   }
 } /* end of sort pages function */
+

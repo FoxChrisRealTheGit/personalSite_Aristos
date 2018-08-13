@@ -2,9 +2,13 @@
     <h2 class="admin-page__main-title">add a portfolio project</h2>
     <% include ../../../../important/admin/views/_layouts/messages/errors %>
     <% include ../../../../important/admin/views/_layouts/messages/messages %>
-    <button class="admin-button admin-button--main">
-        <a  href="/admin/portfolio">Back to Portfolio</a>
+    <button class="admin-button admin-button--add-something"> 
+        <a  href="/admin/portfolio">
+            <i class="fa fa-hand-point-left"></i>
+        </a>
     </button>
+    <br>
+    <br>
 
     <form method="post" action="/admin/portfolio/add-project" enctype="multipart/form-data" class="admin-form">
 
@@ -54,9 +58,8 @@
                 </div>
             </div>
 
-            <div>
                 <button class="admin-button admin-button--submit">Submit</button>
-            </div>
+      
     </form>
 
     <script>

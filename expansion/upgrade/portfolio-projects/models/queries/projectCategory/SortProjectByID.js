@@ -1,14 +1,19 @@
 const ProjectCategory = require("../../projectCategory");
 /* Aristos Logger Path */
-// const Logger = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").Logger;
+const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 /**
- * Sorts pages by ids.
- * @param {string} _id - The ID of the record to find.
- * @return {promise} A promise that resolves with the page that matches the id
+ * Sorts project categories by ids.
+ * @param {string} ids - The ids of the project categories to sort with.
+ * @return {promise} A promise that resolves with the sorted project categories
  */
 module.exports = ids => {
   return sortProjectCategories(ids, function() {
-    ProjectCategory.find({}).sort({ sorting: 1 });
+    ProjectCategory.find({})
+      .sort({ sorting: 1 })
+      .catch(err => {
+        errorAddEvent(err, "project category query error");
+      });
   });
 }; /* end of exports */
 /* Sort pages function */
@@ -33,3 +38,4 @@ function sortProjectCategories(ids, cb) {
     })(count);
   }
 } /* end of sort pages function */
+

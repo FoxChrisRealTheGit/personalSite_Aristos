@@ -1,12 +1,15 @@
 const ProjectCategory = require("../../projectCategory");
 /* Aristos Logger Path */
-// const Logger = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").Logger;
-
+const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 /**
- * Finds a single page in the Page collection.
- * @param {string} _id - The ID of the record to find.
- * @return {promise} A promise that resolves with the page that matches the id
+ * Finds all the sorted project categories in the Project Category collection.
+ * @return {promise} A promise that resolves with all the project categories
  */
 module.exports = () => {
-  return ProjectCategory.find({}).sort({ sorting: 1 });
+  return ProjectCategory.find({})
+    .sort({ sorting: 1 })
+    .catch(err => {
+      errorAddEvent(err, "project category query error");
+    });
 };

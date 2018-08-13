@@ -1,15 +1,18 @@
 const ProjectCategory = require("../../projectCategory");
 /* Aristos Logger Path */
-const Logger = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").Logger;
+const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 
 /**
- * Edits a single page in the Page collection
- * @param {string} _id - The ID of the page to edit.
- * @param {object} artistProps - An object with title, slug, content, parent, 100, description, keywords, author
- * @return {promise} A promise that resolves when the page is edited
+ * Edits a single project category in the Project Category collection
+ * @param {objectId} _id - The ID of the project category to edit.
+ * @param {object} projectCategoryProps - An object with title, slug, description, keywords, author
+ * @return {promise} A promise that resolves when the project category is edited
  */
-module.exports = (_id,  projectCategoryProps) => {
-  return ProjectCategory.findByIdAndUpdate({ _id }, projectCategoryProps).catch(err => {
-    Logger.error(err);
-  });
+module.exports = (_id, projectCategoryProps) => {
+  return ProjectCategory.findByIdAndUpdate({ _id }, projectCategoryProps).catch(
+    err => {
+      errorAddEvent(err, "project category query error");
+    }
+  );
 };
