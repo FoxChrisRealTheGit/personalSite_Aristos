@@ -9,7 +9,7 @@ const errorAddEvent = require("../../../../../../important/AristosStuff/AristosL
  * @return {promise} A promise that resolves when the record is deleted
  */
 module.exports = _id => {
-    return BlogComments.findByIdAndRemove(_id).catch(err => {
+    return BlogComments.remove({blogref:_id}).catch(err => {
       errorAddEvent(err, "blog comment query error");
     });
   };

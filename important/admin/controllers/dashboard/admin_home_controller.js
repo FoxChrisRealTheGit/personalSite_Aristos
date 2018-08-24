@@ -56,6 +56,7 @@ module.exports = {
   } /* end of dashboardGET function */,
   dashboardLogCats(req, res, next) {
     let log;
+    let totalViews, siteViews, FrontEndViews;
     if (req.params.logname === "errors") {
       log = getAllErrorLogs();
     } else if (req.params.logname === "debug") {

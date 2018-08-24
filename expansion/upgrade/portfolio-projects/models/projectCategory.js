@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 /* project Category Schema */
-const PortfolioCategorySchema = new mongoose.Schema({
+const PortfolioCategorySchema = new Schema({
   title: {
     type: String,
     required: true
@@ -15,7 +16,8 @@ const PortfolioCategorySchema = new mongoose.Schema({
     type: String
   },
   author: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: "User"
   },
   sorting: {
     type: Number
@@ -25,4 +27,3 @@ const PortfolioCategorySchema = new mongoose.Schema({
 
 /* end of project category funcitons */
 module.exports = mongoose.model("PortfolioCategory", PortfolioCategorySchema);
-

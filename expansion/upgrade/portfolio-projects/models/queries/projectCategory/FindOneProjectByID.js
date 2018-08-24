@@ -8,7 +8,9 @@ const errorAddEvent = require("../../../../../../important/AristosStuff/AristosL
  * @return {promise} A promise that resolves with the project category that matches the id
  */
 module.exports = _id => {
-  return ProjectCategory.findById(_id).catch(err => {
-    errorAddEvent(err, "project category query error");
-  });
+  return ProjectCategory.findById(_id)
+    .populate("author")
+    .catch(err => {
+      errorAddEvent(err, "project category query error");
+    });
 };

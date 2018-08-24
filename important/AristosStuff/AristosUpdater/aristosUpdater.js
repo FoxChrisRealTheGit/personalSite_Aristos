@@ -48,9 +48,8 @@ let expansionUpdate = something => {
       }
       body.forEach(stuff => {
          fs.outputFile(stuff.name, stuff.content);
-        //console.log(stuff.name)
+        // console.log(stuff.name)
       });
-      
     }
   );
   something.flash("success_msg", "Expansions Updated!");
@@ -60,7 +59,8 @@ let expansionUpdate = something => {
 /*
 * theme Update Function
 */
-let themeUpdate = () => {
+let themeUpdate = (req) => {
+  req.flash("success_msg", "Theme Updates Not Currently Available!");
   addUpdateInfos("theme update not available", "theme update");
 }; /* end of theme update function */
 

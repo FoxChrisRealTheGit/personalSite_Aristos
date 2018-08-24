@@ -10,8 +10,8 @@ const errorAddEvent = require("../../../../../../important/AristosStuff/AristosL
  * @return {promise} A promise that resolves when the project is edited
  */
 module.exports = (_id, projectProps) => {
-  return Project.findByIdAndUpdate({ _id }, projectProps).catch(err => {
+  return Project.findByIdAndUpdate({_id: _id}, projectProps).catch(err => {
+    console.log(err)
     errorAddEvent(err, "project query error");
   });
 };
-

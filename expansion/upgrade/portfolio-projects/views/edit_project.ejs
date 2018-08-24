@@ -24,7 +24,7 @@
             <label for="">Category</label>
             <select name="category" class="form-control">
                 <% categories.forEach(function(category){ %>
-                    <option value="<%= category.slug %>" <% if (category.slug === selectedCat) { %>
+                    <option value="<%= category._id %>" <% if (category.slug === selectedCat) { %>
                         selected = "selected"
                         <% } %>
                             >
@@ -132,3 +132,4 @@
 
     </script>
   <%- include("../../../../important/admin/views/_layouts/adminfooter") %>
+

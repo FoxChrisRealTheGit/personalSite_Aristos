@@ -25,16 +25,11 @@
                         <label for="">Category</label>
                         <select name="category" id="category" class="form-control">
                             <% categories.forEach(function(category){ %>
-                                <option value="<%= category.slug %>">
+                                <option value="<%= category._id %>">
                                     <%= category.title %>
                                 </option>
                                 <% }); %>
                         </select>
-                    </div>
-                    <div class="admin-form__group">
-                        <label for="">Author</label>
-                        <input type="text" class="form-control" name="author" value="<%= author %>" placeholder="Author">
-
                     </div>
                     <div class="admin-form__group">
                         <label for="">Image</label>
@@ -57,8 +52,7 @@
                    
                 </div>
             </div>
-
-                <button class="admin-button admin-button--submit">Submit</button>
+            <button class="admin-button admin-button--submit">Submit</button>
       
     </form>
 
@@ -80,3 +74,4 @@
        
     </script>
     <%- include("../../../../important/admin/views/_layouts/adminfooter") %>
+

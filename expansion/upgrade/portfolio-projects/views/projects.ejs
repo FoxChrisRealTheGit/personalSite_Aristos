@@ -7,7 +7,7 @@
     <br>
     <br>
     <% if(count < 1){ %>
-        <h3 class="admin-page__none-of-something">There are no docs right now...</h3>
+        <h3 class="admin-page__none-of-something">There are no projects right now...</h3>
         <% } else { %>
     <div class="button-row">
         <button class="admin-button admin-button--main">
@@ -16,7 +16,7 @@
 <% categories.forEach(function(category){ %>
     
         <button  class="admin-button admin-button--main">
-            <a href="/admin/portfolio/sorted/<%= category.slug %>">
+            <a href="/admin/portfolio/sorted/<%= category._id %>">
                 <%= category.title %>
             </a>
         </button>
@@ -37,7 +37,7 @@
                 category:
             </h4>
                     <h5>
-                        <%= project.category %>
+                        <%= project.category.title %>
                     </h5>
                     <h4>
                         image:

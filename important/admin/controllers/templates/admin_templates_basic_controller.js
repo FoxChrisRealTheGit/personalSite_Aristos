@@ -93,7 +93,6 @@ module.exports = {
 
   editIndex(req, res, next) {
     FindOneTemplate(req.params.id).then(template => {
-      console.log(template.description);
       res.render(
         "../../../important/admin/views/templateBuilder/editBasicTemplate",
         {

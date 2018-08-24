@@ -8,8 +8,10 @@ const errorAddEvent = require("../../../../../../important/AristosStuff/AristosL
  * @return {promise} A promise that resolves with the project(s) that match the stuff param
  */
 module.exports = stuff => {
-  return Project.find(stuff).catch(err => {
-    errorAddEvent(err, "project query error");
-  });
+  return Project.find(stuff)
+    .populate("category")
+    .populate("author")
+    .catch(err => {
+      errorAddEvent(err, "project query error");
+    });
 };
-

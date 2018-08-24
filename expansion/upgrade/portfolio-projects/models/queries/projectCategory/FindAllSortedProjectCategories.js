@@ -9,6 +9,7 @@ const errorAddEvent = require("../../../../../../important/AristosStuff/AristosL
 module.exports = () => {
   return ProjectCategory.find({})
     .sort({ sorting: 1 })
+    .populate("author")
     .catch(err => {
       errorAddEvent(err, "project category query error");
     });

@@ -15,6 +15,8 @@ const FindProjectCategoryWithParams = require("../models/queries/projectCategory
 const FindProjectCategoryByID = require("../models/queries/projectCategory/FindOneProjectByID");
 const FindAllSortedProjectCategories = require("../models/queries/projectCategory/FindAllSortedProjectCategories");
 const SortProjectCategories = require("../models/queries/projectCategory/SortProjectByID");
+/* Portfolio Queries */
+const DeleteProjectsWithCategory = require("../models/queries/project/DeleteProjectWithCategory");
 /* User Model Queries */
 const FindOneUserByID = require("../../../../important/admin/adminModels/queries/user/FindOneUserWithID");
 module.exports = {
@@ -75,8 +77,8 @@ module.exports = {
         }
 
         let title = req.body.title;
-        let slug = title.replace(/s+/g, "-").toLowerCase();
-        let author = req.body.author;
+        let slug = title.replace(/\s+/g, "-").toLowerCase();
+        let author = req.session.passport.user;
         let description = req.body.description;
         let keywords = req.body.keywords;
 
@@ -160,9 +162,8 @@ module.exports = {
         }
 
         let title = req.body.title;
-        let slug = title.replace(/s+/g, "-").toLowerCase();
+        let slug = title.replace(/\s+/g, "-").toLowerCase();
         let id = req.params.id;
-        let author = req.body.author;
         let description = req.body.description;
         let keywords = req.body.keywords;
         let imagepath = req.body.imagepath;
@@ -186,14 +187,13 @@ module.exports = {
           });
           CheckIfExists.then(category => {
             if (category.length > 0) {
-             errors.push({text: "Category title exists, chooser another."});
+              errors.push({ text: "Category title exists, chooser another." });
               return res.render(
                 "../../../expansion/upgrade/portfolio-projects/views/categories/edit_project_category",
                 {
                   errors: errors,
                   title: title,
                   id: id,
-                  author: author,
                   description: description,
                   keywords: keywords
                 }
@@ -202,7 +202,6 @@ module.exports = {
               const categoryProps = {
                 title: title,
                 slug: slug,
-                author: author,
                 description: description,
                 keywords: keywords,
                 imagepath: imagepath
@@ -219,9 +218,13 @@ module.exports = {
     });
   } /* end of edit function */,
   delete(req, res, next) {
-    DeleteProjectCategory(req.params.id);
-    req.flash("success_msg", "Project Category Deleted!");
-    res.redirect("/admin/portfolio-categories");
+    Promise.all([
+      DeleteProjectCategory(req.params.id),
+      DeleteProjectsWithCategory(req.params.id)
+    ]).then(result => {
+      req.flash("success_msg", "Project Category Deleted!");
+      res.redirect("/admin/portfolio-categories");
+    });
   } /* end of delete function */,
   reorder(req, res, next) {
     const User = FindOneUserByID(req.session.passport.user);
@@ -237,4 +240,3 @@ module.exports = {
     });
   } /* end of reorder function */
 };
-

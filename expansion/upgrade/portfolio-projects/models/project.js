@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 const Schema = mongoose.Schema;
+
 /* Page Schema */
 const ProjectSchema = new Schema({
   title: {
@@ -14,8 +16,8 @@ const ProjectSchema = new Schema({
     required: true
   },
   category: {
-    type: String,
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: "PortfolioCategory"
   },
   image: {
     type: String
@@ -31,18 +33,18 @@ const ProjectSchema = new Schema({
     type: String
   },
   author: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: "User"
   },
   sorting: {
     type: Number
   },
   created:{
-    type: Date,
-    default: Date.now
+    type: String,
+    default: moment().format("dddd, MMM Do YYYY")
   }
 }); /* end of project schema */
 /* start of project schema functions */
 
 /* end of project schema functions */
 module.exports = mongoose.model("Project", ProjectSchema);
-

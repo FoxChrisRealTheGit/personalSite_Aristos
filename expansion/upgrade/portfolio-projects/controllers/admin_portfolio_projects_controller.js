@@ -37,9 +37,11 @@ module.exports = {
       );
     });
   } /* end of index function */,
-  catIndex(req, res, next){
+  catIndex(req, res, next) {
     const theCount = CountProjects();
-    const sortedCat = FindAllSortedProjectsWithParam({category:req.params.category});
+    const sortedCat = FindAllSortedProjectsWithParam({
+      category: req.params.category
+    });
     const allCategories = FindAllProjectCategories();
     Promise.all([theCount, sortedCat, allCategories]).then(result => {
       res.render(
@@ -51,8 +53,7 @@ module.exports = {
         }
       );
     });
-  }/* end of cat index function*/,
-
+  } /* end of cat index function*/,
 
   addIndex(req, res, next) {
     let title,
@@ -98,12 +99,12 @@ module.exports = {
         }
 
         let title = req.body.title;
-        let slug = title.replace(/s+/g, "-").toLowerCase();
+        let slug = title.replace(/\s+/g, "-").toLowerCase();
         let content = req.body.content;
         let category = req.body.category;
         let keywords = req.body.keywords;
         let description = req.body.description;
-        let author = req.body.author;
+        let author = req.session.passport.user;
 
         if (errors.length > 0) {
           const AllProjectCategories = FindAllProjectCategories();
@@ -233,12 +234,11 @@ module.exports = {
               title: result[1].title,
               content: result[1].content,
               categories: result[0],
-              selectedCat: result[1].category,
+              selectedCat: result[1].category.slug,
               image: result[1].image,
               galleryImages: galleryImages,
               id: result[1]._id,
               media: result[2],
-              author: result[1].author,
               description: result[1].description,
               keywords: result[1].keywords
             }
@@ -267,15 +267,13 @@ module.exports = {
         // }
 
         let title = req.body.title;
-        let slug = title.replace(/s+/g, "-").toLowerCase();
+        let slug = title.replace(/\s+/g, "-").toLowerCase();
         let content = req.body.content;
         let category = req.body.category;
         let pimage = req.body.pimage;
         let id = req.params.id;
         let description = req.body.description;
-        let author = req.body.author;
         let keywords = req.body.keywords;
-
         if (errors.length > 0) {
           req.flash("error_msg", "Stuff is wrong, fix stuffs.");
           res.redirect("/admin/portfolio/edit-project/" + id);
@@ -299,42 +297,41 @@ module.exports = {
                 category: category,
                 description: description,
                 keywords: keywords,
-                author: author,
                 image: pimage
               };
-              EditProject(id, ProjectParams);
-
-              if (imageFile !== "") {
-                if (pimage !== "") {
-                  fs.remove(
-                    "content/public/images/portfolio_images/" +
-                      id +
-                      "/" +
-                      pimage,
-                    function(err) {
-                      if (err) {
-                        errorAddEvent(err);
+              EditProject(id, ProjectParams).then(stuff => {
+                if (imageFile !== "") {
+                  if (pimage !== "") {
+                    fs.remove(
+                      "content/public/images/portfolio_images/" +
+                        id +
+                        "/" +
+                        pimage,
+                      function(err) {
+                        if (err) {
+                          errorAddEvent(err);
+                        }
                       }
+                    );
+                  }
+
+                  let projectImage = req.files.image;
+                  let path =
+                    "content/public/images/portfolio_images/" +
+                    id +
+                    "/" +
+                    imageFile;
+
+                  projectImage.mv(path, function(err) {
+                    if (err) {
+                      errorAddEvent(err);
                     }
-                  );
+                  });
                 }
 
-                let projectImage = req.files.image;
-                let path =
-                  "content/public/images/portfolio_images/" +
-                  id +
-                  "/" +
-                  imageFile;
-
-                projectImage.mv(path, function(err) {
-                  if (err) {
-                    errorAddEvent(err);
-                  }
-                });
-              }
-
-              req.flash("success_msg", "Project updated!");
-              res.redirect("/admin/portfolio");
+                req.flash("success_msg", "Project updated!");
+                res.redirect("/admin/portfolio");
+              });
             }
           });
         }
@@ -390,11 +387,11 @@ module.exports = {
       "/gallery/thumbs/" +
       req.params.image;
 
-    fs.remove(originalImage, (err)=> {
+    fs.remove(originalImage, err => {
       if (err) {
         errorAddEvent(err);
       } else {
-        fs.remove(thumbsImage, (err)=> {
+        fs.remove(thumbsImage, err => {
           if (err) {
             errorAddEvent(err);
           } else {
@@ -409,7 +406,7 @@ module.exports = {
     let id = req.params.id;
     let path = "content/public/images/portfolio_images/" + id;
 
-    fs.remove(path, (err)=> {
+    fs.remove(path, err => {
       if (err) {
         errorAddEvent(err);
       } else {
@@ -425,12 +422,11 @@ module.exports = {
     User.then(user => {
       if (user.admin === 1) {
         let ids = req.body["id[]"];
-        SortProjectsByID(ids)
+        SortProjectsByID(ids);
       } else {
         res.redirect("/users/login");
       }
     });
   }
 };
-
 
