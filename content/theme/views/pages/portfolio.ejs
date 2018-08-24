@@ -15,7 +15,7 @@
             <a class="portfolio__project-category" href="/portfolio#projects">all projects</a>
             <% portfolioCats.forEach(function(portCat){ %>
                 <% if(portCat.slug != "publications") { %>
-                    <a class="portfolio__project-category" href="/portfolio/<%= portCat.slug %>#projects">
+                    <a class="portfolio__project-category" href="/portfolio/<%= portCat._id %>#projects">
                         <%= portCat.title.toLowerCase() %>
                     </a>
                 <% } %>

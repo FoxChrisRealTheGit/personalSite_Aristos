@@ -61,7 +61,9 @@ module.exports = {
       price,
       keywords,
       description,
-      author = "";
+      author,
+      startedOn,
+      finished = "";
     const AllProjectCategories = FindAllProjectCategories();
     const AllMedia = FindAllMedia();
     Promise.all([AllProjectCategories, AllMedia]).then(result => {
@@ -75,7 +77,9 @@ module.exports = {
           media: result[1],
           description: description,
           keywords: keywords,
-          author: author
+          author: author,
+          startedOn: startedOn,
+          finished: finished
         }
       );
     });
@@ -105,7 +109,12 @@ module.exports = {
         let keywords = req.body.keywords;
         let description = req.body.description;
         let author = req.session.passport.user;
-
+       
+        let startedOn = req.body.startedOn;
+        let finished = req.body.finished; 
+        if(finished === ""){
+          finished = "Current"
+        }
         if (errors.length > 0) {
           const AllProjectCategories = FindAllProjectCategories();
           const AllMedia = FindAllMedia();
@@ -120,7 +129,9 @@ module.exports = {
                 media: result[1],
                 description: description,
                 keywords: keywords,
-                author: author
+                author: author,
+                startedOn: startedOn,
+                finished: finished
               }
             );
           });
@@ -143,7 +154,9 @@ module.exports = {
                     description: description,
                     keywords: keywords,
                     author: author,
-                    image: imageFile
+                    image: imageFile,
+                    startedOn: startedOn,
+                    finished: finished
                   }
                 );
               });
@@ -157,7 +170,9 @@ module.exports = {
                 description: description,
                 keywords: keywords,
                 sorting: 0,
-                author: author
+                author: author,
+                started: startedOn,
+                completed: finished
               };
               CreateProject(ProjectProps).then(project => {
                 fs.ensureDirSync(
@@ -240,7 +255,9 @@ module.exports = {
               id: result[1]._id,
               media: result[2],
               description: result[1].description,
-              keywords: result[1].keywords
+              keywords: result[1].keywords,
+              startedOn: result[1].started,
+              finished: result[1].completed
             }
           );
         }
@@ -274,6 +291,12 @@ module.exports = {
         let id = req.params.id;
         let description = req.body.description;
         let keywords = req.body.keywords;
+        let startedOn = req.body.startedOn;
+        let finished = req.body.finished; 
+        if(finished === ""){
+          finished = "Current"
+        }
+
         if (errors.length > 0) {
           req.flash("error_msg", "Stuff is wrong, fix stuffs.");
           res.redirect("/admin/portfolio/edit-project/" + id);
@@ -297,7 +320,9 @@ module.exports = {
                 category: category,
                 description: description,
                 keywords: keywords,
-                image: pimage
+                image: pimage,
+                started: startedOn,
+                completed: finished
               };
               EditProject(id, ProjectParams).then(stuff => {
                 if (imageFile !== "") {
@@ -429,4 +454,3 @@ module.exports = {
     });
   }
 };
-

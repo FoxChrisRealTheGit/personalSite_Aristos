@@ -29,10 +29,10 @@ router.get("/portfolio", pagesController.portfolioAll);
 * GET /portfolio/:category
 */
 router.get("/portfolio/:category", function(req, res) {
-  const slug = req.params.category;
+  const id = req.params.category;
   const AllPortfolioCategories = FindAllPortfolioCategories();
-  const foundCategories = FindPortfolioCategoryWithParams({ slug: slug });
-  const foundProjects = FindSortedProjectsWithParams({ category: slug });
+  const foundCategories = FindPortfolioCategoryWithParams({ _id: id });
+  const foundProjects = FindSortedProjectsWithParams({ category: id });
   const AllMedia = FindAllMedia();
   Promise.all([
     AllPortfolioCategories,
@@ -123,19 +123,27 @@ router.get("/", function(req, res) {
         });
       });
     } else {
-      const AllMedia = FindAllMedia();
-      const recentProject = FindMostRecentProject();
-      const foundProjects = FindProjectWithParams({ category: "publications" });
-      Promise.all([AllMedia, recentProject, foundProjects]).then(result => {
-        res.render("index", {
-          title: page[0].title,
-          content: page[0].content,
-          keywords: page[0].keywords,
-          description: page[0].description,
-          author: page[0].author,
-          media: result[0],
-          project: result[1],
-          books: result[2]
+      let pubsName;
+      FindAllPortfolioCategories().then(cats => {
+        cats.forEach(cat => {
+          if (cat.slug === "publications") {
+            pubsName = cat._id;
+          }
+        });
+        const AllMedia = FindAllMedia();
+        const recentProject = FindMostRecentProject();
+        const foundProjects = FindProjectWithParams({ category: pubsName });
+        Promise.all([AllMedia, recentProject, foundProjects]).then(result => {
+          res.render("index", {
+            title: page[0].title,
+            content: page[0].content,
+            keywords: page[0].keywords,
+            description: page[0].description,
+            author: page[0].author,
+            media: result[0],
+            project: result[1],
+            books: result[2]
+          });
         });
       });
     }

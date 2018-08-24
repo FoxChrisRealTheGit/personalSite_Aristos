@@ -42,6 +42,12 @@ const ProjectSchema = new Schema({
   created:{
     type: String,
     default: moment().format("dddd, MMM Do YYYY")
+  },
+  started:{
+    type: String
+  },
+  completed: {
+    type: String
   }
 }); /* end of project schema */
 /* start of project schema functions */
