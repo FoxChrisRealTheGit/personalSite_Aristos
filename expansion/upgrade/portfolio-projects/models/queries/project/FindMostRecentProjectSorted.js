@@ -8,7 +8,7 @@ const errorAddEvent = require("../../../../../../important/AristosStuff/AristosL
  */
 module.exports = () => {
   return Project.find({})
-    .sort({ _id: -1 })
+    .sort({ sorting: 1 })
     .populate("category")
     .populate("author")
     .limit(1)
