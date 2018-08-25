@@ -19,7 +19,7 @@ const FindSortedProjectsWithParams = require("../../../expansion/upgrade/portfol
 
 module.exports={
     contact(req, res, next){
-        const AllMedia = FindMediaWithParams({category: "site-logo"});
+        const AllMedia = FindAllMedia();
         const foundPage = FindPageWithParams({ slug: "contact" });
         Promise.all([AllMedia, foundPage]).then(result => {
           res.render("pages/contact", {

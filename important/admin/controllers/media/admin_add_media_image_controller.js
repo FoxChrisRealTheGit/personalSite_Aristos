@@ -1,4 +1,5 @@
-const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger").addError;
+const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 const fs = require("fs-extra");
 
 /* Media Model Queries */
@@ -10,17 +11,14 @@ const DeleteMedia = require("../../adminModels/queries/media/DeleteMedia");
 
 /* Media Category Model Queries */
 const FindAllMediaCategories = require("../../adminModels/queries/mediaCategories/FindAllMediaCategories");
-
+const FindMediaCategoryByParem = require("../../adminModels/queries/mediaCategories/FindMediaCategoryByParam");
 /* User Model Queries */
 const FindOneUserByID = require("../../adminModels/queries/user/FindOneUserWithID");
 
 module.exports = {
   index(req, res, next) {
-    const mediaCategory = FindAllMediaCategories();
-    const Media = FindAllMedia();
-    Promise.all([mediaCategory, Media]).then(result => {
+    Promise.all([FindAllMediaCategories(), FindAllMedia()]).then(result => {
       res.render("../../../important/admin/views/media/media", {
-        content: "",
         categories: result[0],
         media: result[1]
       });
@@ -44,11 +42,9 @@ module.exports = {
       });
     });
   } /* end of upload get function */,
-
   create(req, res, next) {
     FindOneUserByID(req.session.passport.user).then(user => {
       if (user.admin === 1) {
-       if (req.app.locals.mediaSwitch) {
         let newMedia = req.files.file;
         let path = "/General/" + req.files.file.name;
         fs.ensureDir("content/public/images/General", err => {
@@ -61,21 +57,21 @@ module.exports = {
             addErrorEvent(err, "media create error");
           }
         });
-        const mediaProps = {
-          title: "a new image",
-          alt: "a new image",
-          category: "General",
-          path: path
-        };
-        CreateMedia(mediaProps);
-        res.sendStatus(200);
-       }
+        FindMediaCategoryByParem({ title: "General" }).then(general => {
+          const mediaProps = {
+            title: "a new image",
+            alt: "a new image",
+            category: general[0]._id,
+            path: path
+          };
+          CreateMedia(mediaProps);
+          res.redirect("/admin/add-media");
+        });
       } else {
         res.redirect("/users/login");
       }
     });
   } /* end of create function */,
-
   uploadCreate(req, res, next) {
     FindOneUserByID(req.session.passport.user).then(user => {
       if (user.admin === 1) {
@@ -124,7 +120,7 @@ module.exports = {
           // })
           if (imageFile !== "") {
             let newMedia = req.files.image;
-            newMedia.mv("content/public/images/" + path, (err)=> {
+            newMedia.mv("content/public/images/" + path, err => {
               if (err) {
                 addErrorEvent(err, "media uploadCreate error");
               }
@@ -241,7 +237,7 @@ module.exports = {
     let id = req.params.id;
     FindMediaByID(id).then(media => {
       let path = "content/public" + media.path;
-      fs.remove(path, (err) => {
+      fs.remove(path, err => {
         if (err) {
           addErrorEvent(err, "media delete error");
         } else {

@@ -1,6 +1,7 @@
 const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger")
   .addError;
 /* Page model queries */
+const CountPages = require("../../adminModels/queries/page/CountPages");
 const CreatePage = require("../../adminModels/queries/page/CreatePage");
 const EditPage = require("../../adminModels/queries/page/EditPage");
 const FindAllSortedPages = require("../../adminModels/queries/page/FindAllSortedPages");
@@ -19,9 +20,10 @@ const FindAllTemplates = require("../../adminModels/queries/templates/FindAllTem
 
 module.exports = {
   index(req, res, next) {
-    FindAllSortedPages().then(sortedRes => {
+    Promise.all([FindAllSortedPages(), CountPages()]).then(result => {
       res.render("../../../important/admin/views/pages/pages", {
-        pages: sortedRes
+        pages: result[0],
+        count: result[1]
       });
     });
   } /* end of index function */,
@@ -35,9 +37,7 @@ module.exports = {
       keywords,
       author = "";
 
-    const allTemplates = FindAllTemplates();
-    const allMedia = FindAllMedia();
-    Promise.all([allTemplates, allMedia]).then(results => {
+    Promise.all([FindAllTemplates(), FindAllMedia()]).then(results => {
       res.render("../../../important/admin/views/pages/add_page", {
         title: title,
         slug: slug,
@@ -63,9 +63,9 @@ module.exports = {
         }
 
         let title = req.body.title;
-        let slug = req.body.slug.replace(/s+/g, "-").toLowerCase();
+        let slug = req.body.slug.replace(/\s+/g, "-").toLowerCase();
         if (slug == "") {
-          slug = title.replace(/s+/g, "-").toLowerCase();
+          slug = title.replace(/\s+/g, "-").toLowerCase();
         }
         let content = req.body.content;
         let parent = req.body.parent;
@@ -75,37 +75,40 @@ module.exports = {
         if (parent == "") {
           parent = "home";
         }
+        let template = req.body.template;
         if (errors.length > 0) {
-          FindAllMedia().then(media => {
+          Promise.all([FindAllTemplates(), FindAllMedia()]).then(results => {
             return res.render("../../../important/admin/views/pages/add_page", {
               errors: errors,
-              media: media,
+              media: results[1],
               title: title,
               slug: slug,
               parent: parent,
               content: content,
               description: description,
               keywords: keywords,
-              author: author
+              author: author,
+              templates: results[0]
             });
           });
         } else {
           FindPageWithParam({ slug: slug }).then(curPageRes => {
             if (curPageRes.length > 0) {
-              FindAllMedia().then(media => {
+              Promise.all([FindAllTemplates(), FindAllMedia()]).then(results => {
                 let errors = [{ text: "Page slug exists, choose another." }];
                 return res.render(
                   "../../../important/admin/views/pages/add_page",
                   {
                     errors: errors,
                     title: title,
-                    media: media,
+                    media: results[1],
                     slug: "",
                     content: content,
                     parent: parent,
                     description: description,
                     keywords: keywords,
-                    author: author
+                    author: author,
+                    templates: results[0]
                   } /* end of return render */
                 );
               });
@@ -118,7 +121,8 @@ module.exports = {
                 sorting: 100,
                 description: description,
                 keywords: keywords,
-                author: author
+                author: author,
+                template: template
               }).then(() => {
                 FindAllSortedPages().then(sortedRes => {
                   req.app.locals.pages = sortedRes;
@@ -142,6 +146,7 @@ module.exports = {
         SortPagesByID(ids);
         FindAllSortedPages().then(sortedRes => {
           req.app.locals.pages = sortedRes;
+          res.redirect("/admin/pages");
         });
       } else {
         res.redirect("/users/login");
@@ -150,10 +155,11 @@ module.exports = {
   } /* end of reorder function */,
 
   editIndex(req, res, next) {
-    const OnePage = FindOnePage(req.params.id);
-    const Medias = FindAllMedia();
-    const allTemplates = FindAllTemplates();
-    Promise.all([OnePage, Medias, allTemplates]).then(result => {
+    Promise.all([
+      FindOnePage(req.params.id),
+      FindAllMedia(),
+      FindAllTemplates()
+    ]).then(result => {
       res.render("../../../important/admin/views/pages/edit_page", {
         title: result[0].title,
         slug: result[0].slug,
@@ -165,7 +171,7 @@ module.exports = {
         keywords: result[0].keywords,
         author: result[0].author,
         selectedCat: result[0].parent,
-        template: result[0].template,
+        selectedTemplate: result[0].template.title,
         templates: result[2]
       }); /* end of res render */
     }); /* Promise all */
@@ -182,9 +188,9 @@ module.exports = {
           errors.push({ text: "Please add content." });
         }
         let title = req.body.title;
-        let slug = req.body.slug.replace(/s+/g, "-").toLowerCase();
+        let slug = req.body.slug.replace(/\s+/g, "-").toLowerCase();
         if (slug == "") {
-          slug = title.replace(/s+/g, "-").toLowerCase();
+          slug = title.replace(/\s+/g, "-").toLowerCase();
         }
         let parent = req.body.parent;
         if (parent == "") {
@@ -269,6 +275,7 @@ module.exports = {
   } /* end of save edit function */,
 
   delete(req, res, next) {
+    //remove all child pages??
     DeletePage(req.params.id).then(() => {
       FindAllSortedPages().then(sortedRes => {
         req.app.locals.pages = sortedRes;

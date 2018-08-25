@@ -16,7 +16,7 @@
 </head>
 <body>
     <% media.forEach(function(medias){ %>
-        <% if(medias.category == "site-logo"){ %>
+        <% if(medias.category.title === "site-logo"){ %>
             <div class="header__brand">
                 <a class="navbar-brand" href="/"><img src="<%= medias.path %>" alt="<%= medias.alt %>"></a>
             </div>
