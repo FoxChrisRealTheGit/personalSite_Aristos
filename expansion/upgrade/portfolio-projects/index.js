@@ -1,9 +1,9 @@
-require("./routes/admin_portfolio_routes_checker").theFunction();
+require("./routes/checkers/admin_portfolio_routes_checker").theFunction();
 const adminPortfolioProjectsCategories = require("./routes/admin_portfolio_projects_categories");
 
 const fs = require("fs-extra");
 const adminPortfolioProject = fs.readJSONSync(
-  "./expansion/upgrade/portfolio-projects/routes/portfolioRoutes.json"
+  "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioRoutes.json"
 ).route;
 const adminPortfolioProjects = require(adminPortfolioProject);
 

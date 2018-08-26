@@ -77,38 +77,36 @@ module.exports = {
         }
         let template = req.body.template;
         if (errors.length > 0) {
-          Promise.all([FindAllTemplates(), FindAllMedia()]).then(results => {
+          FindAllMedia().then(media => {
             return res.render("../../../important/admin/views/pages/add_page", {
               errors: errors,
-              media: results[1],
+              media: media,
               title: title,
               slug: slug,
               parent: parent,
               content: content,
               description: description,
               keywords: keywords,
-              author: author,
-              templates: results[0]
+              author: author
             });
           });
         } else {
           FindPageWithParam({ slug: slug }).then(curPageRes => {
             if (curPageRes.length > 0) {
-              Promise.all([FindAllTemplates(), FindAllMedia()]).then(results => {
+              FindAllMedia().then(media => {
                 let errors = [{ text: "Page slug exists, choose another." }];
                 return res.render(
                   "../../../important/admin/views/pages/add_page",
                   {
                     errors: errors,
                     title: title,
-                    media: results[1],
+                    media: media,
                     slug: "",
                     content: content,
                     parent: parent,
                     description: description,
                     keywords: keywords,
-                    author: author,
-                    templates: results[0]
+                    author: author
                   } /* end of return render */
                 );
               });

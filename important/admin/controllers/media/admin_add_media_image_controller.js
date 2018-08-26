@@ -92,53 +92,56 @@ module.exports = {
         let title = req.body.title;
         let alt = req.body.alt;
         let category = req.body.category;
-        let path = "/" + category + "/" + imageFile;
-        let description = req.body.description;
-        let keywords = req.body.keywords;
-        let link = req.body.link;
+        let categoryTitle;
+        FindAllMediaCategories().then(cats => {
+          cats.forEach(cat => {
+            if (cat._id == category) {
+              categoryTitle = cat.title;
+            }
+          });
+          let path = "/" + categoryTitle + "/" + imageFile;
+          let description = req.body.description;
+          let keywords = req.body.keywords;
+          let link = req.body.link;
 
-        if (errors.length > 0) {
-          FindAllMediaCategories().then(categories => {
+          if (errors.length > 0) {
             res.render("../../../important/admin/views/media/add_image", {
               errors: errors,
               title: title,
               alt: alt,
-              categories: categories,
+              categories: cats,
               link: link,
               description: description,
               keywords: keywords
             });
-          });
-        } else {
-          fs.ensureDir("content/public/images/" + category, err => {
-            if (err) {
-              addErrorEvent(err, "media uploadCreate error");
-            }
-          });
-          // mkdirp("content/public/images/" + category + "/" + title, function (err) {
-          //     if (err) { console.log(err) }
-          // })
-          if (imageFile !== "") {
-            let newMedia = req.files.image;
-            newMedia.mv("content/public/images/" + path, err => {
+          } else {
+            fs.ensureDir("content/public/images/" + categoryTitle, err => {
               if (err) {
                 addErrorEvent(err, "media uploadCreate error");
               }
             });
+            if (imageFile !== "") {
+              let newMedia = req.files.image;
+              newMedia.mv("content/public/images/" + path, err => {
+                if (err) {
+                  addErrorEvent(err, "media uploadCreate error");
+                }
+              });
+            }
+            const mediaProps = {
+              title: title,
+              alt: alt,
+              category: category,
+              path: path,
+              link: link,
+              description: description,
+              keywords: keywords
+            };
+            CreateMedia(mediaProps);
+            req.flash("success_msg", "Media added!");
+            res.redirect("/admin/add-media");
           }
-          const mediaProps = {
-            title: title,
-            alt: alt,
-            category: category,
-            path: path,
-            link: link,
-            description: description,
-            keywords: keywords
-          };
-          CreateMedia(mediaProps);
-          req.flash("success_msg", "Media added!");
-          res.redirect("/admin/add-media");
-        }
+        });
       } else {
         res.redirect("/users/login");
       }
@@ -146,22 +149,22 @@ module.exports = {
   } /* end of upload create function */,
 
   edit(req, res, next) {
-    const mediaCategory = FindAllMediaCategories();
-    const mediaFound = FindMediaByID(req.params.id);
-    Promise.all([mediaCategory, mediaFound]).then(result => {
-      res.render("../../../important/admin/views/media/edit_image", {
-        content: "",
-        title: result[1].title,
-        alt: result[1].alt,
-        categories: result[0],
-        path: result[1].path,
-        id: result[1]._id,
-        link: result[1].link,
-        description: result[1].description,
-        keywords: result[1].keywords,
-        selectedCat: result[1].category
-      });
-    });
+    Promise.all([FindAllMediaCategories(), FindMediaByID(req.params.id)]).then(
+      result => {
+        res.render("../../../important/admin/views/media/edit_image", {
+          content: "",
+          title: result[1].title,
+          alt: result[1].alt,
+          categories: result[0],
+          path: result[1].path,
+          id: result[1]._id,
+          link: result[1].link,
+          description: result[1].description,
+          keywords: result[1].keywords,
+          selectedCat: result[1].category
+        });
+      }
+    );
   } /* end of get edit function */,
 
   saveEdit(req, res, next) {
