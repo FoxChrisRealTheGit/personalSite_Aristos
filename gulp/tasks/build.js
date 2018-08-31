@@ -8,7 +8,7 @@ const uglify = require("gulp-uglify");
 const gzip = require("gulp-gzip");
 const browserSync = require("browser-sync").create();
 
-// doesnt work
+/* doesnt work */
 gulp.task("previewDist", ["nodemon"], () => {
   browserSync.init({
     notify: false,
@@ -17,7 +17,7 @@ gulp.task("previewDist", ["nodemon"], () => {
   });
 }); /* end of preview dist task */
 
-gulp.task("deleteDistFolder", ["icons"],() => {
+gulp.task("deleteDistFolder", ["icons"], () => {
   return del("./dist");
 }); /* end of delete dist folder */
 
@@ -29,8 +29,8 @@ gulp.task("copyGeneralFiles", ["deleteDistFolder"], () => {
     "!./content/public/css/**",
     "!./content/public/scripts",
     "!./content/public/scripts/**",
-    "!./content/temp",
-    "!./content/temp/**"
+    "!./content/public/temp",
+    "!./content/public/temp/**"
   ];
   return gulp.src(pathsToCopy).pipe(gulp.dest("./dist/content"));
 }); /* end of copy general files */
@@ -82,20 +82,19 @@ gulp.task("usemin", ["styles"], () => {
     )
     .pipe(gulp.dest("./dist/content/theme"));
 }); /* end of usemin task */
-
-gulp.task("adminCompress", ["deleteDistFolder"], ()=>{
-  gulp.src('./important/**/*')
-    .pipe(gulp.dest('./dist/important'));
-})
-gulp.task("expansionCompress", ["deleteDistFolder"], ()=>{
-  gulp.src('./expansion/**/*')
-    .pipe(gulp.dest('./dist/expansion'));
-})
+/* doesnt really do any compression or... anything but move stuffs */
+gulp.task("adminCompress", ["deleteDistFolder"], () => {
+  gulp.src("./important/**/*").pipe(gulp.dest("./dist/important"));
+}); /* end of admin compress task */
+/* doesnt really do any compression or... anything but move stuffs */
+gulp.task("expansionCompress", ["deleteDistFolder"], () => {
+  gulp.src("./expansion/**/*").pipe(gulp.dest("./dist/expansion"));
+}); /* end of expansion compression task */
 
 gulp.task("build", [
   "deleteDistFolder",
   "copyGeneralFiles",
-  "adminCompress", 
+  "adminCompress",
   "expansionCompress",
   "optimizeImages",
   "useminTrigger"

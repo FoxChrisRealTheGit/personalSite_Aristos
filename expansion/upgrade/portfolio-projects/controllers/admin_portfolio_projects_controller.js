@@ -2,7 +2,7 @@ const errorAddEvent = require("../../../../important/AristosStuff/AristosLogger/
   .addError;
 const fs = require("fs-extra");
 const resizeImg = require("resize-img");
-// Project model Queries
+/* Project model Queries */
 const CountProjects = require("../models/queries/project/CountProjects");
 const FindAllProjects = require("../models/queries/project/FindAllProjects");
 const FindProjectWithParams = require("../models/queries/project/FindProjectWithParams");
@@ -23,10 +23,11 @@ const FindAllProjectCategories = require("../models/queries/projectCategory/Find
 const FindOneUserByID = require("../../../../important/admin/adminModels/queries/user/FindOneUserWithID");
 module.exports = {
   index(req, res, next) {
-    const theCount = CountProjects();
-    const allSorted = FindAllSortedProjects();
-    const allCategories = FindAllProjectCategories();
-    Promise.all([theCount, allSorted, allCategories]).then(result => {
+    Promise.all([
+      CountProjects(),
+      FindAllSortedProjects(),
+      FindAllProjectCategories()
+    ]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/projects",
         {
@@ -38,12 +39,13 @@ module.exports = {
     });
   } /* end of index function */,
   catIndex(req, res, next) {
-    const theCount = CountProjects();
-    const sortedCat = FindAllSortedProjectsWithParam({
-      category: req.params.category
-    });
-    const allCategories = FindAllProjectCategories();
-    Promise.all([theCount, sortedCat, allCategories]).then(result => {
+    Promise.all([
+      CountProjects(),
+      FindAllSortedProjectsWithParam({
+        category: req.params.category
+      }),
+      FindAllProjectCategories()
+    ]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/projects",
         {
@@ -64,9 +66,7 @@ module.exports = {
       author,
       startedOn,
       finished = "";
-    const AllProjectCategories = FindAllProjectCategories();
-    const AllMedia = FindAllMedia();
-    Promise.all([AllProjectCategories, AllMedia]).then(result => {
+    Promise.all([FindAllProjectCategories(), FindAllMedia()]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/add_project",
         {
@@ -109,57 +109,57 @@ module.exports = {
         let keywords = req.body.keywords;
         let description = req.body.description;
         let author = req.session.passport.user;
-       
+
         let startedOn = req.body.startedOn;
-        let finished = req.body.finished; 
-        if(finished === ""){
-          finished = "Current"
+        let finished = req.body.finished;
+        if (finished === "") {
+          finished = "Current";
         }
         if (errors.length > 0) {
-          const AllProjectCategories = FindAllProjectCategories();
-          const AllMedia = FindAllMedia();
-          Promise.all([AllProjectCategories, AllMedia]).then(result => {
-            res.render(
-              "../../../expansion/upgrade/portfolio-projects/views/add_project",
-              {
-                errors: errors,
-                title: title,
-                content: content,
-                categories: result[0],
-                media: result[1],
-                description: description,
-                keywords: keywords,
-                author: author,
-                startedOn: startedOn,
-                finished: finished
-              }
-            );
-          });
+          Promise.all([FindAllProjectCategories(), FindAllMedia()]).then(
+            result => {
+              res.render(
+                "../../../expansion/upgrade/portfolio-projects/views/add_project",
+                {
+                  errors: errors,
+                  title: title,
+                  content: content,
+                  categories: result[0],
+                  media: result[1],
+                  description: description,
+                  keywords: keywords,
+                  author: author,
+                  startedOn: startedOn,
+                  finished: finished
+                }
+              );
+            }
+          );
         } else {
           const CheckIfExists = FindProjectWithParams({ slug: slug });
           CheckIfExists.then(project => {
             if (project.length > 0) {
               errors.push({ text: "Project title exists, chooser another." });
-              const AllProjectCategories = FindAllProjectCategories();
-              const AllMedia = FindAllMedia();
-              Promise.all([AllProjectCategories, AllMedia]).then(result => {
-                res.render(
-                  "../../../expansion/upgrade/portfolio-projects/views/add_project",
-                  {
-                    errors: errors,
-                    title: "",
-                    content: content,
-                    categories: result[0],
-                    media: result[1],
-                    description: description,
-                    keywords: keywords,
-                    author: author,
-                    image: imageFile,
-                    startedOn: startedOn,
-                    finished: finished
-                  }
-                );
-              });
+              Promise.all([FindAllProjectCategories(), FindAllMedia()]).then(
+                result => {
+                  res.render(
+                    "../../../expansion/upgrade/portfolio-projects/views/add_project",
+                    {
+                      errors: errors,
+                      title: "",
+                      content: content,
+                      categories: result[0],
+                      media: result[1],
+                      description: description,
+                      keywords: keywords,
+                      author: author,
+                      image: imageFile,
+                      startedOn: startedOn,
+                      finished: finished
+                    }
+                  );
+                }
+              );
             } else {
               const ProjectProps = {
                 title: title,
@@ -230,10 +230,11 @@ module.exports = {
   } /* end of create function */,
 
   editIndex(req, res, next) {
-    const AllProjectCategories = FindAllProjectCategories();
-    const FoundProject = FindOneProjectByID(req.params.id);
-    const AllMedia = FindAllMedia();
-    Promise.all([AllProjectCategories, FoundProject, AllMedia]).then(result => {
+    Promise.all([
+      FindAllProjectCategories(),
+      FindOneProjectByID(req.params.id),
+      FindAllMedia()
+    ]).then(result => {
       let galleryDir =
         "content/public/images/portfolio_images/" + result[1]._id + "/gallery";
       let galleryImages = null;
@@ -292,9 +293,9 @@ module.exports = {
         let description = req.body.description;
         let keywords = req.body.keywords;
         let startedOn = req.body.startedOn;
-        let finished = req.body.finished; 
-        if(finished === ""){
-          finished = "Current"
+        let finished = req.body.finished;
+        if (finished === "") {
+          finished = "Current";
         }
 
         if (errors.length > 0) {

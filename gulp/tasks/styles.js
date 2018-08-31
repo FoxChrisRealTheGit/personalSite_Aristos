@@ -16,7 +16,7 @@ gulp.task("styles", () => {
       debugAddEvent(errorInfo.toString(), "CSS Issue");
       this.emit("end");
     })
-    .pipe(gulp.dest("./content/temp/styles"));
+    .pipe(gulp.dest("./content/public/temp/styles"));
 }); /* end of styles task */
 
 gulp.task("adminStyles",()=> {
@@ -27,5 +27,5 @@ gulp.task("adminStyles",()=> {
       debugAddEvent(errorInfo.toString(), "CSS Issue");
       this.emit("end");
     })
-    .pipe(gulp.dest("./important/temp/styles/"))
+    .pipe(gulp.dest("./content/public/temp/styles"))
 }); /* end of admin Styles task */

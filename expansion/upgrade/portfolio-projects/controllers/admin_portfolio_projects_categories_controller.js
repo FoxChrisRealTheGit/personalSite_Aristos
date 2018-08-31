@@ -34,8 +34,7 @@ module.exports = {
         };
         CreateProjectCategory(categoryProps);
       }
-      const SortedCategories = FindAllSortedProjectCategories();
-      SortedCategories.then(categories => {
+      FindAllSortedProjectCategories().then(categories => {
         res.render(
           "../../../expansion/upgrade/portfolio-projects/views/categories/project_categories",
           {
@@ -52,8 +51,7 @@ module.exports = {
       author,
       description,
       keywords = "";
-    const AllMedia = FindAllMedia();
-    AllMedia.then(media => {
+    FindAllMedia().then(media => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/categories/add_project_category",
         {
@@ -135,21 +133,21 @@ module.exports = {
   } /* end of create function */,
 
   editIndex(req, res, next) {
-    const ProjectCategory = FindProjectCategoryByID(req.params.id);
-    const AllMedia = FindAllMedia();
-    Promise.all([ProjectCategory, AllMedia]).then(result => {
-      res.render(
-        "../../../expansion/upgrade/portfolio-projects/views/categories/edit_project_category",
-        {
-          title: result[0].title,
-          id: result[0]._id,
-          author: result[0].author,
-          description: result[0].description,
-          keywords: result[0].keywords,
-          media: result[1]
-        }
-      );
-    });
+    Promise.all([FindProjectCategoryByID(req.params.id), FindAllMedia()]).then(
+      result => {
+        res.render(
+          "../../../expansion/upgrade/portfolio-projects/views/categories/edit_project_category",
+          {
+            title: result[0].title,
+            id: result[0]._id,
+            author: result[0].author,
+            description: result[0].description,
+            keywords: result[0].keywords,
+            media: result[1]
+          }
+        );
+      }
+    );
   } /* end of edit index function */,
 
   edit(req, res, next) {

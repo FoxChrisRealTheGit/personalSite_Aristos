@@ -1,4 +1,8 @@
-const Blog = require("../../blog");
+const fs = require("fs-extra");
+const Blogs = fs.readJSONSync(
+  "./expansion/upgrade/blog/routes/checkers/blogModelMainRoute.json"
+).route;
+const Blog = require(Blogs);
 /* Aristos Logger Path */
 const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
   .addError;
@@ -13,4 +17,3 @@ module.exports = () => {
     })
     .catch(err => errorAddEvent(err, "blog query error"));
 };
-

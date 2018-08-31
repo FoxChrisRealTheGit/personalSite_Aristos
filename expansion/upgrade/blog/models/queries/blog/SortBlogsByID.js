@@ -1,4 +1,8 @@
-const Blog = require("../../blog");
+const fs = require("fs-extra");
+const Blogs = fs.readJSONSync(
+  "./expansion/upgrade/blog/routes/checkers/blogModelMainRoute.json"
+).route;
+const Blog = require(Blogs);
 /* Aristos Logger Path */
 const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").addError;
 /**
@@ -34,4 +38,4 @@ function sortBlogs(ids, cb) {
       });
     })(count);
   }
-} /*end of sort pages function */
+} /*end of sort blogs function */

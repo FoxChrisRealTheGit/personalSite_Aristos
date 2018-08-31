@@ -28,6 +28,7 @@ module.exports = {
         }
       });
     });
+    /* default portfolio routes */
     fs.pathExists(
       "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioRoutes.json",
       (err, exists) => {
@@ -39,5 +40,19 @@ module.exports = {
         }
       }
     );
+    /* end of default portfolio routes */
+    /* default portfolio model routes */
+    fs.pathExists(
+      "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioModelRoutes.json",
+      (err, exists) => {
+        if (!exists) {
+          fs.writeJson(
+            "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioModelRoutes.json",
+            { route: "../../project.js" }
+          );
+        }
+      }
+    );
+    /* end of default portfolio model routes */
   }
 };

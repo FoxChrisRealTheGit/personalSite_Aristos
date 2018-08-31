@@ -1,26 +1,26 @@
 const fs = require("fs-extra");
-const pluginChecker = require("../../../../plugins");
+const pluginChecker = require("../../../../../expansion/plugins");
 module.exports = {
   async theFunction() {
     await pluginChecker.then(plugin => {
       plugin.forEach(theThings => {
-        if (theThings.switch === "contactSwitch") {
+        if (theThings.switch === "mediaSwitch") {
           if (theThings.switchRoutes === "true") {
             fs.writeJson(
-              "./expansion/upgrade/contact/routes/checkers/contactRoutes.json",
+              "./important/admin/routes/checkers/media/MediaRoutes.json",
               {
                 route: `../../plugins/${theThings.folder}/switchRoutes.js`
               }
             );
           } else {
             fs.pathExists(
-              "./expansion/upgrade/contact/routes/checkers/contactRoutes.json",
+              "./important/admin/routes/checkers/media/MediaRoutes.json",
               (err, exists) => {
                 if (!exists) {
                   fs.writeJson(
-                    "./expansion/upgrade/contact/routes/contactRoutes.json",
+                    "./important/admin/routes/checkers/media/MediaRoutes.json",
                     {
-                      route: "./routes/admin_contact"
+                      route: "./routes/media/admin_add_media"
                     }
                   );
                 }
@@ -30,35 +30,35 @@ module.exports = {
         }
       });
     });
-    /* default contact routes */
+    /* default routes path */
     fs.pathExists(
-      "./expansion/upgrade/contact/routes/checkers/contactRoutes.json",
+      "./important/admin/routes/checkers/media/MediaRoutes.json",
       (err, exists) => {
         if (!exists) {
           fs.writeJson(
-            "./expansion/upgrade/contact/routes/checkers/contactRoutes.json",
+            "./important/admin/routes/checkers/media/MediaRoutes.json",
             {
-              route: "./routes/admin_contact"
+              route: "./routes/media/admin_add_media"
             }
           );
         }
       }
     );
-    /* end of default contact routes */
-    /* default contact model routes */
+    /* end of default routes path */
+    /* default model routes */
     fs.pathExists(
-      "./expansion/upgrade/contact/routes/checkers/contactModelRoutes.json",
+      "./important/admin/routes/checkers/media/MediaModelRoutes.json",
       (err, exists) => {
         if (!exists) {
           fs.writeJson(
-            "./expansion/upgrade/contact/routes/checkers/contactModelRoutes.json",
+            "./important/admin/routes/checkers/media/MediaModelRoutes.json",
             {
-              route: "../contactMessage"
+              route: "../../medias"
             }
           );
         }
       }
     );
-     /* end of default contact model routes */
+    /* end of default model routes */
   }
 };
