@@ -8,9 +8,8 @@ const passport = require("passport");
 module.exports = app => {
   /* Set admin css folder */
   if (process.env.NODE_ENV == "production") {
-    app.use(
-      express.static(path.join(__dirname, "../../../dist/content/public"))
-    );
+    console.log(process.env.NODE_ENV)
+    app.use(express.static(path.join(__dirname, "../../../dist/content/public")));
   } else {
     app.use(express.static(path.join(__dirname, "../../../content/public")));
   }
