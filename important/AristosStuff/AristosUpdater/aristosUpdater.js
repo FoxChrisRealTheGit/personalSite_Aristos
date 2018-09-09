@@ -1,12 +1,16 @@
 const request = require("request");
 const fs = require("fs-extra");
-
+/* config file */
+const config = require("../../AppStuff/config/config");
+/* for updating aristos version */
+const updateStuff = require("../../AppStuff/config/config").updateItem;
+/* Aristos Logger stuff */
 const addUpdateInfos = require("../AristosLogger/AristosLogger").addUpdate;
 const addErrorInfos = require("../AristosLogger/AristosLogger").addError;
 /*
 * core Update Function
 */
-let coreUpdate = (req) => {
+let coreUpdate = req => {
   request.get(
     "https://b5tx3g61ie.execute-api.us-east-2.amazonaws.com/default/AristosBasicUpdater",
 
@@ -18,11 +22,11 @@ let coreUpdate = (req) => {
 
       const content = JSON.parse(body);
       content.forEach(stuff => {
-        fs.outputFile(stuff.name, stuff.content);
+          fs.outputFile(stuff.name, stuff.content);
       });
     }
   );
-  addUpdateInfos("some version #", "core update")
+  addUpdateInfos("some version #", "core update");
   req.flash("success_msg", "System Updated!");
 }; /* end of core update function */
 /*
@@ -47,19 +51,19 @@ let expansionUpdate = something => {
         return addErrorInfos(error, "expansion update error");
       }
       body.forEach(stuff => {
-         fs.outputFile(stuff.name, stuff.content);
+        fs.outputFile(stuff.name, stuff.content);
         // console.log(stuff.name)
       });
     }
   );
   something.flash("success_msg", "Expansions Updated!");
-  addUpdateInfos("some version #", "expansion update")
+  addUpdateInfos("some version #", "expansion update");
 }; /* end of expansion update function */
 
 /*
 * theme Update Function
 */
-let themeUpdate = (req) => {
+let themeUpdate = req => {
   req.flash("success_msg", "Theme Updates Not Currently Available!");
   addUpdateInfos("theme update not available", "theme update");
 }; /* end of theme update function */
@@ -70,4 +74,3 @@ module.exports = {
   expansionUpdate,
   themeUpdate
 };
-
