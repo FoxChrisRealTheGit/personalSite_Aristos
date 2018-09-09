@@ -7,12 +7,12 @@ const passport = require("passport");
 /* needs more cleanup */
 module.exports = app => {
   /* Set admin css folder */
-  if (process.env.NODE_ENV == "production") {
-    console.log(process.env.NODE_ENV)
-    app.use(express.static(path.join(__dirname, "../../../dist/content/public")));
-  } else {
+  // if (process.env.NODE_ENV == "production") {
+  //   console.log(process.env.NODE_ENV)
+  //   app.use(express.static(path.join(__dirname, "../../../dist/content/public")));
+  // } else {
     app.use(express.static(path.join(__dirname, "../../../content/public")));
-  }
+  // }
   /* Express fileUpload middleware */
   app.use(fileUpload());
   /* end Express fileUpload middleware */
