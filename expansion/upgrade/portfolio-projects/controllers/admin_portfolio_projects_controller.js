@@ -21,19 +21,22 @@ const FindAllMedia = require("../../../../important/admin/adminModels/queries/me
 const FindAllProjectCategories = require("../models/queries/projectCategory/FindAllProjectCategories");
 /* User Model Queries */
 const FindOneUserByID = require("../../../../important/admin/adminModels/queries/user/FindOneUserWithID");
+const FindOneAdminByID = require("../../../../important/admin/adminModels/queries/user/FindAdminUserByID");
 module.exports = {
   index(req, res, next) {
     Promise.all([
       CountProjects(),
       FindAllSortedProjects(),
-      FindAllProjectCategories()
+      FindAllProjectCategories(),
+      FindOneAdminByID(req.session.passport.user)
     ]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/projects",
         {
           count: result[0],
           projects: result[1],
-          categories: result[2]
+          categories: result[2],
+          theUser: result[3]
         }
       );
     });
@@ -44,14 +47,16 @@ module.exports = {
       FindAllSortedProjectsWithParam({
         category: req.params.category
       }),
-      FindAllProjectCategories()
+      FindAllProjectCategories(),
+      FindOneAdminByID(req.session.passport.user)
     ]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/projects",
         {
           count: result[0],
           projects: result[1],
-          categories: result[2]
+          categories: result[2],
+          theUser: result[3]
         }
       );
     });
@@ -65,8 +70,9 @@ module.exports = {
       description,
       author,
       startedOn,
-      finished = "";
-    Promise.all([FindAllProjectCategories(), FindAllMedia()]).then(result => {
+      finished,
+      link = "";
+    Promise.all([FindAllProjectCategories(), FindAllMedia(), FindOneAdminByID(req.session.passport.user)]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/add_project",
         {
@@ -79,7 +85,9 @@ module.exports = {
           keywords: keywords,
           author: author,
           startedOn: startedOn,
-          finished: finished
+          finished: finished,
+          theUser: result[2],
+          link: link
         }
       );
     });
@@ -110,6 +118,8 @@ module.exports = {
         let description = req.body.description;
         let author = req.session.passport.user;
 
+        let link  = req.body.link
+
         let startedOn = req.body.startedOn;
         let finished = req.body.finished;
         if (finished === "") {
@@ -130,7 +140,8 @@ module.exports = {
                   keywords: keywords,
                   author: author,
                   startedOn: startedOn,
-                  finished: finished
+                  finished: finished,
+                  link: link
                 }
               );
             }
@@ -155,7 +166,8 @@ module.exports = {
                       author: author,
                       image: imageFile,
                       startedOn: startedOn,
-                      finished: finished
+                      finished: finished,
+                      link: link
                     }
                   );
                 }
@@ -172,7 +184,8 @@ module.exports = {
                 sorting: 0,
                 author: author,
                 started: startedOn,
-                completed: finished
+                completed: finished,
+                link: link
               };
               CreateProject(ProjectProps).then(project => {
                 fs.ensureDirSync(
@@ -233,7 +246,8 @@ module.exports = {
     Promise.all([
       FindAllProjectCategories(),
       FindOneProjectByID(req.params.id),
-      FindAllMedia()
+      FindAllMedia(),
+      FindOneAdminByID(req.session.passport.user)
     ]).then(result => {
       let galleryDir =
         "content/public/images/portfolio_images/" + result[1]._id + "/gallery";
@@ -258,7 +272,9 @@ module.exports = {
               description: result[1].description,
               keywords: result[1].keywords,
               startedOn: result[1].started,
-              finished: result[1].completed
+              finished: result[1].completed,
+              theUser: result[3],
+              link: result[1].link
             }
           );
         }
@@ -292,6 +308,7 @@ module.exports = {
         let id = req.params.id;
         let description = req.body.description;
         let keywords = req.body.keywords;
+        let link = req.body.link;
         let startedOn = req.body.startedOn;
         let finished = req.body.finished;
         if (finished === "") {
@@ -323,7 +340,8 @@ module.exports = {
                 keywords: keywords,
                 image: pimage,
                 started: startedOn,
-                completed: finished
+                completed: finished,
+                link: link
               };
               EditProject(id, ProjectParams).then(stuff => {
                 if (imageFile !== "") {
@@ -374,12 +392,12 @@ module.exports = {
         let productImage = req.files.file;
         let id = req.params.id;
         let path =
-          "content/public/images/product_images/" +
+          "content/public/images/portfolio_images/" +
           id +
           "/gallery/" +
           req.files.file.name;
         let thumbsPath =
-          "content/public/images/product_images/" +
+          "content/public/images/portfolio_images/" +
           id +
           "/gallery/thumbs/" +
           req.files.file.name;
@@ -403,12 +421,12 @@ module.exports = {
   } /* end of create gallery function */,
   deleteImage(req, res, next) {
     let originalImage =
-      "content/public/images/product_images/" +
+      "content/public/images/portfolio_images/" +
       req.query.id +
       "/gallery/" +
       req.params.image;
     let thumbsImage =
-      "content/public/images/product_images/" +
+      "content/public/images/portfolio_images/" +
       req.query.id +
       "/gallery/thumbs/" +
       req.params.image;

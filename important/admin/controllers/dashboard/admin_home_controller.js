@@ -1,6 +1,7 @@
 const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger")
   .addError;
-
+/* user model queries */
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
 /* site stats stuff */
 const getAllTheStats = require("../../../AristosStuff/AristosSiteStats/AristosSiteStats")
   .readAllStats;
@@ -41,15 +42,18 @@ module.exports = {
       ];
       return require("../../../../expansion/upgrade/dashboard");
     })();
-    upgradeDashboards.then(startIncepting => {
-      Promise.all(startIncepting).then(OneLevelDeep => {
-        res.render("../../../important/admin/views/index", {
-          content: "",
-          infoLogs: allTheInfo,
-          siteViews: siteViews,
-          totalViews: totalViews,
-          FrontEndViews: FrontEndViews,
-          upgradeDashboard: OneLevelDeep
+    FindAdminUserByID(req.session.passport.user).then(user => {
+      upgradeDashboards.then(startIncepting => {
+        Promise.all(startIncepting).then(OneLevelDeep => {
+          res.render("../../../important/admin/views/index", {
+            content: "",
+            infoLogs: allTheInfo,
+            siteViews: siteViews,
+            totalViews: totalViews,
+            FrontEndViews: FrontEndViews,
+            upgradeDashboard: OneLevelDeep,
+            theUser: user
+          });
         });
       });
     });
@@ -88,15 +92,18 @@ module.exports = {
       ];
       return require("../../../../expansion/upgrade/dashboard");
     })();
-    upgradeDashboards.then(startIncepting => {
-      Promise.all(startIncepting).then(OneLevelDeep => {
-        res.render("../../../important/admin/views/index", {
-          content: "",
-          infoLogs: log,
-          siteViews: siteViews,
-          totalViews: totalViews,
-          FrontEndViews: FrontEndViews,
-          upgradeDashboard: OneLevelDeep
+    FindAdminUserByID(req.session.passport.user).then(user => {
+      upgradeDashboards.then(startIncepting => {
+        Promise.all(startIncepting).then(OneLevelDeep => {
+          res.render("../../../important/admin/views/index", {
+            content: "",
+            infoLogs: log,
+            siteViews: siteViews,
+            totalViews: totalViews,
+            FrontEndViews: FrontEndViews,
+            upgradeDashboard: OneLevelDeep,
+            theUser: user
+          });
         });
       });
     });

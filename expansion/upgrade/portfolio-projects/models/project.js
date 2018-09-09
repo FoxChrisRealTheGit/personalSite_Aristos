@@ -48,6 +48,9 @@ const ProjectSchema = new Schema({
   },
   completed: {
     type: String
+  },
+  link:{
+    type: String
   }
 }); /* end of project schema */
 /* start of project schema functions */

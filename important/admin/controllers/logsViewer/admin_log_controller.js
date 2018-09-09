@@ -15,14 +15,19 @@ const clearErrorLogs = require("../../../AristosStuff/AristosLogger/AristosLogge
   .clearErrorLog;
 const clearDebugLogs = require("../../../AristosStuff/AristosLogger/AristosLogger")
   .clearDebugLog;
+/* user model queries */
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
 
 module.exports = {
   index(req, res, next) {
     const allTheInfo = getAllInfoLogs();
-    res.render("../../../important/admin/views/logsViewer/logsViewer", {
-      content: "",
-      logname: "info",
-      infoLogs: allTheInfo
+    FindAdminUserByID(req.session.passport.user).then(user => {
+      res.render("../../../important/admin/views/logsViewer/logsViewer", {
+        content: "",
+        logname: "info",
+        infoLogs: allTheInfo,
+        theUser: user
+      });
     });
   } /* end of logs index function */,
   indexByCategory(req, res, next) {
@@ -40,10 +45,13 @@ module.exports = {
       log = getAllInfoLogs();
       logname = "info";
     }
-    res.render("../../../important/admin/views/logsViewer/logsViewer", {
-      content: "",
-      logname: logname,
-      infoLogs: log
+    FindAdminUserByID(req.session.passport.user).then(user => {
+      res.render("../../../important/admin/views/logsViewer/logsViewer", {
+        content: "",
+        logname: logname,
+        infoLogs: log,
+        theUser: user
+      });
     });
   } /* end of logs by name function */,
   clearLog(req, res, next) {
@@ -57,4 +65,3 @@ module.exports = {
     res.redirect("back");
   } /* end of clear lgo function */
 };
-

@@ -6,10 +6,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <% if (typeof favicon !== "undefined"){ %>
+        <link rel="icon" href="<%= favicon %>">
+    <% } %>
+
     <title>Admin - <%= appTitle %></title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-      <!-- build:css(content/temp) /styles/main.css-->
-    <link rel="stylesheet" href="/temp/styles/main.css">
+    <!-- build:css(content/temp) /styles/main.css-->
+        <link rel="stylesheet" href="/temp/styles/main.css">
     <!-- endbuild -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -34,9 +38,11 @@
                         <a href="/admin/add-media">add media</a>
                     </li>
                     <div class="side-hovered-item" id="">
-                            <a class="admin-nav__nav-item" href="/admin/add-media/upload-image">upload image</a>
-                            <a class="admin-nav__nav-item" href="/admin/add-media/upload-video">upload video</a>
-                            <a class="admin-nav__nav-item" href="/admin/media-categories/add-media-category">add category</a>
+                            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                                <a class="admin-nav__nav-item" href="/admin/add-media/upload-image">upload image</a>
+                                <a class="admin-nav__nav-item" href="/admin/add-media/upload-video">upload video</a>
+                                <a class="admin-nav__nav-item" href="/admin/media-categories/add-media-category">add category</a>
+                            <% } %>
                             <a class="admin-nav__nav-item" href="/admin/media-categories">see all categories</a>
                         </div>
                     </div>
@@ -44,17 +50,21 @@
                         <li class="admin-nav__nav-item">
                             <a href="/admin/pages">pages</a>
                         </li>
-                        <div class="side-hovered-item" id="">
-                            <a class="admin-nav__nav-item" href="/admin/pages/add-page">add page</a>
-                        </div>
+                        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                            <div class="side-hovered-item" id="">
+                                <a class="admin-nav__nav-item" href="/admin/pages/add-page">add page</a>
+                            </div>
+                        <% } %>
                     </div>
                     <div class="side-dropdown">
                         <li class="admin-nav__nav-item">
                             <a href="/admin/template-builder">templates</a>
                         </li>
                         <div class="side-hovered-item" id="">
-                            <a class="admin-nav__nav-item" href="/admin/template-builder/add-basic">add template</a>
-                            <a class="admin-nav__nav-item" href="/admin/template-builder/builder">drag and drop</a>
+                            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                                <a class="admin-nav__nav-item" href="/admin/template-builder/add-basic">add template</a>
+                                <a class="admin-nav__nav-item" href="/admin/template-builder/builder">drag and drop</a>
+                            <% } %>
                         </div>
                     </div>
                 </ul>
@@ -86,10 +96,12 @@
                             <a href="/admin/user-controls">users</a>
                         </li>
                         <div class="side-hovered-item" id="">
-                            <a class="admin-nav__nav-item" href="/admin/user-controls/add-admin">add new member</a>
-                            <a class="admin-nav__nav-item" href="">add existing member</a>
-                            <a class="admin-nav__nav-item" href="">new user role</a>
-                            <a class="admin-nav__nav-item" href="">all user roles</a>
+                            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                                <a class="admin-nav__nav-item" href="/admin/user-controls/add-admin">add new member</a>
+                                <a class="admin-nav__nav-item" href="">add existing member</a>
+                                <a class="admin-nav__nav-item" href="/admin/user-controls/add-admin-role">new user role</a>
+                            <% } %>
+                            <a class="admin-nav__nav-item" href="/admin/user-controls/admin-roles">all user roles</a>
                         </div>
                     </div>
                     <li class="admin-nav__nav-item">

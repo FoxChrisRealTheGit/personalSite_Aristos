@@ -1,4 +1,14 @@
-const ProjectCategory = require("../../projectCategory");
+const fs = require("fs-extra");
+let ProjectCategory;
+try {
+  const ProjectCategories = fs.readJSONSync(
+    "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioCategoryModelRoutes.json"
+  ).route;
+  ProjectCategory = require(ProjectCategories);
+} catch (err) {
+  ProjectCategory = require("../../projectCategory");
+}
+
 /* Aristos Logger Path */
 const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
   .addError;

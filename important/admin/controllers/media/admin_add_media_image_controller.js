@@ -13,14 +13,20 @@ const DeleteMedia = require("../../adminModels/queries/media/DeleteMedia");
 const FindAllMediaCategories = require("../../adminModels/queries/mediaCategories/FindAllMediaCategories");
 const FindMediaCategoryByParem = require("../../adminModels/queries/mediaCategories/FindMediaCategoryByParam");
 /* User Model Queries */
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
 const FindOneUserByID = require("../../adminModels/queries/user/FindOneUserWithID");
 
 module.exports = {
   index(req, res, next) {
-    Promise.all([FindAllMediaCategories(), FindAllMedia()]).then(result => {
+    Promise.all([
+      FindAllMediaCategories(),
+      FindAllMedia(),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../important/admin/views/media/media", {
         categories: result[0],
-        media: result[1]
+        media: result[1],
+        theUser: result[2]
       });
     });
   } /* end of index function */,
@@ -31,14 +37,18 @@ module.exports = {
       link,
       description,
       keywords = "";
-    FindAllMediaCategories().then(categories => {
+    Promise.all([
+      FindAllMediaCategories(),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../important/admin/views/media/add_image", {
         title: title,
         alt: alt,
-        categories: categories,
+        categories: result[0],
         link: link,
         description: description,
-        keywords: keywords
+        keywords: keywords,
+        theUser: result[1]
       });
     });
   } /* end of upload get function */,
@@ -150,22 +160,25 @@ module.exports = {
   } /* end of upload create function */,
 
   edit(req, res, next) {
-    Promise.all([FindAllMediaCategories(), FindMediaByID(req.params.id)]).then(
-      result => {
-        res.render("../../../important/admin/views/media/edit_image", {
-          content: "",
-          title: result[1].title,
-          alt: result[1].alt,
-          categories: result[0],
-          path: result[1].path,
-          id: result[1]._id,
-          link: result[1].link,
-          description: result[1].description,
-          keywords: result[1].keywords,
-          selectedCat: result[1].category
-        });
-      }
-    );
+    Promise.all([
+      FindAllMediaCategories(),
+      FindMediaByID(req.params.id),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
+      res.render("../../../important/admin/views/media/edit_image", {
+        content: "",
+        title: result[1].title,
+        alt: result[1].alt,
+        categories: result[0],
+        path: result[1].path,
+        id: result[1]._id,
+        link: result[1].link,
+        description: result[1].description,
+        keywords: result[1].keywords,
+        selectedCat: result[1].category,
+        theUser: result[2]
+      });
+    });
   } /* end of get edit function */,
 
   saveEdit(req, res, next) {

@@ -47,7 +47,9 @@
                 </div>
             </div>
         </div>
-        <button class="admin-button admin-button--submit">Submit</button>
+        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite=== "yes") { %>
+            <button class="admin-button admin-button--submit">Submit</button>
+        <% } %>
     </form>
     <script>
         function readURL(input) {

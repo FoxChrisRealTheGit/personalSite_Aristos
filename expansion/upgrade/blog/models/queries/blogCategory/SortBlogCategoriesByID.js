@@ -1,4 +1,8 @@
-const BlogCategory = require("../../blogCategory");
+const fs = require("fs-extra");
+const BlogCategories = fs.readJSONSync(
+  "./expansion/upgrade/blog/routes/checkers/blogModelCategoryRoute.json"
+).route;
+const BlogCategory = require(BlogCategories);
 /* Aristos Logger Path */
 const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
   .addError;
@@ -36,4 +40,4 @@ function sortBlogCategories(ids, cb) {
       });
     })(count);
   }
-} /* end of sort pages function */
+} /* end of sort blog categories function */

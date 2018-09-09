@@ -60,6 +60,8 @@
                 </div>
             </div>
         </div>
-        <button id="mostAmazingButton" class="admin-button admin-button--submit">Submit</button>
+        <% if(theUser.userRole.allThethings === "yes" || theUser.userRole.canEdit === "yes"){ %>
+            <button id="mostAmazingButton" class="admin-button admin-button--submit">Submit</button>
+        <% } %>
     </form>
 <%- include("../_layouts/adminfooter") %>

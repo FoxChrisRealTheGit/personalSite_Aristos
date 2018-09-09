@@ -22,11 +22,13 @@
         </div>
     <% }else{ %>  
     <% if(logname !== "updates"){ %>
-    <div class="button-row">
-        <button class="admin-button admin-button--danger">
-            <a href="/admin/logs-viewer/clear/<%= logname %>">Clear Log</a>
-        </button>
-    </div>
+        <% if(theUser.userRole.allThethings === "yes" || theUser.userRole.canRemove === "yes") { %>
+            <div class="button-row">
+                <button class="admin-button admin-button--danger">
+                    <a href="/admin/logs-viewer/clear/<%= logname %>">Clear Log</a>
+                </button>
+            </div>
+        <% } %>
     <% } %>
     <table class="admin-table" id="logs-display">
         <thead>

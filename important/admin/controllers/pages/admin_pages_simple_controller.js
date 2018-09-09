@@ -15,15 +15,21 @@ const FindAllMedia = require("../../adminModels/queries/media/FindAllMedia");
 
 /* User Model Queries */
 const FindOneUserByID = require("../../adminModels/queries/user/FindOneUserWithID");
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
 /* Template Model Queries */
 const FindAllTemplates = require("../../adminModels/queries/templates/FindAllTemplates");
 
 module.exports = {
   index(req, res, next) {
-    Promise.all([FindAllSortedPages(), CountPages()]).then(result => {
+    Promise.all([
+      FindAllSortedPages(),
+      CountPages(),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../important/admin/views/pages/pages", {
         pages: result[0],
-        count: result[1]
+        count: result[1],
+        theUser: result[2]
       });
     });
   } /* end of index function */,
@@ -36,8 +42,11 @@ module.exports = {
       description,
       keywords,
       author = "";
-
-    Promise.all([FindAllTemplates(), FindAllMedia()]).then(results => {
+    Promise.all([
+      FindAllTemplates(),
+      FindAllMedia(),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(results => {
       res.render("../../../important/admin/views/pages/add_page", {
         title: title,
         slug: slug,
@@ -47,7 +56,8 @@ module.exports = {
         description: description,
         keywords: keywords,
         author: author,
-        templates: results[0]
+        templates: results[0],
+        theUser: results[2]
       });
     });
   } /* end of add index function */,
@@ -138,14 +148,19 @@ module.exports = {
   } /* end of create function */,
 
   reorder(req, res, next) {
-    FindOneUserByID(req.session.passport.user).then(user => {
+    FindAdminUserByID(req.session.passport.user).then(user => {
       if (user.admin === 1) {
-        let ids = req.body["id[]"];
-        SortPagesByID(ids);
-        FindAllSortedPages().then(sortedRes => {
-          req.app.locals.pages = sortedRes;
-          res.redirect("/admin/pages");
-        });
+        if (user.userRole.canEdit === "yes") {
+          let ids = req.body["id[]"];
+          SortPagesByID(ids);
+          FindAllSortedPages().then(sortedRes => {
+            req.app.locals.pages = sortedRes;
+            res.redirect("/admin/pages");
+          });
+        } else {
+          req.flash("error_msg", "Not Authorized!");
+          res.redirect("back");
+        }
       } else {
         res.redirect("/users/login");
       }
@@ -156,7 +171,8 @@ module.exports = {
     Promise.all([
       FindOnePage(req.params.id),
       FindAllMedia(),
-      FindAllTemplates()
+      FindAllTemplates(),
+      FindAdminUserByID(req.session.passport.user)
     ]).then(result => {
       res.render("../../../important/admin/views/pages/edit_page", {
         title: result[0].title,
@@ -170,7 +186,8 @@ module.exports = {
         author: result[0].author,
         selectedCat: result[0].parent,
         selectedTemplate: result[0].template.title,
-        templates: result[2]
+        templates: result[2],
+        theUser: result[3]
       }); /* end of res render */
     }); /* Promise all */
   } /* end of edit index function */,

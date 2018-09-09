@@ -8,31 +8,35 @@ const DeleteContactMessage = require("../models/queries/DeleteMessage");
 const GetAllMessages = require("../models/queries/FindAllMessages");
 /* User Model Queries */
 // const FindOneUserByID = require("../../../../important/adminModels/queries/user/FindOneUserWithID");
+const FindOneAdminByID = require("../../../../important/admin/adminModels/queries/user/FindAdminUserByID");
 module.exports = {
   index(req, res, next) {
-    Promise.all([CountContactMessage(), GetAllMessages()]).then(result=>{
-      res.render("../../../expansion/upgrade/contact/views/contact",
-      {
+    Promise.all([
+      CountContactMessage(),
+      GetAllMessages(),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
+      res.render("../../../expansion/upgrade/contact/views/contact", {
         messages: result[1],
-        count: result[0]
+        count: result[0],
+        theUser: result[2]
       });
-    })
-    
+    });
   } /* end of index function */,
 
   create(req, res, next) {
     let errors = [];
-    if(!req.body.name){
-      errors.push({text: "Namme must have a value."})
+    if (!req.body.name) {
+      errors.push({ text: "Namme must have a value." });
     }
-    if(!req.body.content){
-      errors.push({text: "content must have a value."})
+    if (!req.body.content) {
+      errors.push({ text: "content must have a value." });
     }
-    if(!req.body.subject){
-      errors.push({text: "Subject must have a value."})
+    if (!req.body.subject) {
+      errors.push({ text: "Subject must have a value." });
     }
-    if(!req.body.email){
-      errors.push({text: "email must have a value."})
+    if (!req.body.email) {
+      errors.push({ text: "email must have a value." });
     }
 
     let content = req.body.content;
@@ -58,10 +62,9 @@ module.exports = {
     }
   } /* end of create function */,
 
-  delete(req, res, next){
-    DeleteContactMessage(req.params.id)
+  delete(req, res, next) {
+    DeleteContactMessage(req.params.id);
     req.flash("success_msg", "Message Deleted!");
-      res.redirect("back");
-
-  }/* end of delete function */
+    res.redirect("back");
+  } /* end of delete function */
 };

@@ -1,5 +1,6 @@
 const fs = require("fs-extra");
-const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger").addError;
+const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 /* Media Category Model Queries */
 const FindAllMediaCategories = require("../../adminModels/queries/mediaCategories/FindAllMediaCategories");
 const CountMediaCategories = require("../../adminModels/queries/mediaCategories/CountMediaCategories");
@@ -9,6 +10,7 @@ const FindMediaCategoryByID = require("../../adminModels/queries/mediaCategories
 const EditMediaCategory = require("../../adminModels/queries/mediaCategories/EditMediaCategory");
 const DeleteMediaCategory = require("../../adminModels/queries/mediaCategories/DeleteMediaCategory");
 /* User Model Queries */
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
 const FindOneUserByID = require("../../adminModels/queries/user/FindOneUserWithID");
 
 module.exports = {
@@ -20,12 +22,16 @@ module.exports = {
           slug: "general"
         });
       }
-      FindAllMediaCategories().then(categories => {
+      Promise.all([
+        FindAllMediaCategories(),
+        FindAdminUserByID(req.session.passport.user)
+      ]).then(result => {
         res.render(
           "../../../important/admin/views/media/categories/media_categories",
           {
-            categories: categories,
-            count: count
+            categories: result[0],
+            count: count,
+            theUser: result[1]
           }
         );
       });
@@ -34,12 +40,15 @@ module.exports = {
 
   addIndex(req, res, next) {
     let title = "";
-    res.render(
-      "../../../important/admin/views/media/categories/add_media_category",
-      {
-        title: title
-      }
-    );
+    FindAdminUserByID(req.session.passport.user).then(user => {
+      res.render(
+        "../../../important/admin/views/media/categories/add_media_category",
+        {
+          title: title,
+          theUser: user
+        }
+      );
+    });
   } /* end of get add index function */,
 
   create(req, res, next) {
@@ -98,12 +107,16 @@ module.exports = {
   } /* end of create function */,
 
   editIndex(req, res, next) {
-    FindMediaCategoryByID(req.params.id).then(category => {
+    Promise.all([
+      FindMediaCategoryByID(req.params.id),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render(
         "../../../important/admin/views/media/categories/edit_media_category",
         {
-          title: category.title,
-          id: category._id
+          title: result[0].title,
+          id: result[0]._id,
+          theUser: result[1]
         }
       );
     });

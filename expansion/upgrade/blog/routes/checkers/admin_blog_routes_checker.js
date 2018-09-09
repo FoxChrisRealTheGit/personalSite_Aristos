@@ -58,6 +58,19 @@ module.exports = {
         }
       }
     );
+    fs.pathExists(
+      "./expansion/upgrade/blog/routes/checkers/blogCategoryRoutes.json",
+      (err, exists) => {
+        if (!exists) {
+          fs.writeJson(
+            "./expansion/upgrade/blog/routes/checkers/blogCategoryRoutes.json",
+            {
+              route: "./routes/admin_blog_categories"
+            }
+          );
+        }
+      }
+    );
     /* end of default routes path */
     /* default model routes */
     fs.pathExists(
@@ -81,6 +94,19 @@ module.exports = {
             "./expansion/upgrade/blog/routes/checkers/blogModelCommentRoute.json",
             {
               route: "../../blogComments"
+            }
+          );
+        }
+      }
+    );
+    fs.pathExists(
+      "./expansion/upgrade/blog/routes/checkers/blogModelCategoryRoute.json",
+      (err, exists) => {
+        if (!exists) {
+          fs.writeJson(
+            "./expansion/upgrade/blog/routes/checkers/blogModelCategoryRoute.json",
+            {
+              route: "../../blogCategory"
             }
           );
         }

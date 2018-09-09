@@ -28,7 +28,7 @@
                                 <option value="<%= category._id %>">
                                     <%= category.title %>
                                 </option>
-                                <% }); %>
+                            <% }); %>
                         </select>
                     </div>
                     <div class="admin-form__group">
@@ -48,19 +48,25 @@
                 </div>
                 <div class="admin-form__form-options admin-form__form-options--second-group">
                     <div class="admin-form__group">
+                        <label for="">Optional Link</label>
+                        <input type="text" class="form-control" name="link" value="<%= link %>" placeholder="optional redirection link">
+                    </div>
+                    <div class="admin-form__group">
                         <label for="">Meta Description</label>
                         <textarea class="admin-form--disabled-resize" rows="4" name="description" placeholder="Place a brief description of this blog. Max of 320 characters including spaces."
-                            maxlength="320"></textarea>
+                            maxlength="320"><%= description %></textarea>
                     </div>
                     <div class="admin-form__group">
                         <label for="">Meta Keywords</label>
                         <textarea class="admin-form--disabled-resize" rows="4" name="keywords" placeholder="Place your keywords seperated by a comma. Max of 300 characters. EX. neat blog, neater topic, neatest person"
-                            maxlength="300"></textarea>
+                            maxlength="300"><%= keywords %></textarea>
                     </div>
                    
                 </div>
             </div>
-            <button class="admin-button admin-button--submit">Submit</button>
+            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                <button class="admin-button admin-button--submit">Submit</button>
+            <% } %>
       
     </form>
 

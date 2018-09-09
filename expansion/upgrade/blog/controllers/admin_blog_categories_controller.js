@@ -12,11 +12,10 @@ const FindAllSortedBlogCategories = require("../models/queries/blogCategory/Find
 const SortBlogCategories = require("../models/queries/blogCategory/SortBlogCategoriesByID");
 /* User Model Queries */
 const FindOneUserByID = require("../../../../important/admin/adminModels/queries/user/FindOneUserWithID");
-
+const FindOneAdminByID = require("../../../../important/admin/adminModels/queries/user/FindAdminUserByID");
 module.exports = {
   index(req, res, next) {
-    const Count = CountBlogCategories();
-    Count.then(count => {
+    CountBlogCategories().then(count => {
       if (count === 0) {
         const GeneralParams = {
           title: "General",
@@ -27,13 +26,16 @@ module.exports = {
         };
         CreateBlogCategory(GeneralParams);
       }
-      const SortedCats = FindAllSortedBlogCategories();
-      SortedCats.then(categories => {
+      Promise.all([
+        FindAllSortedBlogCategories(),
+        FindOneAdminByID(req.session.passport.user)
+      ]).then(result => {
         res.render(
           "../../../expansion/upgrade/blog/views/categories/blog_categories",
           {
-            categories: categories,
-            count: count
+            categories: result[0],
+            count: count,
+            theUser: result[1]
           }
         );
       });
@@ -45,16 +47,18 @@ module.exports = {
       author,
       description,
       keywords = "";
-
-    res.render(
-      "../../../expansion/upgrade/blog/views/categories/add_blog_category",
-      {
-        title: title,
-        description: description,
-        author: author,
-        keywords: keywords
-      }
-    );
+    FindOneAdminByID(req.session.passport.user).then(user => {
+      res.render(
+        "../../../expansion/upgrade/blog/views/categories/add_blog_category",
+        {
+          title: title,
+          description: description,
+          author: author,
+          keywords: keywords,
+          theUser: user
+        }
+      );
+    });
   } /* end of add index function */,
 
   create(req, res, next) {
@@ -119,16 +123,19 @@ module.exports = {
   } /* end of create function */,
 
   editIndex(req, res, next) {
-    const FoundCategory = FindOneBlogCategoryByID(req.params.id);
-    FoundCategory.then(category => {
+    Promise.all([
+      FindOneBlogCategoryByID(req.params.id),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
       res.render(
         "../../../expansion/upgrade/blog/views/categories/edit_blog_category",
         {
-          title: category.title,
-          id: category._id,
-          author: category.author,
-          description: category.description,
-          keywords: category.keywords
+          title: result[0].title,
+          id: result[0]._id,
+          author: result[0].author,
+          description: result[0].description,
+          keywords: result[0].keywords,
+          theUser: result[1]
         }
       );
     });
@@ -171,7 +178,7 @@ module.exports = {
           });
           CheckIfExists.then(category => {
             if (category.length > 0) {
-              errors.push({text: "Category title exists, chooser another."});
+              errors.push({ text: "Category title exists, chooser another." });
               return res.render(
                 "../../../expansion/upgrade/blog/views/categories/edit_blog_category",
                 {

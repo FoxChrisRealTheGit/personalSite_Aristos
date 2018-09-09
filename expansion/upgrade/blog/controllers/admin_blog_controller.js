@@ -20,13 +20,18 @@ const FindAllBlogCategories = require("../models/queries/blogCategory/FindAllBlo
 const DeleteBlogCommentsByBlog = require("../models/queries/blogComments/DeleteBlogCommentByBlog");
 /* User Model Queries */
 const FindOneUserByID = require("../../../../important/admin/adminModels/queries/user/FindOneUserWithID");
-
+const FindOneAdminByID = require("../../../../important/admin/adminModels/queries/user/FindAdminUserByID");
 module.exports = {
   index(req, res, next) {
-    Promise.all([CountBlog(), FindAllSortedBlogs()]).then(result => {
+    Promise.all([
+      CountBlog(),
+      FindAllSortedBlogs(),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../expansion/upgrade/blog/views/blogs", {
         blogs: result[1],
-        count: result[0]
+        count: result[0],
+        theUser: result[2]
       });
     });
   } /* end of index function */,
@@ -38,7 +43,11 @@ module.exports = {
       author,
       description,
       keywords = "";
-    Promise.all([FindAllBlogCategories(), FindAllMedia()]).then(result => {
+    Promise.all([
+      FindAllBlogCategories(),
+      FindAllMedia(),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../expansion/upgrade/blog/views/add_blog", {
         title: title,
         slug: slug,
@@ -47,7 +56,8 @@ module.exports = {
         media: result[1],
         author: author,
         description: description,
-        keywords: keywords
+        keywords: keywords,
+        theUser: result[2]
       });
     });
   } /* end of add index function */,
@@ -83,43 +93,47 @@ module.exports = {
         }
 
         if (errors.length > 0) {
-          Promise.all([FindAllBlogCategories(), FindAllMedia()]).then(result => {
-            return res.render(
-              "../../../expansion/upgrade/blog/views/add_blog",
-              {
-                errors: errors,
-                title: title,
-                slug: slug,
-                content: content,
-                categories: result[0],
-                media: result[1],
-                author: author,
-                description: description,
-                keywords: keywords
-              }
-            );
-          });
+          Promise.all([FindAllBlogCategories(), FindAllMedia()]).then(
+            result => {
+              return res.render(
+                "../../../expansion/upgrade/blog/views/add_blog",
+                {
+                  errors: errors,
+                  title: title,
+                  slug: slug,
+                  content: content,
+                  categories: result[0],
+                  media: result[1],
+                  author: author,
+                  description: description,
+                  keywords: keywords
+                }
+              );
+            }
+          );
         } else {
           const CheckIfExists = FindBlogWithParam({ slug: slug });
           CheckIfExists.then(blog => {
             if (blog.length > 0) {
               errors.push({ text: "Blog slug exists, choose another." });
-              Promise.all([FindAllBlogCategories(), FindAllMedia()]).then(result => {
-                return res.render(
-                  "../../../expansion/upgrade/blog/views/add_blog",
-                  {
-                    errors: errors,
-                    title: "",
-                    slug: "",
-                    content: content,
-                    categories: result[0],
-                    media: result[1],
-                    author: author,
-                    description: description,
-                    keywords: keywords
-                  }
-                );
-              });
+              Promise.all([FindAllBlogCategories(), FindAllMedia()]).then(
+                result => {
+                  return res.render(
+                    "../../../expansion/upgrade/blog/views/add_blog",
+                    {
+                      errors: errors,
+                      title: "",
+                      slug: "",
+                      content: content,
+                      categories: result[0],
+                      media: result[1],
+                      author: author,
+                      description: description,
+                      keywords: keywords
+                    }
+                  );
+                }
+              );
             } else {
               const BlogParams = {
                 title: title,
@@ -145,7 +159,12 @@ module.exports = {
   } /* end of create function */,
 
   editIndex(req, res, next) {
-    Promise.all([FindAllBlogCategories(), FindAllMedia(), FindBlogByID(req.params.id)]).then(result => {
+    Promise.all([
+      FindAllBlogCategories(),
+      FindAllMedia(),
+      FindBlogByID(req.params.id),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../expansion/upgrade/blog/views/edit_blog", {
         title: result[2].title,
         slug: result[2].slug,
@@ -156,7 +175,8 @@ module.exports = {
         description: result[2].description,
         keywords: result[2].keywords,
         selectedCat: result[2].category.slug,
-        allowComments: result[2].allowComments
+        allowComments: result[2].allowComments,
+        theUser: result[3]
       });
     });
   } /* end of edit index function */,
@@ -192,23 +212,25 @@ module.exports = {
         }
 
         if (errors.length > 0) {
-          Promise.all([FindAllBlogCategories(), FindAllMedia()]).then(result => {
-            return res.render(
-              "../../../expansion/upgrade/blog/views/edit_blog",
-              {
-                errors: errors,
-                title: title,
-                slug: slug,
-                content: content,
-                categories: result[0],
-                media: result[1],
-                id: id,
-                description: description,
-                keywords: keywords,
-                selectedCat: category
-              }
-            );
-          });
+          Promise.all([FindAllBlogCategories(), FindAllMedia()]).then(
+            result => {
+              return res.render(
+                "../../../expansion/upgrade/blog/views/edit_blog",
+                {
+                  errors: errors,
+                  title: title,
+                  slug: slug,
+                  content: content,
+                  categories: result[0],
+                  media: result[1],
+                  id: id,
+                  description: description,
+                  keywords: keywords,
+                  selectedCat: category
+                }
+              );
+            }
+          );
         } else {
           const CheckIfExists = FindBlogWithParam({
             slug: slug,

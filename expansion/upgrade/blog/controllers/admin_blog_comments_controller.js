@@ -7,7 +7,8 @@ const CountBlogComments = require("../models/queries/blogComments/CountBlogComme
 const GetAllCommentsByPost = require("../models/queries/blogComments/GetAllCommentsByPost");
 const CreateBlogComment = require("../models/queries/blogComments/CreateBlogComment");
 const DeleteComment = require("../models/queries/blogComments/DeleteBlogComment");
-
+/* user model queries */
+const FindOneAdminByID = require("../../../../important/admin/adminModels/queries/user/FindAdminUserByID");
 /* Media Model Queries */
 const FindAllMedia = require("../../../../important/admin/adminModels/queries/media/FindAllMedia");
 
@@ -16,14 +17,16 @@ module.exports = {
     let id = req.params.id;
     Promise.all([
       CountBlogComments(),
-      GetAllCommentsByPost(req.params.id)
+      GetAllCommentsByPost(req.params.id),
+      FindOneAdminByID(req.session.passport.user)
     ]).then(result => {
       res.render(
         "../../../expansion/upgrade/blog/views/comments/blog_comments",
         {
           comments: result[1],
           count: result[0],
-          id: id
+          id: id,
+          theUser: result[2]
         }
       );
     });
@@ -34,14 +37,18 @@ module.exports = {
       author = "";
     let id = req.params.id;
 
-    FindAllMedia().then(media => {
+    Promise.all([
+      FindAllMedia(),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
       res.render(
         "../../../expansion/upgrade/blog/views/comments/add_blog_comment",
         {
           content: content,
           author: author,
-          media: media,
-          id: id
+          media: result[0],
+          id: id,
+          theUSer: result[1]
         }
       );
     });

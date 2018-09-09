@@ -15,10 +15,11 @@ let saveItem = items => {
   fs.writeFileSync("./important/AppStuff/config/stuff.json", JSON.stringify(items));
 }; /* end of save config item */
 /* add a config item */
-let addItem = (name, info) => {
+let addItem = (name, what, info) => {
   let items = fetchConfig();
   let item = {
     name,
+    for: what,
     info
   };
   let duplicateItems = items.filter(item => item.name === name);
@@ -29,9 +30,9 @@ let addItem = (name, info) => {
   }
 }; /* end of add a config item */
 /* update config item */
-let updateItem = (name, info) => {
+let updateItem = (name, what, info) => {
   remove(name);
-  return addItem(name, info);
+  return addItem(name, what, info);
 }; /* end of update config item */
 /* get all config items */
 let getAll = () => {

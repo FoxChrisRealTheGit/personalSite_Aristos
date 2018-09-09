@@ -1,27 +1,42 @@
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
-const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger").addError;
+const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger")
+  .addError;
 /* User model Queries */
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
+const FindAllAdmins = require("../../adminModels/queries/user/FindAllAdminUsers");
 const FindUserWithParam = require("../../adminModels/queries/user/FindUserWithParam");
 const CreateUser = require("../../adminModels/queries/user/CreateUser");
 const FindOneUserByID = require("../../adminModels/queries/user/FindOneUserWithID");
 const EditUser = require("../../adminModels/queries/user/EditUser");
 const DeleteUser = require("../../adminModels/queries/user/DeleteUser");
-
+/* User Role Models */
+const FindAllUserRoles = require("../../adminModels/queries/user/roles/FindAllUsers");
 module.exports = {
   index(req, res, next) {
-    FindUserWithParam({ admin: 1 }).then(users => {
+    Promise.all([
+      FindAllAdmins(),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../important/admin/views/users/users", {
-        users: users
+        users: result[0],
+        theUser: result[1]
       });
     });
   } /* end of index function */,
   /* this one needs work?? */
   addIndex(req, res, next) {
     let title = "";
-    res.render("../../../important/admin/views/users/add_users", {
-      content: "",
-      title: title
+    Promise.all([
+      FindAllUserRoles(),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
+      res.render("../../../important/admin/views/users/add_users", {
+        content: "",
+        title: title,
+        roles: result[0],
+        theUser: result[1]
+      });
     });
   } /* end of add index function */,
   createUser(req, res, next) {
@@ -120,6 +135,7 @@ module.exports = {
         } else {
           admin = 0;
         }
+        let adminRole = req.body.adminRole;
 
         if (errors.length > 0) {
           res.render("../../../important/admin/views/users/add_users", {
@@ -130,7 +146,7 @@ module.exports = {
           FindUserWithParam({ username: req.body.username }).then(user => {
             if (user.length > 0) {
               req.flash("error_msg", "Username exists, choose another!");
-              res.redirect("/admin/user-controls/add-users");
+              res.redirect("/admin/user-controls/add-admin");
             } else {
               bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(req.body.password, salt, (err, hash) => {
@@ -142,7 +158,8 @@ module.exports = {
                     email: req.body.email,
                     username: req.body.username,
                     password: hash,
-                    admin: admin
+                    admin: admin,
+                    userRole: adminRole
                   };
                   CreateUser(UserProps);
                   req.flash("success_msg", "Admin is now registered!");
@@ -159,12 +176,15 @@ module.exports = {
   } /* end of create function */,
 
   editIndex(req, res, next) {
-    // change to query
-    FindOneUserByID(req.params.id).then(user => {
+    Promise.all([
+      FindOneUserByID(req.params.id),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render("../../../important/admin/views/users/edit_users", {
         content: "",
-        user: user,
-        id: user._id
+        user: result[0],
+        id: result[0]._id,
+        theUser: result[1]
       });
     });
   } /* end of edit index function */,
@@ -219,7 +239,6 @@ module.exports = {
       }
     });
   } /* end of save edit function */,
-
   remove(req, res, next) {
     DeleteUser(req.params.id);
     req.flash("success_msg", "Admin removed!");

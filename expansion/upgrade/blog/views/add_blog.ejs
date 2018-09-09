@@ -33,9 +33,9 @@
                         </select>
                     </div>
                     <div class="admin-form__group">
-                <label for="">Allow Comments</label>
-                <input type="checkbox" class="form-control" name="allowComments" >
-            </div>
+                        <label for="">Allow Comments</label>
+                        <input type="checkbox" class="form-control" name="allowComments" >
+                    </div>
 
                 </div>
                 <div class="admin-form__form-options admin-form__form-options--second-group">
@@ -52,6 +52,8 @@
 
                 </div>
             </div>
-            <button class="admin-button admin-button--submit">Submit</button>
+            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                <button class="admin-button admin-button--submit">Submit</button>
+            <% } %>
     </form>
-    <%- include("../../../../important/admin/views/_layouts/adminfooter") %>
+<%- include("../../../../important/admin/views/_layouts/adminfooter") %>

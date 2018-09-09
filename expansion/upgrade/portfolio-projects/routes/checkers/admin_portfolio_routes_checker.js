@@ -40,6 +40,17 @@ module.exports = {
         }
       }
     );
+    fs.pathExists(
+      "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioCategoriesRoutes.json",
+      (err, exists) => {
+        if (!exists) {
+          fs.writeJson(
+            "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioCategoriesRoutes.json",
+            { route: "./routes/admin_portfolio_projects_categories.js" }
+          );
+        }
+      }
+    );
     /* end of default portfolio routes */
     /* default portfolio model routes */
     fs.pathExists(
@@ -49,6 +60,17 @@ module.exports = {
           fs.writeJson(
             "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioModelRoutes.json",
             { route: "../../project.js" }
+          );
+        }
+      }
+    );
+    fs.pathExists(
+      "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioCategoryModelRoutes.json",
+      (err, exists) => {
+        if (!exists) {
+          fs.writeJson(
+            "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioCategoryModelRoutes.json",
+            { route: "../../projectCategory.js" }
           );
         }
       }

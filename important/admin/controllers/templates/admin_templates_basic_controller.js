@@ -5,6 +5,7 @@ const addErrorEvent = require("../../../AristosStuff/AristosLogger/AristosLogger
 const FindAllMedia = require("../../adminModels/queries/media/FindAllMedia");
 /* User Model Queries */
 const FindOneUserByID = require("../../adminModels/queries/user/FindOneUserWithID");
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
 /* Template Model Queries */
 const CountTemplayes = require("../../adminModels/queries/templates/CountTemplates");
 const FindAllTemplates = require("../../adminModels/queries/templates/FindAllTemplates");
@@ -16,27 +17,35 @@ const DeleteTemplate = require("../../adminModels/queries/templates/DeleteTempla
 
 module.exports = {
   index(req, res, next) {
-    Promise.all([FindAllTemplates(), CountTemplayes()]).then(result => {
+    Promise.all([
+      FindAllTemplates(),
+      CountTemplayes(),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render(
         "../../../important/admin/views/templateBuilder/templateDashboard",
         {
           templates: result[0],
-          count: result[1]
+          count: result[1],
+          theUser: result[2]
         }
       );
     });
   } /* end of template index function */,
 
   addIndex(req, res, next) {
-    res.render(
-      "../../../important/admin/views/templateBuilder/addBasicTemplate",
-      {
-        content: "",
-        title: "",
-        description: "",
-        path: ""
-      }
-    );
+    FindAdminUserByID(req.session.passport.user).then(user => {
+      res.render(
+        "../../../important/admin/views/templateBuilder/addBasicTemplate",
+        {
+          content: "",
+          title: "",
+          description: "",
+          path: "",
+          theUser: user
+        }
+      );
+    });
   } /* end of template add index function */,
 
   basicCreate(req, res, next) {
@@ -88,15 +97,19 @@ module.exports = {
   } /* end of template basic create function */,
 
   editIndex(req, res, next) {
-    FindOneTemplate(req.params.id).then(template => {
+    Promise.all([
+      FindOneTemplate(req.params.id),
+      FindAdminUserByID(req.session.passport.user)
+    ]).then(result => {
       res.render(
         "../../../important/admin/views/templateBuilder/editBasicTemplate",
         {
-          content: template.content,
-          title: template.title,
-          path: template.path,
-          description: template.description,
-          id: template._id
+          content: result[0].content,
+          title: result[0].title,
+          path: result[0].path,
+          description: result[0].description,
+          id: result[0]._id,
+          theUser: result[1]
         }
       );
     });

@@ -22,16 +22,18 @@
                 <div class="admin-form__group">
                     <label for="">Meta Description</label>
                     <textarea class="admin-form--disabled-resize" rows="4" name="description" placeholder="Place a brief description of this product category. Max of 320 characters including spaces."
-                        maxlength="320"></textarea>
+                        maxlength="320"><%= description %></textarea>
                 </div>
                 <div class="admin-form__group">
                     <label for="">Meta Keywords</label>
                     <textarea class="admin-form--disabled-resize" rows="4" name="keywords" placeholder="Place your keywords seperated by a comma. Max of 300 characters. EX. neat product, neater category, neatest person"
-                        maxlength="300"></textarea>
+                        maxlength="300"><%= keywords %></textarea>
                 </div>
 
             </div>
         </div>
-        <button class="admin-button admin-button--submit">Submit</button>
+        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canEdit === "yes") { %>
+            <button class="admin-button admin-button--submit">Submit</button>
+        <% } %>
     </form>
     <%- include("../../../../../important/admin/views/_layouts/adminfooter") %>

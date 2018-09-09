@@ -35,9 +35,11 @@
                         <a href="/admin/add-media">add media</a>
                     </li>
                     <div class="side-hovered-item" id="">
+                        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
                             <a class="admin-nav__nav-item" href="/admin/add-media/upload-image">upload image</a>
                             <a class="admin-nav__nav-item" href="/admin/add-media/upload-video">upload video</a>
                             <a class="admin-nav__nav-item" href="/admin/media-categories/add-media-category">add category</a>
+                        <% } %>
                             <a class="admin-nav__nav-item" href="/admin/media-categories">see all categories</a>
                         </div>
                     </div>
@@ -45,18 +47,22 @@
                         <li class="admin-nav__nav-item">
                             <a href="/admin/pages">pages</a>
                         </li>
-                        <div class="side-hovered-item" id="">
-                            <a class="admin-nav__nav-item" href="/admin/pages/add-page">add page</a>
-                        </div>
+                        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                            <div class="side-hovered-item" id="">
+                                <a class="admin-nav__nav-item" href="/admin/pages/add-page">add page</a>
+                            </div>
+                        <% } %>
                     </div>
                     <div class="side-dropdown">
                         <li class="admin-nav__nav-item">
                             <a href="/admin/template-builder">templates</a>
                         </li>
-                        <div class="side-hovered-item" id="">
-                            <a class="admin-nav__nav-item" href="/admin/template-builder/add-basic">add template</a>
-                            <a class="admin-nav__nav-item" href="/admin/template-builder/builder">drag and drop</a>
-                        </div>
+                        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                            <div class="side-hovered-item" id="">
+                                <a class="admin-nav__nav-item" href="/admin/template-builder/add-basic">add template</a>
+                                <a class="admin-nav__nav-item" href="/admin/template-builder/builder">drag and drop</a>
+                            </div>
+                        <% } %>
                     </div>
                 </ul>
                 <h4 class="admin-nav__section-header">upgrades</h4>
@@ -87,9 +93,11 @@
                             <a href="/admin/user-controls">users</a>
                         </li>
                         <div class="side-hovered-item" id="">
-                            <a class="admin-nav__nav-item" href="/admin/user-controls/add-admin">add new member</a>
-                            <a class="admin-nav__nav-item" href="">add existing member</a>
-                            <a class="admin-nav__nav-item" href="">new user role</a>
+                            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+                                <a class="admin-nav__nav-item" href="/admin/user-controls/add-admin">add new member</a>
+                                <a class="admin-nav__nav-item" href="">add existing member</a>
+                                <a class="admin-nav__nav-item" href="">new user role</a>
+                            <% } %>
                             <a class="admin-nav__nav-item" href="">all user roles</a>
                         </div>
                     </div>

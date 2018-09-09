@@ -47,12 +47,17 @@
                 </div>
             </div>
         </div>
-        <div>
-            <button type="submit" class="admin-button admin-button--submit">Submit</button>
-        </div>  
-    </form>
-    <form method="post" action="/admin/add-media/delete-image/<%= id %>?_method=DELETE">
-        <input type="hidden" name="_method" value="DELETE">
-        <button type="submit" class="admin-button admin-button--danger">Delete </button>
-    </form>
+        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canEdit === "yes") { %>
+            <div>
+                <button type="submit" class="admin-button admin-button--submit">Submit</button>
+            </div>
+        <% } %>
+       
+    </form> 
+    <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canRemove === "yes") { %>
+        <form method="post" action="/admin/add-media/delete-image/<%= id %>?_method=DELETE">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="admin-button admin-button--danger">Delete </button>
+        </form>
+    <% } %>
 <% include ../_layouts/adminfooter %>

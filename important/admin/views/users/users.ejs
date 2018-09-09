@@ -6,7 +6,6 @@
             <a href="/admin/user-controls/add-admin">+</a>
         </button>
     </div>
-
     <div class="blocks-holder">
         <% users.forEach((user)=>{ %>
         <div class="admin-blocks">
@@ -21,7 +20,7 @@
                     role:
                 </h4>
                 <h5>
-                    NOT A THING YET
+                    <%= user.userRole.name %>
                 </h5>
                 <form method="post" class="admin-blocks__delete-stuffs" action="/admin/user-controls/remove-admin/<%= user._id %>?_method=DELETE">
                     <input type="hidden" name="_method" value="DELETE">

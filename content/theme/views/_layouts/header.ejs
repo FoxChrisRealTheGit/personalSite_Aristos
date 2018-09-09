@@ -6,6 +6,11 @@
     <meta name="description" content="<%= description %>">
     <meta name="keywords" content="<%= keywords %>">
     <meta name="author" content="<%= author %>">
+
+    <% if (typeof favicon !== "undefined"){ %>
+        <link rel="icon" href="<%= favicon %>">
+    <% } %>
+
     <title>Christopher Fox | Portfolio |
         <%= title %>
     </title>
@@ -15,13 +20,11 @@
     <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
-    <% media.forEach(function(medias){ %>
-        <% if(medias.category.title === "site-logo"){ %>
-            <div class="header__brand">
-                <a class="navbar-brand" href="/"><img src="<%= medias.path %>" alt="<%= medias.alt %>"></a>
-            </div>
-        <% } %>
-    <% }) %>
+    <% if (typeof brand !== "undefined"){ %>
+        <div class="header__brand">
+            <a href="/"><img src="<%= brand %>" class=""></a>
+        </div>
+    <% } %>
     <nav class="header__main">
         <div class="header__menu-icon">
             <div class="header__menu-icon__middle"></div>

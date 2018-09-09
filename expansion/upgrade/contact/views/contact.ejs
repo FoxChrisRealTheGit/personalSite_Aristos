@@ -37,10 +37,12 @@
                 <h5>
                     <%= message.content %>
                 </h5>
-                <form class="admin-blocks__delete-stuffs" method="post" action="/admin/contact/delete-message/<%= message._id %>?_method=DELETE">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit">Delete</button>
-                </form>
+                <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canRemove === "yes") { %>
+                    <form class="admin-blocks__delete-stuffs" method="post" action="/admin/contact/delete-message/<%= message._id %>?_method=DELETE">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Delete</button>
+                    </form>
+                <% } %>
             </div>
         <% }) %>
     </div>

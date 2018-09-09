@@ -1,10 +1,10 @@
 <% include ../_layouts/adminheader %>
-<h2 class="admin-page__main-title">Add a Video</h2>
-<% include ../_layouts/messages/messages %>
-<% include ../_layouts/messages/errors %>
-<button class="admin-button admin-button--add-something">
-    <a href="/admin/add-media"><i class="fa fa-hand-point-left"></i></a>
-</button>
+    <h2 class="admin-page__main-title">Add a Video</h2>
+    <% include ../_layouts/messages/messages %>
+    <% include ../_layouts/messages/errors %>
+    <button class="admin-button admin-button--add-something">
+        <a href="/admin/add-media"><i class="fa fa-hand-point-left"></i></a>
+    </button>
     <form method="post" action="/admin/add-media/upload-video" class="admin-form">
         <div class="admin-form__form-options">
             <div class="admin-form__group">
@@ -31,7 +31,9 @@
                 <img src="#" id="imgPreview" alt="">
             </div>
         </div>
-        <button class="admin-button admin-button--submit">Submit</button>
+        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite=== "yes") { %>
+            <button class="admin-button admin-button--submit">Submit</button>
+        <% } %>
     </form>
     <script>
         function readURL(input) {

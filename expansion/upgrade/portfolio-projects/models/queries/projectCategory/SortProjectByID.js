@@ -1,4 +1,8 @@
-const ProjectCategory = require("../../projectCategory");
+const fs = require("fs-extra");
+const ProjectCategories = fs.readJSONSync(
+  "./expansion/upgrade/portfolio-projects/routes/checkers/portfolioCategoryModelRoutes.json"
+).route;
+const ProjectCategory = require(ProjectCategories);
 /* Aristos Logger Path */
 const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
   .addError;
@@ -16,8 +20,8 @@ module.exports = ids => {
       });
   });
 }; /* end of exports */
-/* Sort pages function */
-/* rebuild so that pages sort in category view use all pages id to not mess up ordering */
+/* Sort project categories function */
+/* rebuild so that project categories sort in category view use all pages id to not mess up ordering */
 function sortProjectCategories(ids, cb) {
   let count = 0;
 
@@ -37,5 +41,4 @@ function sortProjectCategories(ids, cb) {
       });
     })(count);
   }
-} /* end of sort pages function */
-
+} /* end of sort project categories function */

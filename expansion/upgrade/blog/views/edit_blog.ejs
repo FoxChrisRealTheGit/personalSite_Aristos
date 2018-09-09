@@ -44,8 +44,6 @@
                         <% } %>
                         >
                     </div>
-
-
                 </div>
                 <div class="admin-form__form-options admin-form__form-options--second-group">
                     <div class="admin-form__group">
@@ -61,8 +59,8 @@
 
                 </div>
             </div>
-
-            <button class="admin-button admin-button--submit">Submit</button>
-          
+            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canEdit === "yes") { %>
+                <button class="admin-button admin-button--submit">Submit</button>
+            <% } %>
     </form>
     <%- include("../../../../important/admin/views/_layouts/adminfooter") %>

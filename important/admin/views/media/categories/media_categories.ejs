@@ -1,26 +1,29 @@
 <%- include("../../_layouts/adminheader") %>
     <h2 class="admin-page__main-title">Media Categories</h2>
     <% include ../../_layouts/messages/messages %>
-    <div>
-    <button class="admin-button admin-button--add-something admin-button--add-something--second">
-    <a href="/admin/add-media/upload-image"><i class="fa fa-image"></i></a>
-</button>
-<button class="admin-button admin-button--add-something">
-    <a href="/admin/add-media/upload-video"><i class="fa fa-video"></i></a>
-</button>
-        <button class="admin-button admin-button--add-something admin-button--add-something--third">
-            <a href="/admin/media-categories/add-media-category">+</a>
-        </button>
-    </div>
+    <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+        <div>
+            <button class="admin-button admin-button--add-something admin-button--add-something--second">
+                <a href="/admin/add-media/upload-image"><i class="fa fa-image"></i></a>
+            </button>
+            <button class="admin-button admin-button--add-something">
+                <a href="/admin/add-media/upload-video"><i class="fa fa-video"></i></a>
+            </button>
+            <button class="admin-button admin-button--add-something admin-button--add-something--third">
+                <a href="/admin/media-categories/add-media-category">+</a>
+            </button>
+        </div>
+    <% } %>
     <% if (count > 0) { %>
-       
-    <div class="blocks-holder">
-                <% categories.forEach((cat)=> { %>
-                    <div class="admin-blocks">
+        <div class="blocks-holder">
+            <% categories.forEach((cat)=> { %>
+                <div class="admin-blocks">
+                <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canEdit === "yes") { %>
                     <a href="/admin/media-categories/edit-media-category/<%= cat._id %>">
-                    <h4>
-                        title:
-                    </h4>
+                <% } %>
+                        <h4>
+                            title:
+                        </h4>
                         <h5>
                             <%= cat.title %>
                         </h5>
@@ -28,12 +31,16 @@
                             <h5>
                             </h5>
                         <% } else { %>
-                            <form class="admin-blocks__delete-stuffs" method="post" action="/admin/media-categories/delete-media-category/<%= cat._id %>?_method=DELETE">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit">Delete</button>
-                            </form>
+                            <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canRemove === "yes") { %>
+                                <form class="admin-blocks__delete-stuffs" method="post" action="/admin/media-categories/delete-media-category/<%= cat._id %>?_method=DELETE">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            <% } %>
                         <% } %>
+                        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canEdit === "yes") { %>
                         </a>
+                        <% } %>
                     </div>
                 <% }); %>
             </div>

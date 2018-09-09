@@ -16,6 +16,16 @@ module.exports = app => {
   } else {
     app.locals.appTitle = title;
   }
+  const favicon = config.read("favicon");
+  if (favicon === "none") {
+  } else {
+    app.locals.favicon = favicon;
+  }
+  const brand = config.read("brand");
+  if (favicon === "none") {
+  } else {
+    app.locals.brand = brand;
+  }
   /* end title name for app */
   /* read Aristos Version Number */
   app.locals.aristosVersion = config.read("aristosVersion");

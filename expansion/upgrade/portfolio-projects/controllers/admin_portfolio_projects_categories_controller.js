@@ -19,10 +19,10 @@ const SortProjectCategories = require("../models/queries/projectCategory/SortPro
 const DeleteProjectsWithCategory = require("../models/queries/project/DeleteProjectWithCategory");
 /* User Model Queries */
 const FindOneUserByID = require("../../../../important/admin/adminModels/queries/user/FindOneUserWithID");
+const FindOneAdminByID = require("../../../../important/admin/adminModels/queries/user/FindAdminUserByID");
 module.exports = {
   index(req, res, next) {
-    const CountedProjectCategories = CountProjectCategories();
-    CountedProjectCategories.then(count => {
+    CountProjectCategories().then(count => {
       if (count < 1) {
         const categoryProps = {
           title: "General",
@@ -34,12 +34,16 @@ module.exports = {
         };
         CreateProjectCategory(categoryProps);
       }
-      FindAllSortedProjectCategories().then(categories => {
+      Promise.all([
+        FindAllSortedProjectCategories(),
+        FindOneAdminByID(req.session.passport.user)
+      ]).then(result => {
         res.render(
           "../../../expansion/upgrade/portfolio-projects/views/categories/project_categories",
           {
-            categories: categories,
-            count: count
+            categories: result[0],
+            count: count,
+            theUser: result[1]
           }
         );
       });
@@ -51,7 +55,10 @@ module.exports = {
       author,
       description,
       keywords = "";
-    FindAllMedia().then(media => {
+    Promise.all([
+      FindAllMedia(),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
       res.render(
         "../../../expansion/upgrade/portfolio-projects/views/categories/add_project_category",
         {
@@ -59,7 +66,8 @@ module.exports = {
           author: author,
           description: description,
           keywords: keywords,
-          media: media
+          media: result[0],
+          theUser: result[1]
         }
       );
     });
@@ -133,21 +141,24 @@ module.exports = {
   } /* end of create function */,
 
   editIndex(req, res, next) {
-    Promise.all([FindProjectCategoryByID(req.params.id), FindAllMedia()]).then(
-      result => {
-        res.render(
-          "../../../expansion/upgrade/portfolio-projects/views/categories/edit_project_category",
-          {
-            title: result[0].title,
-            id: result[0]._id,
-            author: result[0].author,
-            description: result[0].description,
-            keywords: result[0].keywords,
-            media: result[1]
-          }
-        );
-      }
-    );
+    Promise.all([
+      FindProjectCategoryByID(req.params.id),
+      FindAllMedia(),
+      FindOneAdminByID(req.session.passport.user)
+    ]).then(result => {
+      res.render(
+        "../../../expansion/upgrade/portfolio-projects/views/categories/edit_project_category",
+        {
+          title: result[0].title,
+          id: result[0]._id,
+          author: result[0].author,
+          description: result[0].description,
+          keywords: result[0].keywords,
+          media: result[1],
+          theUser: result[2]
+        }
+      );
+    });
   } /* end of edit index function */,
 
   edit(req, res, next) {

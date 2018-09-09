@@ -11,20 +11,19 @@
 
     <form method="post" action="/admin/blog-categories/add-blog-category" class="admin-form">
         <div class="admin-form__form-options--bottom-group">
-        <div class="admin-form__form-options">
-        <div class="admin-form__group">
-            <label for="">Title</label>
-            <input type="text" class="form-control" name="title" value="<%= title %>" placeholder="Title">
+            <div class="admin-form__form-options">
+                <div class="admin-form__group">
+                    <label for="">Title</label>
+                    <input type="text" class="form-control" name="title" value="<%= title %>" placeholder="Title">
 
-        </div>
-        <div class="admin-form__group">
-                <label for="">Author</label>
-                <input type="text" class="form-control" name="author" value="<%= author %>" placeholder="Author">
+                </div>
+                <div class="admin-form__group">
+                        <label for="">Author</label>
+                        <input type="text" class="form-control" name="author" value="<%= author %>" placeholder="Author">
 
+                </div>
             </div>
-            
-        </div>
-        <div class="admin-form__form-options admin-form__form-options--second-group">
+            <div class="admin-form__form-options admin-form__form-options--second-group">
                 <div class="admin-form__group">
                     <label for="">Meta Description</label>
                     <textarea class="disabled-resize" rows="4" name="description" placeholder="Place a brief description of this product category. Max of 320 characters including spaces."
@@ -38,6 +37,8 @@
 
             </div>
         </div>
-        <button class="admin-button admin-button--submit">Submit</button>
+        <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+            <button class="admin-button admin-button--submit">Submit</button>
+        <% } %>
     </form>
-    <%- include("../../../../../important/admin/views/_layouts/adminfooter") %>
+<%- include("../../../../../important/admin/views/_layouts/adminfooter") %>

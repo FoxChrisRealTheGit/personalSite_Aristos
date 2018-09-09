@@ -29,6 +29,10 @@ const UserSchema = new mongoose.Schema({
   },
   facebookID: {
     type: String
+  },
+  userRole:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserRole"
   }
 });
 

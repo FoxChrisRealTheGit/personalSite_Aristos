@@ -30,10 +30,10 @@ module.exports = {
         }
       });
     });
-    /* default routes path */
+    /* default routes path */ 
     fs.pathExists(
       "./important/admin/routes/checkers/media/MediaRoutes.json",
-      (err, exists) => {
+      (err, exists) => { 
         if (!exists) {
           fs.writeJson(
             "./important/admin/routes/checkers/media/MediaRoutes.json",
@@ -48,7 +48,7 @@ module.exports = {
     /* default model routes */
     fs.pathExists(
       "./important/admin/routes/checkers/media/MediaModelRoutes.json",
-      (err, exists) => {
+      (err, exists) => {   
         if (!exists) {
           fs.writeJson(
             "./important/admin/routes/checkers/media/MediaModelRoutes.json",

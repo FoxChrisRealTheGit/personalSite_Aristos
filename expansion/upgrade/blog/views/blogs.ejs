@@ -1,17 +1,21 @@
 <%- include("../../../../important/admin/views/_layouts/adminheader") %>
     <h2 class="admin-page__main-title">Blogs</h2>
     <% include ../../../../important/admin/views/_layouts/messages/messages %>
-    <div class="button-row">
-        <button class="admin-button admin-button--add-something">
-            <a href="/admin/blogs/add-blog">+</a>
-        </button>
-    </div>
+    <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canWrite === "yes") { %>
+        <div class="button-row">
+            <button class="admin-button admin-button--add-something">
+                <a href="/admin/blogs/add-blog">+</a>
+            </button>
+        </div>
+    <% } %>
 
     <% if (count > 0) { %>
     <div class="blocks-holder">
                 <% blogs.forEach(function(blog) { %>
                 <div class="admin-blocks" id="id_<%= blog._id %>" class="<%= blog.slug %>">
+                <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canEdit === "yes") { %>
                     <a href="/admin/blogs/edit-blog/<%= blog._id %>">
+                <% } %>
                         <h4>
                             title:
                         </h4>
@@ -42,23 +46,26 @@
                         <h5>
                         <%= blog.allowComments %>
                         </h5>
-                        
-                    </a><% if(blog.allowComments){ %>
+                    <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canEdit === "yes") { %>    
+                        </a>
+                    <% } %>
+                    <% if(blog.allowComments){ %>
                         <h5 class="admin-table__edit-stuffs">
                             <a href="/admin/blog-comments/by-post/<%= blog.id %>">See Comments</a>
                         </h5>
-                        <% } %>
+                    <% } %>
+                    <% if(theUser.userRole.allTheThings === "yes" || theUser.userRole.canRemove === "yes") { %>
                         <form class="admin-blocks__delete-stuffs" method="post" action="/admin/blogs/delete-blog/<%= blog._id %>?_method=DELETE">
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit">Delete</button>
                         </form>
-                    
+                    <% } %>
                 </div>
                 <% }); %>
             </div>
         <% } else { %>
             <h3 class="admin-page__none-of-something">There are no blogs, you should write one.</h3>
-            <% } %>
+        <% } %>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
             <script>
                 $('.blocks-holder').sortable({
@@ -70,4 +77,4 @@
                     }
                 }, "refresh");
             </script>
-                <%- include("../../../../important/admin/views/_layouts/adminfooter") %>
+<%- include("../../../../important/admin/views/_layouts/adminfooter") %>

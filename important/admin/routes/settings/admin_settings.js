@@ -12,6 +12,15 @@ router
   .post(settingsController.create);
 
 /*
+* POST site favicon
+*/
+router.post("/favicon", settingsController.favicon);
+/*
+* POST site brand
+*/
+router.post("/brand", settingsController.brand);
+
+/*
 * GET admin settings cancel
 */
 router.get("/cancel", isAdmin, settingsController.cancel);

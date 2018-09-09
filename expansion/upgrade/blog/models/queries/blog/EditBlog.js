@@ -1,8 +1,13 @@
 const fs = require("fs-extra");
-const Blogs = fs.readJSONSync(
-  "./expansion/upgrade/blog/routes/checkers/blogModelMainRoute.json"
-).route;
-const Blog = require(Blogs);
+let Blog;
+try {
+  const Blogs = fs.readJSONSync(
+    "./expansion/upgrade/blog/routes/checkers/blogModelMainRoute.json"
+  ).route;
+  Blog = require(Blogs);
+} catch (err) {
+  Blog = require("../../blog");
+}
 /* Aristos Logger Path */
 const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger").addError;
 

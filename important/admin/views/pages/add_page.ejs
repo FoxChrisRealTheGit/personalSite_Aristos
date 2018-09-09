@@ -5,11 +5,9 @@
         <button class="admin-button admin-button--add-something">
             <a class="btn-text" href="/admin/pages"><i class="fa fa-hand-point-left"></i></a>
         </button>
-
     </div>
     <br>
     <br>
-
     <form method="post" action="/admin/pages/add-page" class="admin-form" class="admin-form">
         <%- include("../../../AristosStuff/AristosTextEditor/AristosTextEditor") %>
             <div class="admin-form__form-options--bottom-group">
@@ -67,8 +65,8 @@
 
                 </div>
             </div>
-            <button class="admin-button admin-button--submit">Submit</button>
-            
+            <% if(theUser.userRole.allThethings === "yes" || theUser.userRole.canWrite === "yes"){ %>
+                <button class="admin-button admin-button--submit">Submit</button>
+            <% } %>
     </form>
-
-    <%- include("../_layouts/adminfooter") %>
+<%- include("../_layouts/adminfooter") %>

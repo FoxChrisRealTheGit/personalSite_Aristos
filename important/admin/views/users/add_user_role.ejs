@@ -1,0 +1,60 @@
+<% include ../_layouts/adminheader %>
+    <h2 class="admin-page__main-title">Add an Admin Role</h2>
+    <% include ../_layouts/messages/messages %>
+        <button class="admin-button admin-button--add-something">
+            <a class="btn-text" href="/admin/user-controls/admin-roles"><i class="fa fa-hand-point-left"></i></a>
+        </button>
+        <form method="post" action="/admin/user-controls/add-admin-role" class="admin-form">
+            <div class="admin-form__form-options">
+                <div class="admin-form__group">
+                    <label>Role Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Name">
+                </div>
+                <div class="admin-form__group">
+                    <label for="">Can Read</label>
+                    <select name="canRead" class="form-control">
+                        <option value="no">
+                            No
+                        </option>
+                        <option value="yes">
+                            Yes
+                        </option>
+                    </select>
+                </div>
+                <div class="admin-form__group">
+                    <label for="">Can Edit</label>
+                    <select name="canEdit" class="form-control">
+                        <option value="no">
+                            No
+                        </option>
+                        <option value="yes">
+                            Yes
+                        </option>
+                    </select>
+                </div>
+                <div class="admin-form__group">
+                    <label for="">Can Write</label>
+                    <select name="canWrite" class="form-control">
+                        <option value="no">
+                            No
+                        </option>
+                        <option value="yes">
+                            Yes
+                        </option>
+                    </select>
+                </div>
+                <div class="admin-form__group">
+                    <label for="">Can Delete</label>
+                    <select name="canDelete" class="form-control">
+                        <option value="no">
+                            No
+                        </option>
+                        <option value="yes">
+                            Yes
+                        </option>
+                    </select>
+                </div>
+            </div>
+        <button type="submit" class="admin-button admin-button--submit">Submit</button>
+    </form>
+<% include ../_layouts/adminfooter %>

@@ -1,4 +1,8 @@
-const BlogCategory = require("../../blogCategory");
+const fs = require("fs-extra");
+const BlogCategories = fs.readJSONSync(
+  "./expansion/upgrade/blog/routes/checkers/blogModelCategoryRoute.json"
+).route;
+const BlogCategory = require(BlogCategories);
 /* Aristos Logger Path */
 const errorAddEvent = require("../../../../../../important/AristosStuff/AristosLogger/AristosLogger")
   .addError;
@@ -15,4 +19,3 @@ module.exports = () => {
       errorAddEvent(err, "blog category query error");
     });
 };
-

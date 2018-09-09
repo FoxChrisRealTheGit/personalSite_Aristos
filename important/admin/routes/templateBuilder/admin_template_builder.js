@@ -3,6 +3,8 @@ const router = express.Router();
 const auth = require("../../../AppStuff/authorization/auth");
 const isAdmin = auth.isAdmin;
 const templateBasicController = require("../../controllers/templates/admin_templates_basic_controller");
+/* User Model Queries */
+const FindAdminUserByID = require("../../adminModels/queries/user/FindAdminUserByID");
 /* GET index template builder */
 router.get("/", templateBasicController.index);
 
@@ -23,11 +25,17 @@ router.delete("/delete-basic/:id", templateBasicController.basicDelete);
 
 /* GET drag and drop template builder  */
 router.get("/builder", (req, res, next) => {
-  res.render("../../../important/admin/views/templateBuilder/templateBuilder", {
-    content: "",
-    title: "",
-    author: "",
-    keywords: ""
+  FindAdminUserByID(req.session.passport.user).then(user => {
+    res.render(
+      "../../../important/admin/views/templateBuilder/templateBuilder",
+      {
+        content: "",
+        title: "",
+        author: "",
+        keywords: "",
+        theUser: user
+      }
+    );
   });
 });
 

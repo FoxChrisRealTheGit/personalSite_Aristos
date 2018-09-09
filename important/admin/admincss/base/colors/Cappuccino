@@ -1,0 +1,28 @@
+/* stuffs to change */
+/* used for : nav-header background */
+$colorOne: #4b3832;
+/* used for : table heads, template builder, form options */
+$colorTwo: #854442;
+/* used for : pages title background, table borders,page section divider */
+$colorThree: #854442;
+/* used for : header nav borders, template builder hovers, titles, and main nav colors */
+$colorFour: #fff4e6;
+/* used for : nav hovers, table edit hovers, contrast background,used for base font color, global set for all links,  sub title one and template builder icons */
+$colorFive: #3c2f2f;
+/* used for : main background, admin section redirect*/
+$colorSix: #be9b7b;
+/* used for:  main button hover */
+$colorSeven: #f0f8ff;
+/* end of stuffs to change */
+/* universal stuffs */
+/* used for: marketplace link and complete type links */
+$hoverSuccess: #1E90FF;
+/* used for: button submit */
+$transitionSuccessHover:  #b0c4de;
+/* used for: logout, delete type links */
+$hoverDanger: #FF0000;
+/* used for: button danger */
+$transitionDangerHover:  #b22222;
+/* used for button danger */
+$borderThree: #4a6fa5;
+/* end of universal stuffs */
