@@ -7,7 +7,7 @@ const passport = require("passport");
 /* needs more cleanup */
 module.exports = app => {
   /* Set admin css folder */
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV == "production") {
     app.use(
       express.static(path.join(__dirname, "../../../dist/content/public"))
     );
