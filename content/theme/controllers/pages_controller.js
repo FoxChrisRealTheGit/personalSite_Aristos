@@ -48,7 +48,7 @@ module.exports={
             title: result[3][0].title,
             keywords: result[3][0].keywords,
             description: result[3][0].description,
-            author: result[3][0].author,
+            author:"",
             media: result[0],
             portfolioCats: result[1],
             projects: result[2]

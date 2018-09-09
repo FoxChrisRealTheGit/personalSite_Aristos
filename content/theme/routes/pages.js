@@ -1,3 +1,4 @@
+const fs = require("fs-extra");
 const express = require("express");
 const router = express.Router();
 const config = require("../../../important/AppStuff/config/stuff.json");
@@ -44,7 +45,7 @@ router.get("/portfolio/:category", function(req, res) {
       title: result[1][0].title,
       keywords: result[1][0].keywords,
       description: result[1][0].description,
-      author: result[1][0].author,
+      author: "",
       media: result[3],
       portfolioCats: result[0],
       projects: result[2]
@@ -60,16 +61,30 @@ router.get("/portfolio/:category/:project", function(req, res) {
   const AllPortfolioCategories = FindAllPortfolioCategories();
   const foundProject = FindProjectWithParams({ _id: project });
   const AllMedia = FindAllMedia();
+
+  let galleryImages = null;
   Promise.all([AllPortfolioCategories, foundProject, AllMedia]).then(result => {
-    res.render("pages/portfolioProject", {
-      title: result[1][0].title,
-      keywords: result[1][0].keywords,
-      description: result[1][0].description,
-      content: result[1][0].content,
-      author: result[1][0].author,
-      media: result[2],
-      portfolioCats: result[0],
-      project: result[1][0]
+    let galleryDir =
+      "content/public/images/portfolio_images/" + result[1][0]._id + "/gallery";
+
+    fs.readdir(galleryDir, function(err, files) {
+      if (err) {
+        console.log(err);
+      } else {
+        galleryImages = files;
+
+        res.render("pages/portfolioProject", {
+          title: result[1][0].title,
+          keywords: result[1][0].keywords,
+          description: result[1][0].description,
+          content: result[1][0].content,
+          author: "",
+          media: result[2],
+          portfolioCats: result[0],
+          project: result[1][0],
+          galleryImages: galleryImages
+        });
+      }
     });
   });
 });

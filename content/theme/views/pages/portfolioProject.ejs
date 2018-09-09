@@ -26,13 +26,26 @@
         <div class="portfolio--col">   
             <div class="page__work-holder">
                 <img class="page__work-img" src="/images/portfolio_images/<%= project._id %>/<%= project.image %>" alt="">
-                <div class="page__work-information">
-                    <h3>Worked on: <%= project.started %> - <%= project.completed %></h3>
-                    <p>
-                        <%- content %>
-                    </p>
-                </div>
+                    <a href="<%= project.link %>" target="_blank">
+                        <div class="page__work-information">
+                            <h3>Worked on: <%= project.started %> - <%= project.completed %></h3>
+                            <p>
+                                <%- content %>
+                            </p>
+                        </div>
+                    </a>
+                    
             </div>
+            <ul class="gallery">
+                <% galleryImages.forEach(function(image){ %>
+                    <% if (image != "thumbs") { %>
+                        <li>
+                            <img src="/images/portfolio_images/<%= project.id %>/gallery/thumbs/<%= image %>" alt="">
+                        </li>
+                    <% } %>
+                <% }) %>
+            </ul>
         </div>
+        
     </div>
 <% include ../_layouts/footer %>
