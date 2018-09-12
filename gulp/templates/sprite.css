@@ -10,11 +10,11 @@
 {{#shapes}}
 {{#first}}
 .icon{
-    background-image: url("/sprites/{{{sprite}}}");
+    background-image: url("/images/sprites/{{{sprite}}}");
 }
 
 .no-svg .icon{
-    background-image: url("/sprites/{{#replaceSvgWithPng}}{{{sprite}}}{{/replaceSvgWithPng}}");
+    background-image: url("/images/sprites/{{#replaceSvgWithPng}}{{{sprite}}}{{/replaceSvgWithPng}}");
 }
 {{/first}}
 .icon--{{base}}{

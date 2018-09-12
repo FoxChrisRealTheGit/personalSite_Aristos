@@ -93,13 +93,13 @@
   }
 
   &__work-img {
-    width: 175px;
-    height: 175px;
+    max-width: 175px;
+    max-height: 175px;
     overflow: hidden;
 
     @mixin atMedium {
-      width: 325px;
-      height: 325px;
+      max-width: 325px;
+      max-height: 325px;
       margin: 20px;
     }
   }

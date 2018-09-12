@@ -32,7 +32,7 @@ const config = {
 }; /* end of config */
 
 gulp.task("beginClean", () => {
-  return del(["./app/temp/sprite", "./content/public/images/sprites"]);
+  return del(["./content/public/temp/sprite", "./content/public/images/sprites"]);
 }); /* end of beginClean task */
 
 gulp.task("createSprite", ["beginClean"], () => {
@@ -51,7 +51,7 @@ gulp.task("createSprite", ["beginClean"], () => {
 
 gulp.task("copySpriteGraphic", ["copySpriteCSS"],() => {
   return gulp
-    .src("./content/temp/sprite/css/**/*.svg")
+    .src("./content/public/temp/sprite/css/**/*.svg")
     .pipe(gulp.dest("./content/public/images/sprites"));
 }); /* end of copySpriteGraphic task */
 

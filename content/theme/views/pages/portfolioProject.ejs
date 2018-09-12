@@ -4,7 +4,7 @@
     <% include ../_layouts/messages/errors %>
     <div class="portfolio__icons-holder">
     <% media.forEach(function(icon){ %>
-        <% if(icon.category == "icons"){ %> 
+        <% if(icon.category.title == "icons"){ %> 
             <span class="icon icon--<%= icon.title %> portfolio__icon"></span>
         <% } %>
     <% }) %>
@@ -26,21 +26,25 @@
         <div class="portfolio--col">   
             <div class="page__work-holder">
                 <img class="page__work-img" src="/images/portfolio_images/<%= project._id %>/<%= project.image %>" alt="">
+                    <% if(project.link !== ""){ %>
                     <a href="<%= project.link %>" target="_blank">
+                    <% } %>
                         <div class="page__work-information">
                             <h3>Worked on: <%= project.started %> - <%= project.completed %></h3>
                             <p>
                                 <%- content %>
                             </p>
                         </div>
+                    <% if(project.link !== ""){ %>
                     </a>
+                    <% } %>
                     
             </div>
             <ul class="gallery">
                 <% galleryImages.forEach(function(image){ %>
                     <% if (image != "thumbs") { %>
                         <li>
-                            <img src="/images/portfolio_images/<%= project.id %>/gallery/thumbs/<%= image %>" alt="">
+                            <img src="/images/portfolio_images/<%= project.id %>/gallery/thumbs/<%= image %>" alt="">&emsp;
                         </li>
                     <% } %>
                 <% }) %>

@@ -36,6 +36,7 @@
   }
 
   &__image {
+    height: auto;
     width: 210px;
   }
 }

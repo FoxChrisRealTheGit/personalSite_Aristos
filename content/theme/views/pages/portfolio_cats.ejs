@@ -4,7 +4,7 @@
     <% include ../_layouts/messages/errors %>
     <div class="portfolio__icons-holder">
     <% media.forEach(function(icon){ %>
-        <% if(icon.category == "icons"){ %> 
+        <% if(icon.category.title == "icons"){ %> 
             <span class="icon icon--<%= icon.title %> portfolio__icon"></span>
         <% } %>
     <% }) %>
